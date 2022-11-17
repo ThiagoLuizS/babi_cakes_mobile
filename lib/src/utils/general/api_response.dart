@@ -4,7 +4,7 @@ class ApiResponse<T> {
   late bool ok;
   late String msg;
   late T result;
-  late List<String> erros;
+  late List<String> erros = [];
 
   ApiResponse.ok(this.result) {
     ok = true;

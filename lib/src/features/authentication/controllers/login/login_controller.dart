@@ -41,11 +41,11 @@ class LoginController {
         return ApiResponse.errors(error.messages);
       }
     } on TimeoutException catch (e) {
-      return ApiResponse.error(msgTimeOutGlobal);
+      return ApiResponse.errors([msgTimeOutGlobal]);
     } on SocketException catch (e) {
-      return ApiResponse.error(msgNotConnectionGlobal);
+      return ApiResponse.errors([msgNotConnectionGlobal]);
     } catch (e) {
-      return ApiResponse.error(msgGlobalError);
+      return ApiResponse.errors([msgGlobalError]);
     }
   }
 }

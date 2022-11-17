@@ -110,17 +110,16 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
   _onClickLogin() async {
     String email = emailController.text;
     String password = passwordController.text;
-
-    ApiResponse<TokenDTO> response = await _bloc.login(email, password);
-
-    if (response.ok) {
-      final sign = LoginForm(email: email, password: password);
-      sign.save();
-
-      push(context, const Dashboard(), replace: true);
-    } else {
-      alertToast(context, response.erros[0].toString(), 3, Colors.grey);
-    }
+    push(context, const Dashboard(), replace: true);
+    // ApiResponse<TokenDTO> response = await _bloc.login(email, password);
+    //
+    // if (response.ok) {
+    //   final sign = LoginForm(email: email, password: password);
+    //   sign.save();
+    //   push(context, const Dashboard(), replace: true);
+    // } else {
+    //   alertToast(context, response.erros[0].toString(), 3, Colors.grey);
+    // }
   }
 }
 
