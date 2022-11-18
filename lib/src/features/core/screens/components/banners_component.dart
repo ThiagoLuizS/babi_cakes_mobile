@@ -34,14 +34,14 @@ class _BannersComponentState extends State<BannersComponent> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
       child: Column(
         children: [
           SizedBox(
-            height: 110,
+            height: 140,
             child: PageView(
               controller: _pageController,
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
               children: widget.list,
             ),
@@ -54,7 +54,7 @@ class _BannersComponentState extends State<BannersComponent> {
                   .map((e) => Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4.0),
                         child: AnimatedContainer(
-                          duration: Duration(milliseconds: 200),
+                          duration: const Duration(milliseconds: 200),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: widget.list.indexOf(e) == _currentIndex

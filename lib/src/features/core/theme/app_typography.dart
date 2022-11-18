@@ -11,6 +11,10 @@ class AppTypography {
     return Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 12);
   }
 
+  static TextStyle? medium(BuildContext context) {
+    return Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 13);
+  }
+
   static TextStyle? bodyTextBold(BuildContext context) {
     return Theme.of(context).textTheme.bodyText1?.copyWith(
           fontWeight: FontWeight.w500,
@@ -41,7 +45,7 @@ class AppTypography {
   static TextStyle? sessionTitle(BuildContext context) {
     return Theme.of(context).textTheme.bodyText1?.copyWith(
           fontWeight: FontWeight.w600,
-          fontSize: 16,
+          fontSize: 14,
         );
   }
 

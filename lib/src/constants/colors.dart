@@ -10,6 +10,7 @@ const tAccentColor = Color(0xFF001BFF);
 const tWhiteColor = Colors.white;
 const tDarkColor = Color(0xff000000);
 const tCardBgColor = Color(0xFFF7F5F1);
+const tGreebBgColor = Color(0xFF34A834);
 
 
 
