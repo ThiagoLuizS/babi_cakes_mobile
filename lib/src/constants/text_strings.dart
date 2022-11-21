@@ -78,6 +78,7 @@ const String tDashboardBannerTitle2 = "JAVA";
 const String tDashboardBannerSubTitle = "10 Lessons";
 const String tDashboardButton = "View All";
 const String tDashboardTopCourses = "Top Courses";
+const String tInit = "Início";
 
 
 

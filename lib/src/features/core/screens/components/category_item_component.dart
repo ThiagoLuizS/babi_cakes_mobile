@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:babi_cakes_mobile/src/features/core/models/category/category_view.dart';
-import 'package:babi_cakes_mobile/src/features/core/models/dashboard/category.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_typography.dart';
 import 'package:flutter/material.dart';
@@ -14,14 +13,14 @@ class CategoryItemComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return category.show ? Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
           height: 60,
           width: 60,
           decoration: BoxDecoration(
-            image: DecorationImage(image: MemoryImage(base64Decode(category.categoryFileView.photoBase64ToString)))
+            image: DecorationImage(image: MemoryImage(base64Decode(category.categoryFileView!.photoBase64ToString)))
           ),
         ),
         Flexible(
@@ -35,6 +34,6 @@ class CategoryItemComponent extends StatelessWidget {
           ),
         ),
       ],
-    );
+    ) : Container();
   }
 }

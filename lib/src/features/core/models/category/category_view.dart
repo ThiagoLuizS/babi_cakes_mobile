@@ -6,16 +6,18 @@ import 'package:babi_cakes_mobile/src/utils/general/prefs.dart';
 class CategoryView {
 
   late int id;
-  late CategoryFileView categoryFileView;
+  late CategoryFileView? categoryFileView;
   late String name;
-  late String description;
+  late String? description;
+  late bool show = true; //transient
 
 
   CategoryView({
     required this.id,
-    required this.categoryFileView,
+    this.categoryFileView,
     required this.name,
-    required this.description
+    this.description,
+    required this.show
   });
 
   CategoryView.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class CategoryView {
     categoryFileView = CategoryFileView.fromJson(json['categoryFileView']);
     name = json['name'];
     description = json['description'];
+    show = json['show'];
   }
 
   Map<String, dynamic> toJson() {
@@ -31,6 +34,7 @@ class CategoryView {
     data['categoryFileView'] = categoryFileView;
     data['name'] = name;
     data['description'] = description;
+    data['show'] = show;
     return data;
   }
 

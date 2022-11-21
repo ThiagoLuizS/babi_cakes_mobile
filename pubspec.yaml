@@ -25,6 +25,9 @@ dependencies:
   local_auth: ^2.1.2
   tab_indicator_styler: ^1.0.0
   flutter_svg: ^0.19.3
+  shimmer: ^2.0.0
+  brasil_fields: 1.6.0
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

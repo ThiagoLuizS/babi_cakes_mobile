@@ -11,8 +11,30 @@ class HeaderLocationComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverPersistentHeader(
-      delegate: _HeaderLocationComponentDelegate(location),
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 15),
+              child: Row(
+                children: [
+                  Text(
+                    location,
+                    style: AppTypography.localTextStyle(context),
+                  ),
+                  const AppIcon(
+                      AppIcons.arrowDown,
+                      size: Size(20, 20),
+                      color: AppColors.primaryColor
+                  ),
+                ],
+              ),
+            ),
+          ],
+        )
+      ],
     );
   }
 }

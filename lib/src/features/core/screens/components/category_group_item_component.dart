@@ -1,22 +1,21 @@
-import 'package:babi_cakes_mobile/src/constants/sizes.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/category/category_bloc.dart';
+import 'package:babi_cakes_mobile/src/features/core/controllers/product/product_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/category/category_view.dart';
+import 'package:babi_cakes_mobile/src/features/core/models/product/content_product.dart';
+import 'package:babi_cakes_mobile/src/features/core/models/product/product_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/product_for_category_dashboard_component.dart';
-import 'package:babi_cakes_mobile/src/features/core/screens/dashboard/widgets/categories.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_typography.dart';
+import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
+import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:flutter/material.dart';
 
 class CategoryGroupItemComponent extends StatefulWidget {
   final CategoryView categoryView;
-  final List<CategoryView> categoryViewList;
-  final int itemCount;
 
   const CategoryGroupItemComponent(
       {Key? key,
-      required this.categoryView,
-      required this.itemCount,
-      required this.categoryViewList})
+      required this.categoryView})
       : super(key: key);
 
   @override
@@ -27,23 +26,30 @@ class CategoryGroupItemComponent extends StatefulWidget {
 class _CategoryGroupItemComponentState
     extends State<CategoryGroupItemComponent> {
   final CategoryBloc _bloc = CategoryBloc();
+  final ProductBloc _productBloc = ProductBloc();
+  late ContentProduct contentProduct = ContentProduct(content: []);
+  late bool isLoadingProducts = true;
+  late String productName = '';
 
   @override
   void initState() {
     super.initState();
+    _onGetProductAll(widget.categoryView.id, productName);
   }
 
   @override
   void dispose() {
     super.dispose();
     _bloc.dispose();
+    _productBloc.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
     final txtTheme = Theme.of(context).textTheme;
 
-    return Column(
+    return contentProduct.content.isNotEmpty ? Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
@@ -51,7 +57,7 @@ class _CategoryGroupItemComponentState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 12, top: 40),
+              padding: const EdgeInsets.only(left: 12, bottom: 10),
               child: Text(
                 widget.categoryView.name,
                 style: AppTypography.sessionTitle(
@@ -60,7 +66,7 @@ class _CategoryGroupItemComponentState
               ),
             ),
             const Padding(
-              padding: EdgeInsets.only(right: 12, top: 40),
+              padding: EdgeInsets.only(right: 12, bottom: 10),
               child: Text(
                 "Ver mais",
                 style: TextStyle(fontSize: 13, color: AppColors.berimbau),
@@ -76,7 +82,7 @@ class _CategoryGroupItemComponentState
               SizedBox(
                 height: 260,
                 child: ListView.builder(
-                  itemCount: widget.itemCount,
+                  itemCount: contentProduct.content.length,
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   physics: const BouncingScrollPhysics(),
@@ -85,7 +91,8 @@ class _CategoryGroupItemComponentState
                     child: SizedBox(
                       height: 260,
                       child: ProductForCategoryDashboardComponent(
-                        categoryView: widget.categoryViewList[index],
+                        isLoadingProducts: isLoadingProducts,
+                        productView: contentProduct.content[index],
                         txtTheme: txtTheme,
                       ),
                     ),
@@ -96,6 +103,23 @@ class _CategoryGroupItemComponentState
           ),
         ),
       ],
-    );
+    ) : Container();
+  }
+
+  _onGetProductAll(int categoryId, String productName) async {
+    setState(() {
+      isLoadingProducts = true;
+    });
+    ApiResponse<ContentProduct> response =
+    await _productBloc.getAllByPage(0, 10, categoryId, productName);
+
+    if (response.ok) {
+      setState(() {
+        isLoadingProducts = false;
+        contentProduct = response.result;
+      });
+    } else {
+      alertToast(context, response.erros[0].toString(), 3, Colors.grey);
+    }
   }
 }
