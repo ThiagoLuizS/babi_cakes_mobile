@@ -12,4 +12,5 @@ class AppColors {
   static const Color milkCream = Color(0xC5D1C6B4);
   static const Color berimbau = Color(0xFFB29983);
   static const Color greyTransp100 = Color(0x4DFFFFFF);
+  static const Color greyTransp200 = Color(0x32989191);
 }

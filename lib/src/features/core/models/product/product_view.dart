@@ -1,8 +1,7 @@
-import 'package:babi_cakes_mobile/src/features/core/models/category/category_file_view.dart';
+import 'dart:convert' as convert;
+
 import 'package:babi_cakes_mobile/src/features/core/models/category/category_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/product/product_file_view.dart';
-
-import 'dart:convert' as convert;
 
 import 'package:babi_cakes_mobile/src/utils/general/prefs.dart';
 

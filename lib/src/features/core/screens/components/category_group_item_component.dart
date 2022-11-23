@@ -75,12 +75,12 @@ class _CategoryGroupItemComponentState
           ],
         ),
         SizedBox(
-          height: 260,
+          height: 320,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 260,
+                height: 320,
                 child: ListView.builder(
                   itemCount: contentProduct.content.length,
                   shrinkWrap: true,

@@ -3,7 +3,9 @@ import 'package:babi_cakes_mobile/src/features/core/models/category/category_vie
 import 'package:babi_cakes_mobile/src/features/core/models/product/content_product.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/product_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/search_product_component.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/product/product.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
+import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
 import 'package:flutter/material.dart';
 
 class ProductTabComponent extends StatefulWidget {
@@ -43,20 +45,22 @@ class _ProductTabComponentState extends State<ProductTabComponent> {
       onRefresh: () async {
         return _refreshIndicator();
       },
-      child: CustomScrollView(slivers: [
-        SliverList(
-          delegate: SliverChildListDelegate([
-            Padding(
-              padding: const EdgeInsets.only(top: 25, bottom: 10),
-              child: SearchProductComponent(
-                filterController: filterController,
-                productBloc: _productBloc,
-                onPressed: () {_onGetProductAll(widget.categoryView!.id, filterController.text);},
+      child: CustomScrollView(
+        slivers: [
+          SliverList(
+            delegate: SliverChildListDelegate([
+              Padding(
+                padding: const EdgeInsets.only(top: 25, bottom: 10),
+                child: SearchProductComponent(
+                  filterController: filterController,
+                  productBloc: _productBloc,
+                  onPressed: () {
+                    _onGetProductAll(
+                        widget.categoryView!.id, filterController.text);
+                  },
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 100),
-              child: SizedBox(
+              SizedBox(
                 height: height,
                 child: GridView.builder(
                   padding: const EdgeInsets.only(top: 20),
@@ -65,18 +69,24 @@ class _ProductTabComponentState extends State<ProductTabComponent> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 2,
                       crossAxisSpacing: 2,
-                      childAspectRatio: 0.60
-                  ),
+                      childAspectRatio: 0.60),
                   itemCount: contentProduct.content.length,
                   itemBuilder: (context, index) {
-                    return ProductComponent(productView: contentProduct.content[index], isLoading: isLoading);
+                    return GestureDetector(
+                      onTap: () {
+                        push(context, Product(productView: contentProduct.content[index]), replace: true);
+                      },
+                      child: ProductComponent(
+                          productView: contentProduct.content[index],
+                          isLoading: isLoading),
+                    );
                   },
                 ),
-              ),
-            )
-          ]),
-        ),
-      ],),
+              )
+            ]),
+          ),
+        ],
+      ),
     );
   }
 

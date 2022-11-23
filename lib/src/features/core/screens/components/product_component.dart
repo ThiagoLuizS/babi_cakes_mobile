@@ -59,7 +59,7 @@ class _ProductComponentState extends State<ProductComponent> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                          UtilBrasilFields.obterReal(widget.productView.value, moeda: true, decimal: 2),// '${'R\$ '}${widget.productView.value.toString()}',
+                          UtilBrasilFields.obterReal(widget.productView.value - widget.productView.discountValue, moeda: true, decimal: 2),// '${'R\$ '}${widget.productView.value.toString()}',
                             style: const TextStyle(
                                 color: tGreebBgColor,
                                 fontSize: 16,
@@ -96,7 +96,7 @@ class _ProductComponentState extends State<ProductComponent> {
                         children: [
                           widget.productView.existPercentage
                               ? Text(
-                            UtilBrasilFields.obterReal(widget.productView.value - widget.productView.discountValue, moeda: true, decimal: 2),
+                            UtilBrasilFields.obterReal(widget.productView.value, moeda: true, decimal: 2),
                             style: const TextStyle(
                                 decoration: TextDecoration.lineThrough,
                                 color: tSecondaryColor,

@@ -4,20 +4,21 @@ import 'dart:io';
 
 import 'package:babi_cakes_mobile/config.dart';
 import 'package:babi_cakes_mobile/src/features/authentication/models/dto/token_dto.dart';
-import 'package:babi_cakes_mobile/src/features/core/models/category/content_category.dart';
+import 'package:babi_cakes_mobile/src/features/core/models/budget/content_budget.dart';
 import 'package:babi_cakes_mobile/src/models/dto/error_view.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:babi_cakes_mobile/src/utils/general/constants.dart';
 import 'package:http/http.dart' as http;
 
-class CategoryController {
-  static Future<ApiResponse<ContentCategory>> getAllByPage(int page,
+class BudgetController {
+  static Future<ApiResponse<ContentBudget>> getBudgetPageByUser(int page,
       int size) async {
     try {
-      Uri uri = Uri.http(
-          Config.apiURL, '/api/categories/pageable', {'page': '0'});
+
+      Uri uri = Uri.http(Config.apiURL, '/api/budgets/pageable');
 
       TokenDTO? token = await TokenDTO.get();
+
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "Authorization": "Bearer ${token!.token}"
@@ -26,13 +27,14 @@ class CategoryController {
       var response = await http.get(uri, headers: headers);
 
       if (response.statusCode == 200) {
+
         Map<String, dynamic> mapResponse = json.decode(response.body);
 
-        final category = ContentCategory.fromJson(mapResponse);
+        final contentBudget = ContentBudget.fromJson(mapResponse);
 
-        category.save();
+        //contentBudget.save();
 
-        return ApiResponse.ok(category);
+        return ApiResponse.ok(contentBudget);
       } else {
         Map<String, dynamic> mapResponse = json.decode(response.body);
         ErrorView error = ErrorView.fromJson(mapResponse);

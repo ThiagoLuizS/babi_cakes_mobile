@@ -1,19 +1,19 @@
 import 'dart:convert' as convert;
 
-import 'package:babi_cakes_mobile/src/features/core/models/product/product_view.dart';
+import 'package:babi_cakes_mobile/src/features/core/models/budget/budget_view.dart';
 import 'package:babi_cakes_mobile/src/utils/general/prefs.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 @JsonSerializable()
-class ContentProduct {
-  late List<ProductView> content = [];
+class ContentBudget {
+  late List<BudgetView> content = [];
   late int? size;
   late int? totalPages;
   late int? totalElements;
   late int? numberOfElements;
   late bool? empty;
 
-  ContentProduct(
+  ContentBudget(
       { required this.content,
          this.size,
          this.totalPages,
@@ -21,9 +21,9 @@ class ContentProduct {
          this.numberOfElements,
         this.empty});
 
-  ContentProduct.fromJson(Map<String, dynamic> json) {
+  ContentBudget.fromJson(Map<String, dynamic> json) {
     String map = convert.json.encode(json);
-    content = convert.json.decode(map)['content'].map<ProductView>((data) =>  ProductView.fromJson(data)).toList();
+    content = convert.json.decode(map)['content'].map<BudgetView>((data) =>  BudgetView.fromJson(data)).toList();
     size = json['size'];
     totalPages = json['totalPages'];
     totalElements = json['totalElements'];
@@ -45,11 +45,11 @@ class ContentProduct {
   void save() {
     Map map = toJson();
     String json = convert.json.encode(map);
-    Prefs.setString("ContentProduct.prefs", json);
+    Prefs.setString("ContentBudget.prefs", json);
   }
 
-  static Future<ContentProduct?> get() async {
-    String json = await Prefs.getString("ContentProduct.prefs");
+  static Future<ContentBudget?> get() async {
+    String json = await Prefs.getString("ContentBudget.prefs");
 
     if (json.isEmpty) {
       return null;
@@ -57,12 +57,12 @@ class ContentProduct {
 
     Map<String, dynamic> map = convert.json.decode(json);
 
-    ContentProduct contentProduct = ContentProduct.fromJson(map);
+    ContentBudget contentBudget = ContentBudget.fromJson(map);
 
-    return contentProduct;
+    return contentBudget;
   }
 
   static void clear() {
-    Prefs.setString("ContentProduct.prefs", "");
+    Prefs.setString("ContentBudget.prefs", "");
   }
 }
