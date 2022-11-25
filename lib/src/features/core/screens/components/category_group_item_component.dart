@@ -4,10 +4,12 @@ import 'package:babi_cakes_mobile/src/features/core/models/category/category_vie
 import 'package:babi_cakes_mobile/src/features/core/models/product/content_product.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/product/product_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/product_for_category_dashboard_component.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/product/product.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_typography.dart';
 import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
+import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
 import 'package:flutter/material.dart';
 
 class CategoryGroupItemComponent extends StatefulWidget {
@@ -30,11 +32,12 @@ class _CategoryGroupItemComponentState
   late ContentProduct contentProduct = ContentProduct(content: []);
   late bool isLoadingProducts = true;
   late String productName = '';
+  int pageSize = 4;
 
   @override
   void initState() {
     super.initState();
-    _onGetProductAll(widget.categoryView.id, productName);
+    _onGetProductAll(widget.categoryView.id, productName, pageSize);
   }
 
   @override
@@ -65,11 +68,14 @@ class _CategoryGroupItemComponentState
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(right: 12, bottom: 10),
-              child: Text(
-                "Ver mais",
-                style: TextStyle(fontSize: 13, color: AppColors.berimbau),
+            Padding(
+              padding: const EdgeInsets.only(right: 12, bottom: 10),
+              child: GestureDetector(
+                onTap: () {},
+                child: const Text(
+                  "Ver mais",
+                  style: TextStyle(fontSize: 13, color: AppColors.berimbau),
+                ),
               ),
             ),
           ],
@@ -81,19 +87,25 @@ class _CategoryGroupItemComponentState
             children: [
               SizedBox(
                 height: 320,
-                child: ListView.builder(
-                  itemCount: contentProduct.content.length,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (BuildContext context, int index) =>
-                      GestureDetector(
-                    child: SizedBox(
-                      height: 260,
-                      child: ProductForCategoryDashboardComponent(
-                        isLoadingProducts: isLoadingProducts,
-                        productView: contentProduct.content[index],
-                        txtTheme: txtTheme,
+                child: NotificationListener<ScrollNotification>(
+                  onNotification: (scrollNotification) => onNotification(scrollNotification),
+                  child: ListView.builder(
+                    itemCount: contentProduct.content.length,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemBuilder: (BuildContext context, int index) =>
+                        GestureDetector(
+                          onTap: () {
+                            push(context, Product(productView: contentProduct.content[index]), replace: true);
+                          },
+                      child: SizedBox(
+                        height: 260,
+                        child: ProductForCategoryDashboardComponent(
+                          isLoadingProducts: isLoadingProducts,
+                          productView: contentProduct.content[index],
+                          txtTheme: txtTheme,
+                        ),
                       ),
                     ),
                   ),
@@ -106,12 +118,19 @@ class _CategoryGroupItemComponentState
     ) : Container();
   }
 
-  _onGetProductAll(int categoryId, String productName) async {
+  bool onNotification(ScrollNotification scrollInfo) {
+    if (scrollInfo is OverscrollNotification && !isLoadingProducts) {
+      _onGetProductAll(widget.categoryView!.id, productName, pageSize += 1);
+    }
+    return false;
+  }
+
+  _onGetProductAll(int categoryId, String productName, pageSize) async {
     setState(() {
       isLoadingProducts = true;
     });
     ApiResponse<ContentProduct> response =
-    await _productBloc.getAllByPage(0, 10, categoryId, productName);
+    await _productBloc.getAllByPage(0, pageSize, categoryId, productName);
 
     if (response.ok) {
       setState(() {

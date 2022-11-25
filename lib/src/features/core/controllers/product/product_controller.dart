@@ -17,7 +17,7 @@ class ProductController {
     try {
 
       Uri uri = Uri.http(
-          Config.apiURL, '/api/products/pageable/$categoryId', {'page': '0', 'productName': productName});
+          Config.apiURL, '/api/products/pageable/$categoryId', {'page': page.toString(), 'size': size.toString(), 'productName': productName});
 
       TokenDTO? token = await TokenDTO.get();
       Map<String, String> headers = {

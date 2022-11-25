@@ -28,57 +28,34 @@ class _SearchProductComponentState extends State<SearchProductComponent> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
     return Form(
       key: _formKey,
-      child: Container(
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(1),
-                    color: Colors.grey.shade100,
-                  ),
-                  child: TextFormField(
-                    controller: widget.filterController,
-                    decoration: const InputDecoration(
-                      hintText: 'Nome do produto',
-                      border: InputBorder.none,
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: Colors.red,
-                      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14),
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(1),
+                  color: Colors.grey.shade100,
+                ),
+                child: TextFormField(
+                  controller: widget.filterController,
+                  decoration: const InputDecoration(
+                    hintText: 'Nome do produto',
+                    border: InputBorder.none,
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.red,
                     ),
                   ),
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(left: 12),
-                child: StreamBuilder<Object>(
-                  stream: widget.productBloc.stream,
-                  builder: (context, snapshot) {
-                    return ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        side: const BorderSide(color: Colors.white),
-                      ),
-                      onPressed: () {
-                        widget.onPressed();
-                      },
-                      child: const Text(
-                        'Filtros',
-                        style: TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.bold),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
+            ),
+
+          ],
         ),
       ),
     );

@@ -1,6 +1,5 @@
 import 'package:babi_cakes_mobile/src/features/core/controllers/category/category_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/content_controller.dart';
-import 'package:babi_cakes_mobile/src/features/core/controllers/product/product_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/category/category_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/category/content_category.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/product/content_product.dart';
@@ -14,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
 class ContentTabBarComponent extends StatefulWidget {
-
   ContentTabBarComponent({
     Key? key,
   }) : super(key: key);
@@ -25,8 +23,6 @@ class ContentTabBarComponent extends StatefulWidget {
 
 class _ContentTabBarComponentState extends State<ContentTabBarComponent>
     with TickerProviderStateMixin {
-
-  final ContentProduct contentProduct = ContentProduct(content: [], empty: true);
   late TabController tabController;
   final controller = ContentController();
   final _bloc = CategoryBloc();
@@ -51,15 +47,23 @@ class _ContentTabBarComponentState extends State<ContentTabBarComponent>
 
   @override
   Widget build(BuildContext context) {
-    List<Tab> tabs = contentCategory.content.map((e) => Tab(child: Text(e.name))).toList();
-    return RefreshIndicator(
-      onRefresh: () async {
-        return _refreshIndicator();
-      },
-      child: Padding(
-        padding: const EdgeInsets.only(top: 10, left: 16, right: 16),
-        child: DefaultTabController(
-          length: tabs.length,
+    List<Tab> tabs =
+        contentCategory.content.map((e) => Tab(child: Text(e.name))).toList();
+    double heigth = MediaQuery.of(context).size.height;
+    return DefaultTabController(
+      length: tabs.length,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          toolbarHeight: 230,
+          backgroundColor: AppColors.berimbau,
+          flexibleSpace: const SizedBox(),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(60)),
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.only(top: 10, left: 16, right: 16),
           child: Scaffold(
             backgroundColor: Colors.white,
             appBar: TabBar(
@@ -78,13 +82,15 @@ class _ContentTabBarComponentState extends State<ContentTabBarComponent>
               isScrollable: true,
               tabs: tabs,
             ),
-            body: TabBarView(
-              children: contentCategory.content.map((e) {
-                if(e.id == 0) {
+            body: SizedBox(
+              height: heigth,
+              child: TabBarView(
+                  children: contentCategory.content.map((e) {
+                if (e.id == 0) {
                   return const DashboardComponent();
                 }
                 return ProductTabComponent(categoryView: e);
-              }).toList()
+              }).toList()),
             ),
           ),
         ),
@@ -92,9 +98,7 @@ class _ContentTabBarComponentState extends State<ContentTabBarComponent>
     );
   }
 
-  _refreshIndicator() {
-
-  }
+  _refreshIndicator() {}
 
   _onGetCategoryAll() async {
     ApiResponse<ContentCategory> response = await _bloc.getAllByPage(0, 10);
@@ -103,7 +107,7 @@ class _ContentTabBarComponentState extends State<ContentTabBarComponent>
       response.result.content
           .insert(0, CategoryView(id: 0, name: "Inicio", show: false));
       TabController tab =
-      TabController(length: contentCategory.content.length, vsync: this);
+          TabController(length: contentCategory.content.length, vsync: this);
 
       setState(() {
         contentCategory = response.result;
@@ -114,7 +118,3 @@ class _ContentTabBarComponentState extends State<ContentTabBarComponent>
     }
   }
 }
-
-
-
-
