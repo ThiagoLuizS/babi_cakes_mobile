@@ -114,10 +114,9 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
     ApiResponse<TokenDTO> response = await _bloc.login(email, password);
 
     if (response.ok) {
-      final sign = LoginForm(email: email, password: password);
-      sign.save();
-
-      push(context, const Dashboard(), replace: true);
+      Future.delayed(Duration.zero, () async {
+        push(context, const Dashboard(), replace: true);
+      });
     } else {
       alertToast(context, response.erros[0].toString(), 3, Colors.grey);
     }

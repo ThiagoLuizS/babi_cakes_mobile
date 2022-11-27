@@ -9,6 +9,9 @@ class ApiResponse<T> {
   ApiResponse.ok(this.result) {
     ok = true;
   }
+  ApiResponse.okNotResult() {
+    ok = true;
+  }
   ApiResponse.error(this.msg) {
     ok = false;
   }

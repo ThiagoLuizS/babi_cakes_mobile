@@ -4,7 +4,6 @@ import 'package:babi_cakes_mobile/src/features/core/models/category/category_vie
 import 'package:babi_cakes_mobile/src/features/core/models/category/content_category.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/category_group_item_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/dashboard/dashboard.dart';
-import 'package:babi_cakes_mobile/src/features/core/screens/dashboard/widgets/banner_session.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/dashboard/widgets/category_session.dart';
 import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
@@ -19,17 +18,16 @@ class DashboardComponent extends StatefulWidget {
 }
 
 class _DashboardComponentState extends State<DashboardComponent> with SingleTickerProviderStateMixin {
-  final ProductBloc _productBloc = ProductBloc();
-  final CategoryBloc _categoryBloc = CategoryBloc();
+  final _productBloc = ProductBloc();
+  final _categoryBloc = CategoryBloc();
   late ContentCategory contentCategory = ContentCategory(content: []);
   late bool isLoadingProducts = false;
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _productBloc.dispose();
     _categoryBloc.dispose();
+    _productBloc.dispose();
+    super.dispose();
   }
 
   @override
@@ -50,7 +48,6 @@ class _DashboardComponentState extends State<DashboardComponent> with SingleTick
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
             CategorySession(categories: contentCategory.content, categoryBloc: _categoryBloc),
-            // BannerSession(),
             SliverList(
               delegate: SliverChildListDelegate(
                 contentCategory.content
@@ -66,9 +63,6 @@ class _DashboardComponentState extends State<DashboardComponent> with SingleTick
     );
   }
 
-  _refreshIndicator() {
-    _onGetCategoryAll();
-  }
 
   CategoryView _setStateCategoryView(CategoryView categoryView) {
     setState(() {
@@ -88,6 +82,7 @@ class _DashboardComponentState extends State<DashboardComponent> with SingleTick
         contentCategory = response.result;
       });
     } else {
+      // ignore: use_build_context_synchronously
       alertToast(context, response.erros[0].toString(), 3, Colors.grey);
     }
   }

@@ -119,7 +119,8 @@ class _CategoryGroupItemComponentState
   }
 
   bool onNotification(ScrollNotification scrollInfo) {
-    if (scrollInfo is OverscrollNotification && !isLoadingProducts) {
+    if (scrollInfo is ScrollEndNotification && !isLoadingProducts && scrollInfo.metrics.pixels ==
+        scrollInfo.metrics.maxScrollExtent) {
       _onGetProductAll(widget.categoryView!.id, productName, pageSize += 1);
     }
     return false;
@@ -130,7 +131,7 @@ class _CategoryGroupItemComponentState
       isLoadingProducts = true;
     });
     ApiResponse<ContentProduct> response =
-    await _productBloc.getAllByPage(0, pageSize, categoryId, productName);
+    await _productBloc.getAllByCategoryPage(0, pageSize, categoryId, productName, '');
 
     if (response.ok) {
       setState(() {

@@ -33,12 +33,8 @@ class TokenDTO {
     Prefs.setString("TokenDTO.prefs", json);
   }
 
-  static Future<TokenDTO?> get() async {
+  static Future<TokenDTO> get() async {
     String json = await Prefs.getString("TokenDTO.prefs");
-
-    if (json.isEmpty) {
-      return null;
-    }
 
     Map<String, dynamic> map = convert.json.decode(json);
 

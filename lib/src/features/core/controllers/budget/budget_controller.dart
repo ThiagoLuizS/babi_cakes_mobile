@@ -11,6 +11,7 @@ import 'package:babi_cakes_mobile/src/utils/general/constants.dart';
 import 'package:http/http.dart' as http;
 
 class BudgetController {
+
   static Future<ApiResponse<ContentBudget>> getBudgetPageByUser(int page,
       int size) async {
     try {

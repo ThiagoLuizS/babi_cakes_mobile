@@ -17,7 +17,8 @@ class CategoryController {
       Uri uri = Uri.http(
           Config.apiURL, '/api/categories/pageable', {'page': '0'});
 
-      TokenDTO? token = await TokenDTO.get();
+      TokenDTO token = await TokenDTO.get();
+
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "Authorization": "Bearer ${token!.token}"

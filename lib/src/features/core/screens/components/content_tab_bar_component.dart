@@ -2,18 +2,19 @@ import 'package:babi_cakes_mobile/src/features/core/controllers/category/categor
 import 'package:babi_cakes_mobile/src/features/core/controllers/content_controller.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/category/category_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/category/content_category.dart';
-import 'package:babi_cakes_mobile/src/features/core/models/product/content_product.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/dashboard_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/product_tab_component.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/dashboard/widgets/banner_session.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_typography.dart';
 import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
 class ContentTabBarComponent extends StatefulWidget {
-  ContentTabBarComponent({
+  const ContentTabBarComponent({
     Key? key,
   }) : super(key: key);
 
@@ -32,14 +33,12 @@ class _ContentTabBarComponentState extends State<ContentTabBarComponent>
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
     _bloc.dispose();
+    super.dispose();
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _onGetCategoryAll();
     tabController = TabController(length: 0, vsync: this);
@@ -49,18 +48,19 @@ class _ContentTabBarComponentState extends State<ContentTabBarComponent>
   Widget build(BuildContext context) {
     List<Tab> tabs =
         contentCategory.content.map((e) => Tab(child: Text(e.name))).toList();
-    double heigth = MediaQuery.of(context).size.height;
+    double height = MediaQuery.of(context).size.height;
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
           toolbarHeight: 230,
-          backgroundColor: AppColors.berimbau,
+          backgroundColor: AppColors.white,
           flexibleSpace: const SizedBox(),
           shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(60)),
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(120)),
           ),
+          actions: [Expanded(child: BannerSession())],
         ),
         body: Padding(
           padding: const EdgeInsets.only(top: 10, left: 16, right: 16),
@@ -83,7 +83,7 @@ class _ContentTabBarComponentState extends State<ContentTabBarComponent>
               tabs: tabs,
             ),
             body: SizedBox(
-              height: heigth,
+              height: height,
               child: TabBarView(
                   children: contentCategory.content.map((e) {
                 if (e.id == 0) {

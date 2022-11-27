@@ -1,6 +1,8 @@
 import 'package:babi_cakes_mobile/src/features/core/controllers/category/category_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/category/category_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/category_item_component.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/product/product_list_category.dart';
+import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
 import 'package:flutter/material.dart';
 
 class CategorySession extends StatelessWidget {
@@ -25,8 +27,13 @@ class CategorySession extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
                     padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
-                    child: CategoryItemComponent(
-                      category: categories[index],
+                    child: GestureDetector(
+                      onTap: () => {
+                        push(context, ProductListCategory(categoryView: categories[index],), replace: true)
+                      },
+                      child: CategoryItemComponent(
+                        category: categories[index],
+                      ),
                     ),
                   );
                 },
@@ -36,13 +43,5 @@ class CategorySession extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  bool onNotification(ScrollNotification scrollInfo) {
-    print(scrollInfo);
-    if (scrollInfo is OverscrollNotification) {
-      print("Entrou");
-    }
-    return false;
   }
 }

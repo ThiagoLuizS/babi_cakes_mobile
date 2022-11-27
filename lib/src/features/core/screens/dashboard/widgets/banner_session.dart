@@ -5,25 +5,24 @@ import 'package:flutter/material.dart';
 class BannerSession extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const SliverToBoxAdapter(
-      child: SizedBox(
-        height: 190,
-        child: BannersComponent(
-          list: [
-            BannerItemComponent(
-              imagePath: AppImages.banner1,
-            ),
-            BannerItemComponent(
-              imagePath: AppImages.banner2,
-            ),
-            BannerItemComponent(
-              imagePath: AppImages.banner3,
-            ),
-            BannerItemComponent(
-              imagePath: AppImages.banner4,
-            )
-          ],
-        ),
+    double height = MediaQuery.of(context).size.height;
+    return SizedBox(
+      height: height,
+      child: const BannersComponent(
+        list: [
+          BannerItemComponent(
+            imagePath: AppImages.banner1,
+          ),
+          BannerItemComponent(
+            imagePath: AppImages.banner2,
+          ),
+          BannerItemComponent(
+            imagePath: AppImages.banner3,
+          ),
+          BannerItemComponent(
+            imagePath: AppImages.banner4,
+          )
+        ],
       ),
     );
   }

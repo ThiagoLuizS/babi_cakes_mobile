@@ -11,6 +11,8 @@ class SimpleBloc<T> {
       !_controller.isClosed ?? _controller.addError(error);
 
   dispose() {
-    _controller.close();
+    if(!_controller.isClosed) {
+      _controller.close();
+    }
   }
 }

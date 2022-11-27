@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:babi_cakes_mobile/src/constants/colors.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/product/product_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/shimmer_component.dart';
+import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -19,6 +20,9 @@ class ProductComponent extends StatefulWidget {
 }
 
 class _ProductComponentState extends State<ProductComponent> {
+  double valueFinal = 0.0;
+  int _quantity = 1;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -38,7 +42,7 @@ class _ProductComponentState extends State<ProductComponent> {
           ),
         ),
         Container(
-          height: 150,
+          height: 155,
           width: 180,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -59,7 +63,7 @@ class _ProductComponentState extends State<ProductComponent> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                          UtilBrasilFields.obterReal(widget.productView.value - widget.productView.discountValue, moeda: true, decimal: 2),// '${'R\$ '}${widget.productView.value.toString()}',
+                          UtilBrasilFields.obterReal(widget.productView.value - widget.productView.discountValue, moeda: true, decimal: 2),
                             style: const TextStyle(
                                 color: tGreebBgColor,
                                 fontSize: 16,
@@ -102,7 +106,8 @@ class _ProductComponentState extends State<ProductComponent> {
                                 color: tSecondaryColor,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w900),
-                          ) : Container(),
+                          ) : Container(height: 18,
+                            width: 38),
                         ],
                       )
                     ),
@@ -120,7 +125,7 @@ class _ProductComponentState extends State<ProductComponent> {
                                     color: tDarkColor,
                                     fontSize: 13,
                                     fontWeight: FontWeight.w500,
-                                    overflow: widget.productView.name.length > 43 ? TextOverflow.ellipsis : TextOverflow.visible),
+                                    overflow: widget.productView.name.length > 43 ? TextOverflow.ellipsis : TextOverflow.ellipsis),
                               ),
                             ),
                           ],
@@ -146,6 +151,68 @@ class _ProductComponentState extends State<ProductComponent> {
                           ],
                         ),
                       ),
+                    ),
+                    ShimmerComponent(
+                      isLoading: widget.isLoading,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 2, bottom: 2),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  side: const BorderSide(color: Colors.white),
+                                ),
+                                onPressed: () {_subtractQuantityProduct();},
+                                child: Icon(
+                                  Icons.remove,
+                                  color: _quantity > 1 ? Colors.red : Colors.grey,
+                                  size: 16,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 0),
+                              child: Text(_quantity.toString()),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 2, right: 2),
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.white,
+                                    side: const BorderSide(color: Colors.white),
+                                  ),
+                                  onPressed: () {_incrementeQuantityProduct();},
+                                  child: Icon(
+                                    Icons.add,
+                                    color: _quantity > 0 ? Colors.red : Colors.grey,
+                                    size: 16,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 45,
+                              width: 45,
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.milkCream,
+                                    side: const BorderSide(color: Colors.white),
+                                  ),
+                                  onPressed: () {},
+                                  child: const Icon(
+                                    Icons.shopping_cart_checkout_outlined,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
                     )
                   ],
                 ),
@@ -155,5 +222,28 @@ class _ProductComponentState extends State<ProductComponent> {
         ),
       ],
     );
+  }
+
+  _incrementeQuantityProduct() {
+    setState(() {
+      _quantity = _quantity + 1;
+    });
+    _calculateValueFinal();
+  }
+
+  _subtractQuantityProduct() {
+    if(_quantity > 1) {
+      setState(() {
+        _quantity = _quantity - 1;
+      });
+      _calculateValueFinal();
+    }
+  }
+
+  _calculateValueFinal() {
+    double value = (widget.productView.value - widget.productView.discountValue) * _quantity;
+    setState(() {
+      valueFinal = value;
+    });
   }
 }

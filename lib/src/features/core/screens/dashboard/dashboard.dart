@@ -1,5 +1,7 @@
 import 'package:babi_cakes_mobile/src/features/core/screens/budget/budget_list_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/content_tab_bar_component.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/product/product_search.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/profile/profile_screen.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -74,15 +76,9 @@ class _DashboardState extends State<Dashboard> {
   }
 
   final List<Widget> _widgetOptions = <Widget>[
-    ContentTabBarComponent(),
-    const Text(
-      'Pesquisar',
-      style: optionStyle,
-    ),
+    const ContentTabBarComponent(),
+    const ProductSearch(),
     const BudgetListView(),
-    const Text(
-      'Perfil',
-      style: optionStyle,
-    ),
+    const ProfileScreen()
   ];
 }

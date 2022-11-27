@@ -4,13 +4,11 @@ import 'package:flutter/material.dart';
 class SearchProductComponent extends StatefulWidget {
   final TextEditingController filterController;
   late ProductBloc productBloc;
-  late Function onPressed;
 
   SearchProductComponent({
     Key? key,
     required this.filterController,
-    required this.productBloc,
-    required this.onPressed,
+    required this.productBloc
   }) : super(key: key);
 
   @override
@@ -28,7 +26,6 @@ class _SearchProductComponentState extends State<SearchProductComponent> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     return Form(
       key: _formKey,
       child: Padding(
@@ -54,7 +51,6 @@ class _SearchProductComponentState extends State<SearchProductComponent> {
                 ),
               ),
             ),
-
           ],
         ),
       ),

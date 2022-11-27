@@ -38,7 +38,7 @@ class _BannersComponentState extends State<BannersComponent> {
       child: Column(
         children: [
           SizedBox(
-            height: 140,
+            height: 180,
             child: PageView(
               controller: _pageController,
               physics: const BouncingScrollPhysics(),

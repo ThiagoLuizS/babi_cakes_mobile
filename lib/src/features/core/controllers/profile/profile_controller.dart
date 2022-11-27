@@ -1,42 +1,39 @@
-import 'package:babi_cakes_mobile/config.dart';
-import 'package:babi_cakes_mobile/src/features/authentication/models/dto/token_dto.dart';
-import 'package:babi_cakes_mobile/src/features/core/models/category/content_category.dart';
-import 'package:babi_cakes_mobile/src/features/core/models/product/content_product.dart';
-import 'package:babi_cakes_mobile/src/models/dto/error_view.dart';
-import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
-import 'dart:convert' as convert;
-import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:babi_cakes_mobile/src/utils/general/constants.dart';
 
-class ProductController {
-  static Future<ApiResponse<ContentProduct>> getAllByCategoryPage(int page,
-      int size, int categoryId, String productName, String sort) async {
+import 'package:babi_cakes_mobile/config.dart';
+import 'package:babi_cakes_mobile/src/features/authentication/models/dto/token_dto.dart';
+import 'package:babi_cakes_mobile/src/features/core/models/profile/content_address.dart';
+import 'package:babi_cakes_mobile/src/models/dto/error_view.dart';
+import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
+import 'package:babi_cakes_mobile/src/utils/general/constants.dart';
+import 'package:http/http.dart' as http;
+
+class ProfileController {
+  static Future<ApiResponse<ContentAddress>> getAddressPageByUser() async {
     try {
 
-      Uri uri = Uri.http(
-          Config.apiURL, '/api/products/pageable/$categoryId', {'page': page.toString(), 'size': size.toString(), 'productName': productName, 'sort': sort});
+      Uri uri = Uri.http(Config.apiURL, '/api/address/all');
 
       TokenDTO? token = await TokenDTO.get();
+
       Map<String, String> headers = {
         "Content-Type": "application/json",
-        "Authorization": "Bearer ${token!.token}"
+        "Authorization": "Bearer ${token.token}"
       };
-
-      String encode = json.encode(headers);
 
       var response = await http.get(uri, headers: headers);
 
       if (response.statusCode == 200) {
+
         Map<String, dynamic> mapResponse = json.decode(response.body);
 
-        final product = ContentProduct.fromJson(mapResponse);
+        final contentProduct = ContentAddress.fromJson(mapResponse);
 
-        product.save();
+        //contentBudget.save();
 
-        return ApiResponse.ok(product);
+        return ApiResponse.ok(contentProduct);
       } else {
         Map<String, dynamic> mapResponse = json.decode(response.body);
         ErrorView error = ErrorView.fromJson(mapResponse);
@@ -51,31 +48,22 @@ class ProductController {
     }
   }
 
-  static Future<ApiResponse<ContentProduct>> getAllByPage(int page,
-      int size, String productName, String sort) async {
+  static Future<ApiResponse<ContentAddress>> updateAddressMain(int id) async {
     try {
 
-      Uri uri = Uri.http(
-          Config.apiURL, '/api/products/pageable/all', {'page': page.toString(), 'size': size.toString(), 'productName': productName, 'sort': sort});
+      Uri uri = Uri.http(Config.apiURL, '/api/address/main/$id');
 
       TokenDTO? token = await TokenDTO.get();
+
       Map<String, String> headers = {
         "Content-Type": "application/json",
-        "Authorization": "Bearer ${token!.token}"
+        "Authorization": "Bearer ${token.token}"
       };
 
-      String encode = json.encode(headers);
-
-      var response = await http.get(uri, headers: headers);
+      var response = await http.put(uri, headers: headers);
 
       if (response.statusCode == 200) {
-        Map<String, dynamic> mapResponse = json.decode(response.body);
-
-        final product = ContentProduct.fromJson(mapResponse);
-
-        product.save();
-
-        return ApiResponse.ok(product);
+        return ApiResponse.okNotResult();
       } else {
         Map<String, dynamic> mapResponse = json.decode(response.body);
         ErrorView error = ErrorView.fromJson(mapResponse);
