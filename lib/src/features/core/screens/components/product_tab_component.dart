@@ -2,7 +2,6 @@ import 'package:babi_cakes_mobile/src/features/core/controllers/product/product_
 import 'package:babi_cakes_mobile/src/features/core/models/category/category_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/product/content_product.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/product/filter_param.dart';
-import 'package:babi_cakes_mobile/src/features/core/models/product/product_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/product_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/search_product_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/product/product.dart';
@@ -10,7 +9,6 @@ import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
 import 'package:flutter/material.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class ProductTabComponent extends StatefulWidget {
   final CategoryView? categoryView;

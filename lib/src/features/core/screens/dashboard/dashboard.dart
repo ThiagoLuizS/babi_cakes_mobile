@@ -6,7 +6,8 @@ import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({Key? key}) : super(key: key);
+  final int indexBottomNavigationBar;
+  const Dashboard({Key? key, this.indexBottomNavigationBar = 0}) : super(key: key);
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -15,8 +16,13 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   int _selectedIndex = 0;
 
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  @override
+  void initState() {
+    setState(() {
+      _selectedIndex = widget.indexBottomNavigationBar;
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

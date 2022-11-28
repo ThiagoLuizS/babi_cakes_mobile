@@ -27,7 +27,7 @@ alertToast(context, msg, timeInSecForIosWeb, Color color) {
   Fluttertoast.showToast(
       msg: msg,
       toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.BOTTOM,
+      gravity: ToastGravity.TOP,
       timeInSecForIosWeb: timeInSecForIosWeb,
       backgroundColor: color,
       textColor: Colors.white,

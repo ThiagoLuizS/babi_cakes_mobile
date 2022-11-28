@@ -19,7 +19,7 @@ class _ProfileAddressCardComponentState
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.all(16),
       child: GestureDetector(
         onTap: () {widget.onTapUpdateMain();},
         child: Container(
@@ -33,9 +33,9 @@ class _ProfileAddressCardComponentState
             boxShadow: const [
               BoxShadow(
                 color: Color(0x32989191),
-                offset: Offset(0.4, 0.4),
-                blurRadius: 1.4,
-                spreadRadius: 1.4,
+                offset: Offset(0.3, 0.3),
+                blurRadius: 1.0,
+                spreadRadius: 1.0,
               ),
             ],
           ),

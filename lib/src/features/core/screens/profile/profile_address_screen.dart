@@ -3,9 +3,13 @@ import 'package:babi_cakes_mobile/src/features/core/models/profile/address_view.
 import 'package:babi_cakes_mobile/src/features/core/models/profile/content_address.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/app_bar_default_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/shimmer_component.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/component/profile_address_card_component.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/profile/profile_address_form_screen.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/profile/profile_screen.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
+import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
 import 'package:flutter/material.dart';
 
 class ProfileAddressScreen extends StatefulWidget {
@@ -39,7 +43,7 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: FloatingActionButton.small(
         onPressed: () {
-          Navigator.of(context).pop();
+          push(context, const Dashboard(indexBottomNavigationBar: 3), replace: true);
         },
         backgroundColor: Colors.white,
         child: const Icon(
@@ -54,40 +58,47 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
           title: "Endereço",
         ),
       ),
-      body: CustomScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        slivers: [
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: height,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 50),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: SizedBox(
-                        height: height,
-                        child: ListView.builder(
-                          itemCount: contentAddress.content.length,
-                          itemBuilder: (BuildContext itemBuilder, index) {
-                            AddressView address = contentAddress.content[index];
-                            return ShimmerComponent(
-                              isLoading: isLoading,
-                              child: ProfileAddressCardComponent(
-                                onTapUpdateMain: () => _updateAddressMain(address.id),
-                                addressView: address,
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
+      body: SizedBox(
+        height: height,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 50),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(primary: AppColors.greyTransp200, side: BorderSide(width: 0, color: Colors.white)),
+                    onPressed: () {
+                      push(context, const ProfileAddressFormScreen(), replace: true);
+                    },
+                    child: const Icon(Icons.add, color: Colors.black87,),
+                  ),
                 ),
               ),
-            ),
-          )
-        ],
+              Expanded(
+                child: SizedBox(
+                  child: ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: contentAddress.content.length,
+                    itemBuilder: (BuildContext itemBuilder, index) {
+                      AddressView address = contentAddress.content[index];
+                      return ShimmerComponent(
+                        isLoading: isLoading,
+                        child: ProfileAddressCardComponent(
+                          onTapUpdateMain: () =>
+                              _updateAddressMain(address.id),
+                          addressView: address,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -109,8 +120,8 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
   }
 
   _updateAddressMain(int id) async {
-
-    ApiResponse<ContentAddress> response = await _blocAddress.updateAddressMain(id);
+    ApiResponse<ContentAddress> response =
+        await _blocAddress.updateAddressMain(id);
 
     if (response.ok) {
       _onGetProductAll();
