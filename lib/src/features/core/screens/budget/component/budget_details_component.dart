@@ -39,7 +39,7 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent> {
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: FloatingActionButton.small(
         onPressed: () {
-          push(context, const Dashboard(), replace: true);
+          push(context, const Dashboard(indexBottomNavigationBar: 2), replace: true);
         },
         backgroundColor: Colors.white,
         child: const Icon(

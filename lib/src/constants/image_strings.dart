@@ -37,3 +37,4 @@ const String tTopCourseImage2 = "assets/images/dashboard/dash-04.png";
 
 // -- Profile
 const String tProfileImage = "assets/images/profile/profile.png";
+const String tProfileCupomImage = "assets/images/profile/cupom.png";

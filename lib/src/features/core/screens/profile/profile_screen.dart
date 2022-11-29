@@ -3,7 +3,8 @@ import 'package:babi_cakes_mobile/src/features/authentication/models/dto/token_d
 import 'package:babi_cakes_mobile/src/features/authentication/screens/login/login_screen.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/app_bar_default_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/component/profile_card_component.dart';
-import 'package:babi_cakes_mobile/src/features/core/screens/profile/profile_address_screen.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/profile/address/profile_address_screen.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/profile/cupom/profile_cupom_screen.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_icons.dart';
 import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
 import 'package:flutter/material.dart';
@@ -103,16 +104,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         ProfileCardComponent(
-                          onTap: () => {
-                            push(context, const ProfileAddressScreen(), replace: true)
-                          },
+                          onTap: () => push(context, const ProfileAddressScreen(), replace: true),
                           icon: Icon(Icons.location_on_outlined),
                           title: 'Endereço',
                           subTitle: 'Meus endereços de entrega',
                           isDialog: false,
                         ),
                         ProfileCardComponent(
-                          onTap: () {},
+                          onTap: () => push(context, const ProfileCupomScreen(), replace: true),
                           icon: Icon(Icons.notification_add_outlined),
                           title: 'Cupons',
                           subTitle: 'Meus cupons de desconto',

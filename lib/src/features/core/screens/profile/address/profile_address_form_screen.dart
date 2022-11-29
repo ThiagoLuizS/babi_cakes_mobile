@@ -4,7 +4,7 @@ import 'package:babi_cakes_mobile/src/constants/variables.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/profile/profile_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/profile/address_form.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/app_bar_default_component.dart';
-import 'package:babi_cakes_mobile/src/features/core/screens/profile/profile_address_screen.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/profile/address/profile_address_screen.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/profile_screen.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/utils/general/alert.dart';

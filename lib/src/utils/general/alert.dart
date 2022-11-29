@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -24,12 +25,36 @@ alert(context, msg) {
 }
 
 alertToast(context, msg, timeInSecForIosWeb, Color color) {
-  Fluttertoast.showToast(
-      msg: msg,
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.TOP,
-      timeInSecForIosWeb: timeInSecForIosWeb,
-      backgroundColor: color,
-      textColor: Colors.white,
-      fontSize: 16.0);
+  final snackBar = SnackBar(
+    /// need to set following properties for best effect of awesome_snackbar_content
+    elevation: 0,
+    behavior: SnackBarBehavior.fixed,
+    backgroundColor: Colors.transparent,
+    content: AwesomeSnackbarContent(
+      title: 'Atenção!',
+      message: msg,
+      contentType: ContentType.failure,
+    ),
+  );
+  ScaffoldMessenger.of(context)
+    ..hideCurrentSnackBar()
+    ..showSnackBar(snackBar);
+}
+
+snackBar(context) {
+  final snackBar = SnackBar(
+    /// need to set following properties for best effect of awesome_snackbar_content
+    elevation: 0,
+    behavior: SnackBarBehavior.fixed,
+    backgroundColor: Colors.transparent,
+    content: AwesomeSnackbarContent(
+      title: 'On Snap!',
+      message:
+      'This is an example error message that will be shown in the body of snackbar!',
+      contentType: ContentType.failure,
+    ),
+  );
+  ScaffoldMessenger.of(context)
+    ..hideCurrentSnackBar()
+    ..showSnackBar(snackBar);
 }

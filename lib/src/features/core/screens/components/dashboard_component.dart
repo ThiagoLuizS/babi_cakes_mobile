@@ -3,6 +3,7 @@ import 'package:babi_cakes_mobile/src/features/core/controllers/product/product_
 import 'package:babi_cakes_mobile/src/features/core/models/category/category_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/category/content_category.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/category_group_item_component.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/components/liquid_refresh_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/dashboard/widgets/category_session.dart';
 import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
@@ -39,10 +40,8 @@ class _DashboardComponentState extends State<DashboardComponent> with SingleTick
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    return RefreshIndicator(
-      onRefresh: () async {
-        push(context, const Dashboard(), replace: true);
-      },
+    return LiquidRefreshComponent(
+      onRefresh: () async => push(context, const Dashboard(), replace: true),
       child: SizedBox(
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),

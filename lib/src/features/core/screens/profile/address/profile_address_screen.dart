@@ -2,15 +2,18 @@ import 'package:babi_cakes_mobile/src/features/core/controllers/profile/profile_
 import 'package:babi_cakes_mobile/src/features/core/models/profile/address_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/profile/content_address.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/app_bar_default_component.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/components/liquid_refresh_component.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/components/message_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/shimmer_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/dashboard/dashboard.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/profile/address/profile_address_form_screen.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/component/profile_address_card_component.dart';
-import 'package:babi_cakes_mobile/src/features/core/screens/profile/profile_address_form_screen.dart';
-import 'package:babi_cakes_mobile/src/features/core/screens/profile/profile_screen.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
+import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
 import 'package:flutter/material.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class ProfileAddressScreen extends StatefulWidget {
   const ProfileAddressScreen({Key? key}) : super(key: key);
@@ -24,6 +27,9 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
   final _blocAddress = ProfileBloc();
   late bool isLoading = true;
 
+  final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey =
+  GlobalKey<LiquidPullToRefreshState>();
+
   @override
   void dispose() {
     super.dispose();
@@ -33,7 +39,7 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
   @override
   void initState() {
     super.initState();
-    _onGetProductAll();
+    _getAddressPageByUser();
   }
 
   @override
@@ -58,52 +64,62 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
           title: "Endereço",
         ),
       ),
-      body: SizedBox(
-        height: height,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 50),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: AppColors.greyTransp200, side: BorderSide(width: 0, color: Colors.white)),
-                    onPressed: () {
-                      push(context, const ProfileAddressFormScreen(), replace: true);
-                    },
-                    child: const Icon(Icons.add, color: Colors.black87,),
+      body: LiquidRefreshComponent(
+        onRefresh: () async => _getAddressPageByUser(),
+        child: SizedBox(
+          height: height,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 50),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(primary: AppColors.greyTransp200, side: BorderSide(width: 0, color: Colors.white)),
+                      onPressed: () {
+                        push(context, const ProfileAddressFormScreen(), replace: true);
+                      },
+                      child: const Icon(Icons.add, color: Colors.black87,),
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: SizedBox(
-                  child: ListView.builder(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: contentAddress.content.length,
-                    itemBuilder: (BuildContext itemBuilder, index) {
-                      AddressView address = contentAddress.content[index];
-                      return ShimmerComponent(
-                        isLoading: isLoading,
-                        child: ProfileAddressCardComponent(
-                          onTapUpdateMain: () =>
-                              _updateAddressMain(address.id),
-                          addressView: address,
-                        ),
-                      );
-                    },
+                contentAddress.content.isEmpty ? const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: MessageComponent(message: 'Cadastre um novo endereço'),
+                  ),
+                ) : Container(),
+                Expanded(
+                  child: SizedBox(
+                    child: ListView.builder(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: contentAddress.content.length,
+                      itemBuilder: (BuildContext itemBuilder, index) {
+                        AddressView address = contentAddress.content[index];
+                        return ShimmerComponent(
+                          isLoading: isLoading,
+                          child: ProfileAddressCardComponent(
+                            onTapUpdateMain: () =>
+                                _updateAddressMain(address.id),
+                            addressView: address,
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  _onGetProductAll() async {
+  _getAddressPageByUser() async {
     setState(() {
       isLoading = true;
     });
@@ -124,7 +140,9 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
         await _blocAddress.updateAddressMain(id);
 
     if (response.ok) {
-      _onGetProductAll();
+      _getAddressPageByUser();
+    } else {
+      alertToast(context, response.erros[0].toString(), 3, Colors.grey);
     }
   }
 }
