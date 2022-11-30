@@ -11,6 +11,8 @@ import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class CategoryGroupItemComponent extends StatefulWidget {
   final CategoryView categoryView;
@@ -96,9 +98,7 @@ class _CategoryGroupItemComponentState
                     physics: const AlwaysScrollableScrollPhysics(),
                     itemBuilder: (BuildContext context, int index) =>
                         GestureDetector(
-                          onTap: () {
-                            push(context, Product(productView: contentProduct.content[index]), replace: true);
-                          },
+                          onTap: () => Get.offAll(() => Product(productView: contentProduct.content[index])),
                       child: SizedBox(
                         height: 260,
                         child: ProductForCategoryDashboardComponent(
@@ -121,7 +121,7 @@ class _CategoryGroupItemComponentState
   bool onNotification(ScrollNotification scrollInfo) {
     if (scrollInfo is ScrollEndNotification && !isLoadingProducts && scrollInfo.metrics.pixels ==
         scrollInfo.metrics.maxScrollExtent) {
-      _onGetProductAll(widget.categoryView!.id, productName, pageSize += 1);
+      _onGetProductAll(widget.categoryView.id, productName, pageSize += 1);
     }
     return false;
   }

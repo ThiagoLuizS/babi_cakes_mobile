@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1033023825210-eabrv97su8v5fpvvpv8l2o403fg8otdr.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1033023825210-eabrv97su8v5fpvvpv8l2o403fg8otdr</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBnWrU_ydyzAP2FI-849FzdmJk-W4Nm5tI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1033023825210</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>br.com.babiCakesMobile</string>
+	<key>PROJECT_ID</key>
+	<string>babi-cakes</string>
+	<key>STORAGE_BUCKET</key>
+	<string>babi-cakes.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1033023825210:ios:a0326ad0e6f835a7c19c03</string>
+</dict>
+</plist>

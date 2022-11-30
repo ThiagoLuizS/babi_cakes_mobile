@@ -21,7 +21,7 @@ class CategoryController {
 
       Map<String, String> headers = {
         "Content-Type": "application/json",
-        "Authorization": "Bearer ${token!.token}"
+        "Authorization": "Bearer ${token.token}"
       };
 
       var response = await http.get(uri, headers: headers);

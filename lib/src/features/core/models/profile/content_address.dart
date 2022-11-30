@@ -1,6 +1,5 @@
 import 'dart:convert' as convert;
 
-import 'package:babi_cakes_mobile/src/features/core/models/product/product_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/profile/address_view.dart';
 import 'package:babi_cakes_mobile/src/utils/general/prefs.dart';
 import 'package:json_annotation/json_annotation.dart';

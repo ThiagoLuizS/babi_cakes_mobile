@@ -22,7 +22,7 @@ class LoginScreen extends StatelessWidget {
                 // Back arrow button
                 Align(
                   alignment: Alignment.topLeft,
-                  child: GestureDetector(onTap: () => Get.offAll(() => const LoginScreen()),child: const Icon(Icons.keyboard_backspace))
+                  child: GestureDetector(onTap: () => Get.offAll(() => const LoginScreen()), child: const Icon(Icons.keyboard_backspace))
                 ),
                 const FormHeaderWidget(
                   image: tWelcomeScreenImage,

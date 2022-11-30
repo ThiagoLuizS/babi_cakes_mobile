@@ -115,7 +115,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
 
     if (response.ok) {
       Future.delayed(Duration.zero, () async {
-        push(context, const Dashboard(), replace: true);
+        Get.offAll(() => const Dashboard());
       });
     } else {
       alertToast(context, response.erros[0].toString(), 3, Colors.grey);

@@ -12,6 +12,8 @@ import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 
 class BudgetDetailsComponent extends StatefulWidget {
@@ -38,9 +40,7 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent> {
           )),
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: FloatingActionButton.small(
-        onPressed: () {
-          push(context, const Dashboard(indexBottomNavigationBar: 2), replace: true);
-        },
+        onPressed: () => Get.offAll(() => const Dashboard(indexBottomNavigationBar: 2)),
         backgroundColor: Colors.white,
         child: const Icon(
           Icons.arrow_back_ios_new_outlined,

@@ -11,6 +11,7 @@ import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProfileAddressFormScreen extends StatefulWidget {
   const ProfileAddressFormScreen({Key? key}) : super(key: key);
@@ -61,9 +62,7 @@ class _ProfileAddressFormScreenState extends State<ProfileAddressFormScreen> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: FloatingActionButton.small(
-        onPressed: () {
-          push(context, const ProfileAddressScreen(), replace: true);
-        },
+        onPressed: () => Get.offAll(() => const ProfileAddressScreen()),
         backgroundColor: Colors.white,
         child: const Icon(
           Icons.arrow_back_ios_new_outlined,
@@ -251,13 +250,13 @@ class _ProfileAddressFormScreenState extends State<ProfileAddressFormScreen> {
         isLoading = false;
         isShowForm = true;
 
-        _cepController.text = response.result.cep.toString() ?? '';
-        _typeController.text = response.result.addressType ?? '';
-        _nameController.text = response.result.addressName ?? '';
-        _numberController.text = response.result.number ?? '';
-        _districtController.text = response.result.district ?? '';
-        _cityController.text = response.result.city ?? '';
-        _stateController.text = response.result.state ?? '';
+        _cepController.text = response.result.cep.toString();
+        _typeController.text = response.result.addressType;
+        _nameController.text = response.result.addressName;
+        _numberController.text = response.result.number;
+        _districtController.text = response.result.district;
+        _cityController.text = response.result.city;
+        _stateController.text = response.result.state;
       });
     } else {
       setState(() {
@@ -280,7 +279,7 @@ class _ProfileAddressFormScreenState extends State<ProfileAddressFormScreen> {
     if (!response.ok) {
       alertToast(context, response.erros[0].toString(), 3, AppColors.milkCream);
     } else {
-      push(context, const ProfileAddressScreen(), replace: true);
+      Get.offAll(() => const ProfileAddressScreen());
     }
 
     setState(() {

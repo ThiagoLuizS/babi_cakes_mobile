@@ -8,7 +8,7 @@ class SimpleBloc<T> {
   void add(T object) => _controller.add(object);
 
   void addError(Object error) =>
-      !_controller.isClosed ?? _controller.addError(error);
+      !_controller.isClosed;
 
   dispose() {
     if(!_controller.isClosed) {

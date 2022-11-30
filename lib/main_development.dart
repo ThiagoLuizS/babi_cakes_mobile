@@ -1,14 +1,54 @@
 // @dart=2.9
+import 'dart:async';
+
 import 'package:babi_cakes_mobile/config.dart';
+import 'package:babi_cakes_mobile/firebase_options.dart';
+import 'package:babi_cakes_mobile/src/features/authentication/screens/splash_screen/splash_screen.dart';
+import 'package:babi_cakes_mobile/src/utils/theme/theme.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
-import 'package:babi_cakes_mobile/src/features/authentication/screens/splash_screen/splash_screen.dart';
-import 'package:babi_cakes_mobile/src/utils/theme/theme.dart';
 
-void main() {
+
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  print('Handling a background message: ${message.data}');
+}
+
+Future<void> main() async {
   Config.buildMode = Modo.development;
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  FirebaseMessaging.onMessage.listen(firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
   runApp(MyApp());
+}
+
+Future<void> notificationSettingAuthorized() async {
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: true,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    sound: true
+  );
+
+  if(settings.authorizationStatus == AuthorizationStatus.authorized) {
+    print('Permissão concedida pelo usuário ${settings.authorizationStatus}');
+  } else if(settings.authorizationStatus == AuthorizationStatus.provisional) {
+    print('Permissão concedida provisoriamente pelo usuário ${settings.authorizationStatus}');
+  } else {
+    print('Permissão negada pelo usuário');
+  }
 }
 
 class MyApp extends StatelessWidget {

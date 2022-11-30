@@ -10,6 +10,7 @@ import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProductSearch extends StatefulWidget {
   const ProductSearch({Key? key}) : super(key: key);
@@ -167,14 +168,9 @@ class _ProductSearchState extends State<ProductSearch> {
                           itemCount: contentProduct.content.length,
                           itemBuilder: (context, index) {
                             return GestureDetector(
-                              onTap: () {
-                                push(
-                                    context,
-                                    Product(
-                                        productView:
-                                            contentProduct.content[index]),
-                                    replace: true);
-                              },
+                              onTap: () => Get.offAll(() => Product(
+                                  productView:
+                                  contentProduct.content[index])),
                               child: ProductComponent(
                                   productView: contentProduct.content[index],
                                   isLoading: isLoading),

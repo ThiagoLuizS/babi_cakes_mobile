@@ -12,6 +12,7 @@ import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 import '../../components/shimmer_component.dart';
@@ -52,7 +53,7 @@ class _ProfileCupomScreenState extends State<ProfileCupomScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: FloatingActionButton.small(
         onPressed: () {
-          push(context, const Dashboard(indexBottomNavigationBar: 3), replace: true);
+          Get.offAll(() => const Dashboard(indexBottomNavigationBar: 3));
         },
         backgroundColor: Colors.white,
         child: const Icon(

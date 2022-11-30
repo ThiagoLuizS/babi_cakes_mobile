@@ -8,6 +8,7 @@ import 'package:babi_cakes_mobile/src/features/core/theme/app_typography.dart';
 import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -43,9 +44,7 @@ class _ProductState extends State<Product> {
       child: Scaffold(
         backgroundColor: Colors.white,
         floatingActionButton: FloatingActionButton.small(
-          onPressed: () {
-            push(context, const Dashboard() , replace: true);
-          },
+          onPressed: () => Get.offAll(() => const Dashboard()),
           backgroundColor: Colors.white,
           child: const Icon(
             Icons.arrow_back_ios_new_outlined,

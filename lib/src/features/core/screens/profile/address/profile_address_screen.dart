@@ -13,6 +13,7 @@ import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class ProfileAddressScreen extends StatefulWidget {
@@ -48,9 +49,7 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: FloatingActionButton.small(
-        onPressed: () {
-          push(context, const Dashboard(indexBottomNavigationBar: 3), replace: true);
-        },
+        onPressed: () => Get.offAll(() => const Dashboard(indexBottomNavigationBar: 3)),
         backgroundColor: Colors.white,
         child: const Icon(
           Icons.arrow_back_ios_new_outlined,
@@ -78,9 +77,7 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: AppColors.greyTransp200, side: BorderSide(width: 0, color: Colors.white)),
-                      onPressed: () {
-                        push(context, const ProfileAddressFormScreen(), replace: true);
-                      },
+                      onPressed: () => Get.offAll(() => const ProfileAddressFormScreen()),
                       child: const Icon(Icons.add, color: Colors.black87,),
                     ),
                   ),

@@ -12,6 +12,7 @@ import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProductListCategory extends StatefulWidget {
   final CategoryView categoryView;
@@ -44,7 +45,7 @@ class _ProductListCategoryState extends State<ProductListCategory> {
   void initState() {
     filterParam = FilterParam();
     productFilterParams = FilterParam.listFilterProduct;
-    _onGetProductAll(widget.categoryView!.id, productName, pageSize);
+    _onGetProductAll(widget.categoryView.id, productName, pageSize);
     super.initState();
   }
 
@@ -59,9 +60,7 @@ class _ProductListCategoryState extends State<ProductListCategory> {
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
         floatingActionButton: FloatingActionButton.small(
-          onPressed: () {
-            push(context, const Dashboard(), replace: true);
-          },
+          onPressed: () => Get.offAll(() => const Dashboard()),
           backgroundColor: Colors.white,
           child: const Icon(
             Icons.arrow_back_ios_new_outlined,
@@ -104,7 +103,7 @@ class _ProductListCategoryState extends State<ProductListCategory> {
                                 productFilterParams[index].selected = true;
                                 filterParam = productFilterParams[index];
                               });
-                              _onGetProductAll(widget.categoryView!.id, productName, pageSize);
+                              _onGetProductAll(widget.categoryView.id, productName, pageSize);
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(8),
@@ -158,7 +157,7 @@ class _ProductListCategoryState extends State<ProductListCategory> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        _onGetProductAll(widget.categoryView!.id,
+                        _onGetProductAll(widget.categoryView.id,
                             filterController.text, pageSize);
                       },
                       style: ElevatedButton.styleFrom(backgroundColor: Colors.white, side: BorderSide.none, foregroundColor: AppColors.grey3),
@@ -191,14 +190,9 @@ class _ProductListCategoryState extends State<ProductListCategory> {
                                   itemCount: contentProduct.content.length,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
-                                      onTap: () {
-                                        push(
-                                            context,
-                                            Product(
-                                                productView: contentProduct
-                                                    .content[index]),
-                                            replace: true);
-                                      },
+                                      onTap: () => Get.offAll(() => Product(
+                                          productView: contentProduct
+                                              .content[index])),
                                       child: ProductComponent(
                                           productView:
                                               contentProduct.content[index],
@@ -219,13 +213,13 @@ class _ProductListCategoryState extends State<ProductListCategory> {
   }
 
   _refreshIndicator() {
-    _onGetProductAll(widget.categoryView!.id, productName, pageSize);
+    _onGetProductAll(widget.categoryView.id, productName, pageSize);
   }
 
   bool onNotification(ScrollNotification scrollInfo) {
     if (scrollInfo is ScrollEndNotification && !isLoading && scrollInfo.metrics.pixels ==
         scrollInfo.metrics.maxScrollExtent) {
-      _onGetProductAll(widget.categoryView!.id, productName, pageSize += 1);
+      _onGetProductAll(widget.categoryView.id, productName, pageSize += 1);
     }
     return false;
   }

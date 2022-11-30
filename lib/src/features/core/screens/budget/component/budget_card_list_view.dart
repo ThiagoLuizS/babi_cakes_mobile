@@ -5,6 +5,8 @@ import 'package:babi_cakes_mobile/src/features/core/screens/budget/component/bud
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 
 class BudgetCardListView extends StatefulWidget {
@@ -36,9 +38,7 @@ class _BudgetCardListViewState extends State<BudgetCardListView> {
           ),
         ),
         GestureDetector(
-          onTap: () {
-            push(context, BudgetDetailsComponent(budgetView: widget.budgetView), replace: false);
-          },
+          onTap: () => Get.offAll(() => BudgetDetailsComponent(budgetView: widget.budgetView)),
           child: Padding(
             padding: const EdgeInsets.only(top: 16),
             child: Container(
@@ -170,9 +170,7 @@ class _BudgetCardListViewState extends State<BudgetCardListView> {
                       children: [
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(backgroundColor: Colors.white, side: BorderSide.none, foregroundColor: AppColors.grey3),
-                          onPressed: () {
-                            push(context, BudgetDetailsComponent(budgetView: widget.budgetView), replace: false);
-                          },
+                          onPressed: () => Get.offAll(() => BudgetDetailsComponent(budgetView: widget.budgetView)),
                           child: const Padding(
                             padding: EdgeInsets.only(left: 12, right: 12),
                             child: Text("Veja mais", style: TextStyle(color: AppColors.berimbau),),

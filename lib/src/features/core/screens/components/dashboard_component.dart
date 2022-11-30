@@ -10,6 +10,8 @@ import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class DashboardComponent extends StatefulWidget {
   const DashboardComponent({Key? key}) : super(key: key);
@@ -41,7 +43,7 @@ class _DashboardComponentState extends State<DashboardComponent> with SingleTick
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return LiquidRefreshComponent(
-      onRefresh: () async => push(context, const Dashboard(), replace: true),
+      onRefresh: () async => Get.offAll(() => const Dashboard()),
       child: SizedBox(
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),

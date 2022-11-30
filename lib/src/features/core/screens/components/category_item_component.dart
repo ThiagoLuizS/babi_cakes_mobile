@@ -27,7 +27,7 @@ class CategoryItemComponent extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(top: 5.0),
             child: Text(
-              category?.name ?? '',
+              category.name,
               style:
                   AppTypography.medium(context)?.copyWith(color: AppColors.black54),
             ),

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:babi_cakes_mobile/src/models/dto/error_view.dart';
+import 'package:babi_cakes_mobile/src/service/device_service.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:babi_cakes_mobile/config.dart';
@@ -33,6 +34,8 @@ class LoginController {
         final user = TokenDTO.fromJson(mapResponse);
 
         user.save();
+
+        DeviceService.saveDeviceGetInstance();
 
         return ApiResponse.ok(user);
       } else {

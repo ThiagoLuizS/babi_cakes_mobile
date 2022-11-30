@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1033023825210",
+    "project_id": "babi-cakes",
+    "storage_bucket": "babi-cakes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1033023825210:android:3301bd22e75e5ae1c19c03",
+        "android_client_info": {
+          "package_name": "br.com.babi_cakes_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1033023825210-21lsm9967k5a7b0djc0g9fqihjfi83kq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrUIlfiH905Zflf4hZbHWG67qD4mMc2Zg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1033023825210-21lsm9967k5a7b0djc0g9fqihjfi83kq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1033023825210-eabrv97su8v5fpvvpv8l2o403fg8otdr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "br.com.babiCakesMobile"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

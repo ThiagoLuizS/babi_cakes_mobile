@@ -9,6 +9,7 @@ import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProductTabComponent extends StatefulWidget {
   final CategoryView? categoryView;
@@ -164,14 +165,7 @@ class _ProductTabComponentState extends State<ProductTabComponent> {
                         itemCount: contentProduct.content.length,
                         itemBuilder: (context, index) {
                           return GestureDetector(
-                            onTap: () {
-                              push(
-                                  context,
-                                  Product(
-                                      productView:
-                                          contentProduct.content[index]),
-                                  replace: true);
-                            },
+                            onTap: () => Get.offAll(() => Product(productView: contentProduct.content[index])),
                             child: ProductComponent(
                                 productView: contentProduct.content[index],
                                 isLoading: isLoading),
