@@ -1,6 +1,5 @@
 import 'package:babi_cakes_mobile/config.dart';
-import 'package:babi_cakes_mobile/src/features/authentication/models/dto/token_dto.dart';
-import 'package:babi_cakes_mobile/src/features/core/models/category/content_category.dart';
+import 'package:babi_cakes_mobile/src/features/authentication/models/login/token_dto.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/product/content_product.dart';
 import 'package:babi_cakes_mobile/src/models/dto/error_view.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
@@ -19,7 +18,8 @@ class ProductController {
       Uri uri = Uri.http(
           Config.apiURL, '/api/products/pageable/$categoryId', {'page': page.toString(), 'size': size.toString(), 'productName': productName, 'sort': sort});
 
-      TokenDTO? token = await TokenDTO.get();
+      TokenDTO token = await TokenDTO.get();
+
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "Authorization": "Bearer ${token.token}"

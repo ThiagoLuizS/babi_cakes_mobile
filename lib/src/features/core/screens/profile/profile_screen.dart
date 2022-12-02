@@ -1,5 +1,5 @@
 import 'package:babi_cakes_mobile/src/constants/image_strings.dart';
-import 'package:babi_cakes_mobile/src/features/authentication/models/dto/token_dto.dart';
+import 'package:babi_cakes_mobile/src/features/authentication/models/login/token_dto.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/event/event_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/app_bar_default_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/liquid_refresh_component.dart';

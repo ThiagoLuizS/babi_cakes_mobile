@@ -36,6 +36,7 @@ dependencies:
   firebase_messaging: ^14.1.2
   firebase_analytics: ^10.0.6
   device_info_plus: ^8.0.0
+  mask_text_input_formatter: ^2.4.0
 
 dev_dependencies:
   flutter_test:

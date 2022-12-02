@@ -113,7 +113,7 @@ class _ProfileCupomScreenState extends State<ProfileCupomScreen> {
         isLoading = false;
       });
     } else {
-      alertToast(context, response.erros[0].toString(), 3, Colors.grey);
+      alertToast(context, response.erros[0].toString(), 3, Colors.grey, false);
     }
   }
 }

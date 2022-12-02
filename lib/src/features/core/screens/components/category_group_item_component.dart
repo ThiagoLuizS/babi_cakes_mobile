@@ -139,7 +139,7 @@ class _CategoryGroupItemComponentState
         contentProduct = response.result;
       });
     } else {
-      alertToast(context, response.erros[0].toString(), 3, Colors.grey);
+      alertToast(context, response.erros[0].toString(), 3, Colors.grey, false);
     }
   }
 }

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:babi_cakes_mobile/config.dart';
-import 'package:babi_cakes_mobile/src/features/authentication/models/dto/token_dto.dart';
+import 'package:babi_cakes_mobile/src/features/authentication/models/login/token_dto.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/cupom/content_cupom.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/profile/address_form.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/profile/content_address.dart';
@@ -18,7 +18,7 @@ class ProfileController {
 
       Uri uri = Uri.http(Config.apiURL, '/api/address/all');
 
-      TokenDTO? token = await TokenDTO.get();
+      TokenDTO token = await TokenDTO.get();
 
       Map<String, String> headers = {
         "Content-Type": "application/json",
@@ -53,7 +53,7 @@ class ProfileController {
 
       Uri uri = Uri.http(Config.apiURL, '/api/address/main/$id');
 
-      TokenDTO? token = await TokenDTO.get();
+      TokenDTO token = await TokenDTO.get();
 
       Map<String, String> headers = {
         "Content-Type": "application/json",
@@ -83,7 +83,7 @@ class ProfileController {
 
       Uri uri = Uri.http(Config.apiURL, '/api/address/cep/$cep');
 
-      TokenDTO? token = await TokenDTO.get();
+      TokenDTO token = await TokenDTO.get();
 
       Map<String, String> headers = {
         "Content-Type": "application/json",
@@ -118,7 +118,7 @@ class ProfileController {
 
       Uri uri = Uri.http(Config.apiURL, '/api/address');
 
-      TokenDTO? token = await TokenDTO.get();
+      TokenDTO token = await TokenDTO.get();
 
       Map<String, String> headers = {
         "Content-Type": "application/json",
@@ -148,7 +148,7 @@ class ProfileController {
 
       Uri uri = Uri.http(Config.apiURL, '/api/cupons/all', {'status': 'ACTIVE'});
 
-      TokenDTO? token = await TokenDTO.get();
+      TokenDTO token = await TokenDTO.get();
 
       Map<String, String> headers = {
         "Content-Type": "application/json",

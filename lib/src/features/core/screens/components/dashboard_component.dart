@@ -84,7 +84,7 @@ class _DashboardComponentState extends State<DashboardComponent> with SingleTick
       });
     } else {
       // ignore: use_build_context_synchronously
-      alertToast(context, response.erros[0].toString(), 3, Colors.grey);
+      alertToast(context, response.erros[0].toString(), 3, Colors.grey, false);
     }
   }
 }

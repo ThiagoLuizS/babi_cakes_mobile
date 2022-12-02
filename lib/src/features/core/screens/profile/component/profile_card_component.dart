@@ -1,6 +1,5 @@
-import 'package:babi_cakes_mobile/src/features/authentication/models/dto/token_dto.dart';
+import 'package:babi_cakes_mobile/src/features/authentication/models/login/token_dto.dart';
 import 'package:babi_cakes_mobile/src/features/authentication/screens/login/login_screen.dart';
-import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

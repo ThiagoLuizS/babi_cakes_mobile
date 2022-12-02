@@ -24,16 +24,17 @@ alert(context, msg) {
       });
 }
 
-alertToast(context, msg, timeInSecForIosWeb, Color color) {
+alertToast(context, msg, timeDuration, Color color, bool isSucess) {
   final snackBar = SnackBar(
     /// need to set following properties for best effect of awesome_snackbar_content
     elevation: 0,
+    duration: timeDuration == 0 ? const Duration(days: 1) : Duration(seconds: timeDuration),
     behavior: SnackBarBehavior.fixed,
     backgroundColor: Colors.transparent,
     content: AwesomeSnackbarContent(
-      title: 'Atenção!',
+      title: isSucess ? 'Parabéns' : 'Atenção!',
       message: msg,
-      contentType: ContentType.failure,
+      contentType: isSucess ? ContentType.success : ContentType.failure,
     ),
   );
   ScaffoldMessenger.of(context)

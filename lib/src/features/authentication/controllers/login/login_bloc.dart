@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:babi_cakes_mobile/src/features/authentication/controllers/login/login_controller.dart';
-import 'package:babi_cakes_mobile/src/features/authentication/models/dto/token_dto.dart';
+import 'package:babi_cakes_mobile/src/features/authentication/models/login/token_dto.dart';
 import 'package:babi_cakes_mobile/src/service/simple_bloc.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 

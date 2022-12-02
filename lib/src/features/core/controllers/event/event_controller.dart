@@ -4,7 +4,7 @@ import 'dart:convert' as convert;
 import 'dart:io';
 
 import 'package:babi_cakes_mobile/config.dart';
-import 'package:babi_cakes_mobile/src/features/authentication/models/dto/token_dto.dart';
+import 'package:babi_cakes_mobile/src/features/authentication/models/login/token_dto.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/event/event_view.dart';
 import 'package:babi_cakes_mobile/src/models/dto/error_view.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
@@ -18,7 +18,7 @@ class EventController {
 
       Uri uri = Uri.http(Config.apiURL, '/api/events/user');
 
-      TokenDTO? token = await TokenDTO.get();
+      TokenDTO token = await TokenDTO.get();
 
       Map<String, String> headers = {
         "Content-Type": "application/json",
@@ -53,7 +53,7 @@ class EventController {
 
       Uri uri = Uri.http(Config.apiURL, '/api/events/user/count/event-not-vizualized');
 
-      TokenDTO? token = await TokenDTO.get();
+      TokenDTO token = await TokenDTO.get();
 
       Map<String, String> headers = {
         "Content-Type": "application/json",
@@ -86,7 +86,7 @@ class EventController {
 
       Uri uri = Uri.http(Config.apiURL, '/api/events/vizualized/$eventId');
 
-      TokenDTO? token = await TokenDTO.get();
+      TokenDTO token = await TokenDTO.get();
 
       Map<String, String> headers = {
         "Content-Type": "application/json",

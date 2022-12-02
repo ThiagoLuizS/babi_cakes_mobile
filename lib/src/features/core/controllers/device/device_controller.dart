@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:babi_cakes_mobile/config.dart';
-import 'package:babi_cakes_mobile/src/features/authentication/models/dto/token_dto.dart';
+import 'package:babi_cakes_mobile/src/features/authentication/models/login/token_dto.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/device/device_form.dart';
 import 'package:babi_cakes_mobile/src/models/dto/error_view.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
@@ -16,7 +16,7 @@ class DeviceController {
 
       Uri uri = Uri.http(Config.apiURL, '/api/devices');
 
-      TokenDTO? token = await TokenDTO.get();
+      TokenDTO token = await TokenDTO.get();
 
       Map<String, String> headers = {
         "Content-Type": "application/json",

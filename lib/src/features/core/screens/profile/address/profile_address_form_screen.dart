@@ -42,14 +42,12 @@ class _ProfileAddressFormScreenState extends State<ProfileAddressFormScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _blocAddress.dispose();
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     isLoading = false;
     isLoadingSave = false;
@@ -211,8 +209,9 @@ class _ProfileAddressFormScreenState extends State<ProfileAddressFormScreen> {
                                     child: ElevatedButton(
                                       onPressed: () {
                                         if (_formSaveKey.currentState!
-                                            .validate()) {}
-                                        _saveAddress();
+                                            .validate()) {
+                                          _saveAddress();
+                                        }
                                       },
                                       child: Text(tSignup.toUpperCase()),
                                     ),
@@ -262,7 +261,7 @@ class _ProfileAddressFormScreenState extends State<ProfileAddressFormScreen> {
       setState(() {
         isLoading = false;
       });
-      alertToast(context, response.erros[0].toString(), 3, Colors.grey);
+      alertToast(context, response.erros[0].toString(), 3, Colors.grey, false);
     }
   }
 
@@ -277,7 +276,7 @@ class _ProfileAddressFormScreenState extends State<ProfileAddressFormScreen> {
     ApiResponse<Object> response = await _blocAddress.saveAddress(addressForm);
 
     if (!response.ok) {
-      alertToast(context, response.erros[0].toString(), 3, AppColors.milkCream);
+      alertToast(context, response.erros[0].toString(), 3, AppColors.milkCream, false);
     } else {
       Get.offAll(() => const ProfileAddressScreen());
     }

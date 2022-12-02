@@ -3,7 +3,7 @@
 
 // -- GLOBAL Texts
 const String tNext = "Next";
-const String tLogin = "Já cadastrei";
+const String tLogin = "Entrar";
 const String tEmail = "E-Mail";
 const String tBirdhDate = "Data de nascimento";
 const String tSignup = "Increver-se";

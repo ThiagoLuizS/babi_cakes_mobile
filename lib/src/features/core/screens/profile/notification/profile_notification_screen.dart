@@ -118,7 +118,7 @@ class _ProfileNotificationScreenState extends State<ProfileNotificationScreen> {
     if (response.ok) {
       _getByUserNotVisualized();
     } else {
-      alertToast(context, response.erros[0].toString(), 3, Colors.grey);
+      alertToast(context, response.erros[0].toString(), 3, Colors.grey, false);
     }
   }
 }
