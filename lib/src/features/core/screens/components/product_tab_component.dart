@@ -7,7 +7,6 @@ import 'package:babi_cakes_mobile/src/features/core/screens/components/search_pr
 import 'package:babi_cakes_mobile/src/features/core/screens/product/product.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
-import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

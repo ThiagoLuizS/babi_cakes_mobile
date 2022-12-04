@@ -22,6 +22,8 @@ class AppIcons {
 
   static const profileActive = '${pathIcons}bottom/profile_active.svg';
   static const profile = '${pathIcons}bottom/profile.svg';
+
+  static const mapShoppingCart = '${pathIcons}shopping_cart/map.svg';
   }
 
 class AppIcon extends StatelessWidget {

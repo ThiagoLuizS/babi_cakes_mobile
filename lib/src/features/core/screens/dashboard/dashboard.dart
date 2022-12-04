@@ -1,13 +1,18 @@
+import 'package:babi_cakes_mobile/src/features/core/controllers/shopping_cart/shopping_cart_controller.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/budget/budget_list_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/content_tab_bar_component.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/components/shopping_cart_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/product/product_search.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/profile_screen.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Dashboard extends StatefulWidget {
   final int indexBottomNavigationBar;
-  const Dashboard({Key? key, this.indexBottomNavigationBar = 0}) : super(key: key);
+
+  const Dashboard({Key? key, this.indexBottomNavigationBar = 0})
+      : super(key: key);
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -15,6 +20,12 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int _selectedIndex = 0;
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -26,58 +37,78 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
     return WillPopScope(
       onWillPop: () {
         return Future(() => false);
       },
-      child: Scaffold(
-        backgroundColor: AppColors.white,
-        body: SafeArea(
-          child: _widgetOptions.elementAt(_selectedIndex),
-        ),
-        extendBody: true,
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: const [
-                BoxShadow(
-                    color: Colors.grey, spreadRadius: 0, blurRadius: 0),
-              ],
-              color: Colors.white,
-            ),
-            child: BottomNavigationBar(
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home_outlined, color: Colors.black87),
-                  label: 'Início',
-                ),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.search, color: Colors.black87),
-                    label: 'Busca'),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.add_business_outlined, color: Colors.black87),
-                  label: 'Pedidos',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.person_outline_outlined, color: Colors.black87),
-                  label: 'Perfil',
-                ),
-              ],
-              currentIndex: _selectedIndex,
-              selectedItemColor: Colors.black87,
-              onTap: (index) {
-                setState(
-                  () {
-                    _selectedIndex = index;
-                  },
-                );
-              },
+      child: Consumer<ShoppingCartController>(builder: (context, cart, child) {
+        return Scaffold(
+          backgroundColor: AppColors.white,
+          body: SafeArea(
+            child: _widgetOptions.elementAt(_selectedIndex),
+          ),
+          extendBody: true,
+          bottomNavigationBar: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: cart.items.isNotEmpty ? 130 : 75,
+              child: Column(
+                children: [
+                  cart.items.isNotEmpty ? const ShoppingCartComponent(): Container(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Container(
+                      height: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: const [
+                          BoxShadow(
+                              color: Colors.grey,
+                              spreadRadius: 0,
+                              blurRadius: 0),
+                        ],
+                        color: Colors.white,
+                      ),
+                      child: BottomNavigationBar(
+                        items: const <BottomNavigationBarItem>[
+                          BottomNavigationBarItem(
+                            icon: Icon(Icons.home_outlined,
+                                color: Colors.black87),
+                            label: 'Início',
+                          ),
+                          BottomNavigationBarItem(
+                              icon: Icon(Icons.search, color: Colors.black87),
+                              label: 'Busca'),
+                          BottomNavigationBarItem(
+                            icon: Icon(Icons.add_business_outlined,
+                                color: Colors.black87),
+                            label: 'Pedidos',
+                          ),
+                          BottomNavigationBarItem(
+                            icon: Icon(Icons.person_outline_outlined,
+                                color: Colors.black87),
+                            label: 'Perfil',
+                          ),
+                        ],
+                        currentIndex: _selectedIndex,
+                        selectedItemColor: Colors.black87,
+                        onTap: (index) {
+                          setState(
+                            () {
+                              _selectedIndex = index;
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 

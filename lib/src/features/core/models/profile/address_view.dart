@@ -1,3 +1,7 @@
+import 'dart:convert' as convert;
+
+import 'package:babi_cakes_mobile/src/utils/general/prefs.dart';
+
 class AddressView {
   late int id;
   late int cep;
@@ -52,5 +56,25 @@ class AddressView {
     data['number'] = number;
     data['complement'] = complement;
     return data;
+  }
+
+  void save() {
+    Map map = toJson();
+    String json = convert.json.encode(map);
+    Prefs.setString("AddressView.prefs", json);
+  }
+
+  static Future<AddressView> get() async {
+    String json = await Prefs.getString("AddressView.prefs");
+
+    Map<String, dynamic> map = convert.json.decode(json);
+
+    AddressView addressView = AddressView.fromJson(map);
+
+    return addressView;
+  }
+
+  static void clear() {
+    Prefs.setString("AddressView.prefs", "");
   }
 }

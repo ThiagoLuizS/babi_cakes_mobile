@@ -1,6 +1,7 @@
 import 'dart:convert' as convert;
 
 import 'package:babi_cakes_mobile/src/features/core/models/budget/budget_product_reserved_view.dart';
+import 'package:babi_cakes_mobile/src/features/core/models/cupom/cupom_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/property_string.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/user/address_view.dart';
 import 'package:babi_cakes_mobile/src/utils/general/prefs.dart';
@@ -8,17 +9,20 @@ import 'package:babi_cakes_mobile/src/utils/general/prefs.dart';
 class BudgetView {
   late int id;
   late AddressView address;
+  late CupomView cupom;
   late int code;
   late DateTime dateCreateBudget;
   late DateTime dateFinalizedBudget;
   late PropertyString budgetStatusEnum;
   late List<BudgetProductReservedView> productReservedViewList = [];
+  late double subTotal;
   late double amount;
   late double freightCost;
 
   BudgetView(
       {required this.id,
       required this.address,
+        required this.cupom,
       required this.code,
       required this.dateCreateBudget,
       required this.dateFinalizedBudget,
@@ -30,6 +34,10 @@ class BudgetView {
     String map = convert.json.encode(json);
     id = json['id'];
     address = AddressView.fromJson(json['address']);
+    if(json['cupom'] != null) {
+
+    }
+    cupom = json['cupom'] != null ? CupomView.fromJson(json['cupom']) : json['cupom'];
     code = json['code'];
     dateCreateBudget = DateTime.parse(json['dateCreateBudget'].toString());
     if(json['dateFinalizedBudget'] != null) {
@@ -37,6 +45,7 @@ class BudgetView {
     }
     budgetStatusEnum = PropertyString.fromJson(json['budgetStatusEnum']);
     productReservedViewList = convert.json.decode(map)['productReservedViewList'].map<BudgetProductReservedView>((data) =>  BudgetProductReservedView.fromJson(data)).toList();
+    subTotal = json['subTotal'];
     amount = json['amount'];
     freightCost = json['freightCost'];
   }
@@ -45,11 +54,13 @@ class BudgetView {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['address'] = address;
+    data['cupom'] = cupom;
     data['code'] = code;
     data['dateCreateBudget'] = dateCreateBudget;
     data['dateFinalizedBudget'] = dateFinalizedBudget;
     data['budgetStatusEnum'] = budgetStatusEnum;
     data['productReservedViewList'] = productReservedViewList;
+    data['subTotal'] = subTotal;
     data['amount'] = amount;
     data['freightCost'] = freightCost;
     return data;

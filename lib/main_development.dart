@@ -4,12 +4,14 @@ import 'dart:async';
 import 'package:babi_cakes_mobile/config.dart';
 import 'package:babi_cakes_mobile/firebase_options.dart';
 import 'package:babi_cakes_mobile/src/features/authentication/screens/splash_screen/splash_screen.dart';
+import 'package:babi_cakes_mobile/src/features/core/controllers/shopping_cart/shopping_cart_controller.dart';
 import 'package:babi_cakes_mobile/src/utils/theme/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:provider/provider.dart';
 
 
 @pragma('vm:entry-point')
@@ -27,7 +29,12 @@ Future<void> main() async {
   FirebaseMessaging.onMessage.listen(firebaseMessagingBackgroundHandler);
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ShoppingCartController(),
+      child: MyApp(),
+    )
+  );
 }
 
 Future<void> notificationSettingAuthorized() async {

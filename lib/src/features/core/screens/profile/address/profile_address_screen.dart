@@ -40,6 +40,7 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
   @override
   void initState() {
     super.initState();
+    isLoading = true;
     _getAddressPageByUser();
   }
 

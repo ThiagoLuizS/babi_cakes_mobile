@@ -1,6 +1,5 @@
 import 'package:babi_cakes_mobile/src/constants/image_strings.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/cupom/cupom_view.dart';
-import 'package:babi_cakes_mobile/src/features/core/models/profile/address_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +8,11 @@ import 'package:intl/intl.dart';
 class ProfileCupomCardComponent extends StatefulWidget {
   final CupomView cupomView;
   final Function onTap;
+  final String textButtomSelected;
+  final bool cupomSelectedBudget;
 
   const ProfileCupomCardComponent(
-      {Key? key, required this.cupomView, required this.onTap})
+      {Key? key, required this.cupomView, required this.onTap, this.textButtomSelected = "Ver produtos", this.cupomSelectedBudget = false})
       : super(key: key);
 
   @override
@@ -28,6 +29,8 @@ class _ProfileCupomCardComponentState extends State<ProfileCupomCardComponent> {
         height: 190,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
+          border: widget.cupomSelectedBudget ? Border.all(width: 2, color: AppColors.milkCream)
+              : Border.all(width: 0, color: Colors.white),
           color: Colors.white,
           boxShadow: const [
             BoxShadow(
@@ -105,7 +108,7 @@ class _ProfileCupomCardComponentState extends State<ProfileCupomCardComponent> {
                     padding: const EdgeInsets.only(top: 16),
                     child: SizedBox(
                       width: double.infinity,
-                      child: ElevatedButton(
+                      child: !widget.cupomSelectedBudget ? ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           primary: AppColors.white,
                           side: const BorderSide(
@@ -114,11 +117,11 @@ class _ProfileCupomCardComponentState extends State<ProfileCupomCardComponent> {
                         onPressed: () {
                           widget.onTap();
                         },
-                        child: const Text(
-                          "Ver produtos",
-                          style: TextStyle(color: Colors.black),
+                        child: Text(
+                          widget.textButtomSelected,
+                          style: const TextStyle(color: Colors.black),
                         ),
-                      ),
+                      ) : const Center(child: Text("Cupom Selecionado")),
                     ),
                   ))
                 ],

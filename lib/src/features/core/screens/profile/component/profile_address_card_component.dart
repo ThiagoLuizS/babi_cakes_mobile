@@ -1,4 +1,5 @@
 import 'package:babi_cakes_mobile/src/features/core/models/profile/address_view.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/profile/address/component/profile_address_description_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -46,30 +47,7 @@ class _ProfileAddressCardComponentState
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Icon(Icons.home_work_outlined),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16, right: 16),
-                        child: Text(
-                          '${widget.addressView.addressType} ${widget.addressView.addressName}, ${widget.addressView.number} - ${widget.addressView.complement}',
-                          style: const TextStyle(
-                              color: Color.fromARGB(175, 0, 0, 0), fontSize: 13),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16, right: 16),
-                        child: Text(
-                          '${widget.addressView.district} - ${widget.addressView.city} - ${widget.addressView.state}',
-                          style: const TextStyle(
-                              color: Color.fromARGB(175, 0, 0, 0), fontSize: 13),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                Expanded(child: ProfileAddressDescriptionComponent(addressView: widget.addressView,)),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,

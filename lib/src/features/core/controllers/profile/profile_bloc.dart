@@ -1,6 +1,7 @@
 import 'package:babi_cakes_mobile/src/features/core/controllers/profile/profile_controller.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/cupom/content_cupom.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/profile/address_form.dart';
+import 'package:babi_cakes_mobile/src/features/core/models/profile/address_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/profile/content_address.dart';
 import 'package:babi_cakes_mobile/src/service/simple_bloc.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
@@ -37,6 +38,13 @@ class ProfileBloc extends SimpleBloc<bool> {
   Future<ApiResponse<ContentCupom>> getCupomByUserAndCupomStatusEnum() async {
     add(true);
     ApiResponse<ContentCupom> response = await ProfileController.getCupomByUserAndCupomStatusEnum();
+    add(false);
+    return response;
+  }
+
+  Future<ApiResponse<AddressView>> getAddressByMain() async {
+    add(true);
+    ApiResponse<AddressView> response = await ProfileController.getAddressByMain();
     add(false);
     return response;
   }

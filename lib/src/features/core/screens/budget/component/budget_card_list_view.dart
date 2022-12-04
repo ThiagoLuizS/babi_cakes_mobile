@@ -124,7 +124,7 @@ class _BudgetCardListViewState extends State<BudgetCardListView> {
                           itemCount: widget.budgetView.productReservedViewList.length,
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
-                          physics: const BouncingScrollPhysics(),
+                          physics: const AlwaysScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, int index) =>
                               GestureDetector(
                             child: SizedBox(
