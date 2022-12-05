@@ -6,10 +6,13 @@ import 'package:babi_cakes_mobile/src/features/core/controllers/parameterization
 import 'package:babi_cakes_mobile/src/features/core/controllers/profile/profile_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/shopping_cart/shopping_cart_controller.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/budget/budget_body_send.dart';
+import 'package:babi_cakes_mobile/src/features/core/models/budget/budget_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/cupom/content_cupom.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/cupom/cupom_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/profile/address_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/shopping_cart/shopping_cart.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/budget/budget_list_view.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/budget/component/budget_details_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/body_cupom_cart_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/shimmer_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/address/component/profile_address_description_component.dart';
@@ -47,21 +50,21 @@ class _BodyShowBarShoppingCartComponentState
 
   @override
   void dispose() {
-    _blocProfile.dispose();
     _blocBudget.dispose();
+    _blocProfile.dispose();
     _blocParameterization.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
-    super.initState();
     isLoading = true;
     isLoadingBudget = true;
     freightCost = 0.0;
     _getAddressMain();
     _getCupomByUserAndCupomStatusEnum();
     _getFreightCost();
+    super.initState();
   }
 
   @override
@@ -543,25 +546,30 @@ class _BodyShowBarShoppingCartComponentState
                     child: SizedBox(
                       width: double.infinity,
                       child: isLoadingBudget
-                          ? ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: AppColors.berimbau,
-                                  side: BorderSide.none),
-                              onPressed: () => {
-                                if (addressView == null)
-                                  {
-                                    alertToast(
-                                        context,
-                                        "Cadastre um endereço para continuar",
-                                        3,
-                                        Colors.grey,
-                                        false)
-                                  }
-                                else
-                                  {_createNewOrder(cart.items, cart.cupomView), cart.removeAll()}
-                              },
-                              child: const Text("Continuar"),
-                            )
+                          ? StreamBuilder<Object>(
+                            stream: _blocBudget.stream,
+                            builder: (context, snapshot) {
+                              return ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      primary: AppColors.berimbau,
+                                      side: BorderSide.none),
+                                  onPressed: () {
+                                    if (addressView == null){
+                                        alertToast(
+                                            context,
+                                            "Cadastre um endereço para continuar",
+                                            3,
+                                            Colors.grey,
+                                            false);
+                                    } else{
+                                      cart.removeAll();
+                                      _createNewOrder(cart.items, cart.cupomView);
+                                    }
+                                  },
+                                  child: const Text("Continuar"),
+                                );
+                            }
+                          )
                           : const SizedBox(
                               height: 25,
                               child: Center(
@@ -720,13 +728,9 @@ class _BodyShowBarShoppingCartComponentState
         await _blocBudget.createNewOrder(budgetBodySend);
 
     if (response.ok) {
-      alertToast(context, "Pedido criado com sucesso", 0, Colors.grey, true);
+      Get.offAll(() => const BudgetListView());
     } else {
       alertToast(context, response.erros[0].toString(), 8, Colors.grey, false);
     }
-
-    setState(() {
-      isLoading = false;
-    });
   }
 }

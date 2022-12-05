@@ -5,7 +5,11 @@ class SimpleBloc<T> {
 
   Stream<T> get stream => _controller.stream;
 
-  void add(T object) => _controller.add(object);
+  void add(T object) {
+    if(!_controller.isClosed) {
+      _controller.add(object);
+    }
+  }
 
   void addError(Object error) =>
       !_controller.isClosed;

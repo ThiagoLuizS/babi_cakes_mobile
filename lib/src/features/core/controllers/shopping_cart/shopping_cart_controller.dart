@@ -73,7 +73,6 @@ class ShoppingCartController extends ChangeNotifier {
 
   void removeCupom() {
     cupomView = null;
-    notifyListeners();
   }
 
   void removeAll() {
@@ -84,7 +83,6 @@ class ShoppingCartController extends ChangeNotifier {
 
   void removeItems() {
     _items.clear();
-    notifyListeners();
   }
 
   void removeItem(ProductView itemProd) {

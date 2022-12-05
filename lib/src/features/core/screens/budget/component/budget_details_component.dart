@@ -25,8 +25,47 @@ class BudgetDetailsComponent extends StatefulWidget {
   State<BudgetDetailsComponent> createState() => _BudgetDetailsComponentState();
 }
 
-class _BudgetDetailsComponentState extends State<BudgetDetailsComponent> {
+class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
+    with TickerProviderStateMixin {
   final BudgetData budgetData = BudgetData();
+
+  late AnimationController controller1;
+  late AnimationController controller2;
+  late AnimationController controller3;
+
+  @override
+  void dispose() {
+    controller1.dispose();
+    controller2.dispose();
+    controller3.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    controller1 = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 0),
+    )..addListener(() {
+      setState(() {});
+    });
+    controller2 = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..addListener(() {
+      setState(() {});
+    });
+    controller3 = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    )..addListener(() {
+      setState(() {});
+    });
+    controller1.forward().orCancel;
+    controller2.repeat(reverse: true);
+    controller3.repeat(reverse: true);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +132,49 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent> {
                                     style: const TextStyle(color: Colors.black),
                                   ),
                                 )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: SizedBox(
+                            height: 20,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4),
+                                    child: LinearProgressIndicator(
+                                      backgroundColor: Colors.white,
+                                      color: Colors.green,
+                                      value: controller1.value,
+                                      semanticsLabel: 'Linear progress indicator',
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4),
+                                    child: LinearProgressIndicator(
+                                      backgroundColor: AppColors.grey3,
+                                      color: Colors.green,
+                                      value: controller2.value,
+                                      semanticsLabel: 'Linear progress indicator',
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4),
+                                    child: LinearProgressIndicator(
+                                      backgroundColor: AppColors.grey3,
+                                      color: Colors.green,
+                                      value: controller3.value,
+                                      semanticsLabel: 'Linear progress indicator',
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),

@@ -4,7 +4,7 @@ class ShimmerComponent extends StatelessWidget {
   final Widget child;
   final bool isLoading;
 
-  const ShimmerComponent({Key? key, required this.child, required this.isLoading}) : super(key: key);
+  const ShimmerComponent({Key? key, required this.child, this.isLoading = true}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
