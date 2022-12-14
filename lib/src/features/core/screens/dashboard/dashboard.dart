@@ -49,28 +49,21 @@ class _DashboardState extends State<Dashboard> {
             child: _widgetOptions.elementAt(_selectedIndex),
           ),
           extendBody: true,
-          bottomNavigationBar: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              height: cart.items.isNotEmpty ? 130 : 75,
-              child: Column(
-                children: [
-                  cart.items.isNotEmpty ? const ShoppingCartComponent(): Container(),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Container(
-                      height: 60,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: const [
-                          BoxShadow(
-                              color: Colors.grey,
-                              spreadRadius: 0,
-                              blurRadius: 0),
-                        ],
-                        color: Colors.white,
-                      ),
+          bottomNavigationBar: SizedBox(
+            height: cart.items.isNotEmpty ? 130 : 75,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                cart.items.isNotEmpty ? const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: ShoppingCartComponent(),
+                ): Container(),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Theme(data: Theme.of(context).copyWith(canvasColor: Colors.white),
                       child: BottomNavigationBar(
+                        backgroundColor: Colors.white,
                         items: const <BottomNavigationBarItem>[
                           BottomNavigationBarItem(
                             icon: Icon(Icons.home_outlined,
@@ -95,16 +88,14 @@ class _DashboardState extends State<Dashboard> {
                         selectedItemColor: Colors.black87,
                         onTap: (index) {
                           setState(
-                            () {
+                                () {
                               _selectedIndex = index;
                             },
                           );
                         },
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                      ),)
+                )
+              ],
             ),
           ),
         );

@@ -2,6 +2,7 @@ import 'package:babi_cakes_mobile/src/features/core/controllers/product/product_
 import 'package:babi_cakes_mobile/src/features/core/models/category/category_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/product/content_product.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/product/filter_param.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/components/liquid_refresh_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/product_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/search_product_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/product/product.dart';
@@ -48,7 +49,7 @@ class _ProductTabComponentState extends State<ProductTabComponent> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    return RefreshIndicator(
+    return LiquidRefreshComponent(
       onRefresh: () async {
         return _refreshIndicator();
       },

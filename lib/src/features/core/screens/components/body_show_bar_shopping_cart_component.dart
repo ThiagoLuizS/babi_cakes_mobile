@@ -151,10 +151,16 @@ class _BodyShowBarShoppingCartComponentState
                                           ],
                                         ),
                                       ),
-                                      const Icon(
-                                        Icons.arrow_forward_ios_outlined,
-                                        color: Colors.red,
-                                        size: 17,
+                                      GestureDetector(
+                                        onTap: () {
+                                          Get.offAll(() =>
+                                          const ProfileAddressScreen());
+                                        },
+                                        child: const Icon(
+                                          Icons.arrow_forward_ios_outlined,
+                                          color: Colors.red,
+                                          size: 17,
+                                        ),
                                       )
                                     ]
                                   : [
@@ -292,12 +298,12 @@ class _BodyShowBarShoppingCartComponentState
                                                                             8),
                                                                 child: Text(
                                                                   UtilBrasilFields.obterReal(
-                                                                      shoppingCart
-                                                                              .product
-                                                                              .value -
+                                                                      (shoppingCart
+                                                                          .product
+                                                                          .value -
                                                                           shoppingCart
                                                                               .product
-                                                                              .discountValue,
+                                                                              .discountValue) * shoppingCart.quantity,
                                                                       moeda:
                                                                           true,
                                                                       decimal:
@@ -562,8 +568,8 @@ class _BodyShowBarShoppingCartComponentState
                                             Colors.grey,
                                             false);
                                     } else{
-                                      cart.removeAll();
                                       _createNewOrder(cart.items, cart.cupomView);
+                                      cart.removeAll();
                                     }
                                   },
                                   child: const Text("Continuar"),

@@ -18,9 +18,7 @@ class AddressView {
   late String number;
   late String complement;
 
-  AddressView(this.id, this.cep, this.addressMain, this.addressType, this.addressName, this.state,
-      this.district, this.lat, this.lng, this.city, this.cityIbge, this.ddd,
-      this.number, this.complement);
+  AddressView(this.id);
 
   AddressView.fromJson(Map<String, dynamic> json) {
     id = json['id'];

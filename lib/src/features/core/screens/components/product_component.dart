@@ -15,7 +15,7 @@ class ProductComponent extends StatefulWidget {
   final ProductView productView;
   final bool isLoading;
 
-  const ProductComponent({Key? key, required this.productView, required this.isLoading})
+  const ProductComponent({Key? key, required this.productView, this.isLoading = false})
       : super(key: key);
 
   @override
@@ -24,7 +24,7 @@ class ProductComponent extends StatefulWidget {
 
 class _ProductComponentState extends State<ProductComponent> {
   double valueFinal = 0.0;
-  int _quantity = 1;
+  final int _quantity = 1;
 
   @override
   Widget build(BuildContext context) {

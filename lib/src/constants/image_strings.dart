@@ -38,3 +38,7 @@ const String tTopCourseImage2 = "assets/images/dashboard/dash-04.png";
 // -- Profile
 const String tProfileImage = "assets/images/profile/profile.png";
 const String tProfileCupomImage = "assets/images/profile/cupom.png";
+
+// -- Budget
+const String tPayPalImage = "assets/images/budget/paypal.png";
+const String tCheckImage = "assets/images/budget/image-check.png";

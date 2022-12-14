@@ -91,7 +91,7 @@ class _BodyShowBarCupomShoppingCartComponentState
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                              children: const [
                                 Text("Sem cupom", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
                                 Text("Nenhum cupom aplicado", style: TextStyle(color: Colors.grey, fontSize: 13))
                               ],

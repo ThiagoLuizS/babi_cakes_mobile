@@ -4,7 +4,6 @@ import 'package:babi_cakes_mobile/src/features/core/models/cupom/cupom_view.dart
 import 'package:babi_cakes_mobile/src/features/core/models/product/product_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/shopping_cart/shopping_cart.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class ShoppingCartController extends ChangeNotifier {
 
@@ -73,6 +72,7 @@ class ShoppingCartController extends ChangeNotifier {
 
   void removeCupom() {
     cupomView = null;
+    notifyListeners();
   }
 
   void removeAll() {

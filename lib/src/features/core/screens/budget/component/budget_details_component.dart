@@ -1,14 +1,24 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
 
 import 'package:babi_cakes_mobile/src/constants/colors.dart';
 import 'package:babi_cakes_mobile/src/constants/image_strings.dart';
+import 'package:babi_cakes_mobile/src/features/core/controllers/budget/budget_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/budget/budget_data.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/budget/budget_product_reserved_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/budget/budget_view.dart';
+import 'package:babi_cakes_mobile/src/features/core/models/event/event_message_view.dart';
+import 'package:babi_cakes_mobile/src/features/core/models/event/event_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/app_bar_default_component.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/components/budget_linear_progress_component.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/components/paypal_payment_button_component.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/components/whatsapp_button_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/dashboard/dashboard.dart';
+import 'package:babi_cakes_mobile/src/features/core/service/budget/budget_service.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
+import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
+import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -28,43 +38,24 @@ class BudgetDetailsComponent extends StatefulWidget {
 class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
     with TickerProviderStateMixin {
   final BudgetData budgetData = BudgetData();
-
-  late AnimationController controller1;
-  late AnimationController controller2;
-  late AnimationController controller3;
+  final BudgetBloc _blocBudget = BudgetBloc();
+  late BudgetView budgetView;
+  late Timer _timer;
 
   @override
   void dispose() {
-    controller1.dispose();
-    controller2.dispose();
-    controller3.dispose();
+    _blocBudget.dispose();
+    _timer.cancel();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    controller1 = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 0),
-    )..addListener(() {
-      setState(() {});
+    setState(() {
+      budgetView = widget.budgetView;
     });
-    controller2 = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 2),
-    )..addListener(() {
-      setState(() {});
-    });
-    controller3 = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 3),
-    )..addListener(() {
-      setState(() {});
-    });
-    controller1.forward().orCancel;
-    controller2.repeat(reverse: true);
-    controller3.repeat(reverse: true);
+    _timer = _schedulerEvent();
   }
 
   @override
@@ -109,7 +100,7 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text("Babi cakes", style: TextStyle(color: Colors.black87, fontSize: 18),),
-                                  Text('Pedido nº ${widget.budgetView.code} * ${DateFormat.yMd().add_jm().format(widget.budgetView.dateCreateBudget)}', style: TextStyle(color: Color.fromARGB(109, 0, 0, 0), fontSize: 14),),
+                                  Text('Pedido nº ${budgetView.code} * ${DateFormat.yMd().add_jm().format(budgetView.dateCreateBudget)}', style: TextStyle(color: Color.fromARGB(109, 0, 0, 0), fontSize: 14),),
                                 ],
                               )
                             ],
@@ -118,67 +109,29 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
                         Padding(
                           padding: const EdgeInsets.only(left: 16, right: 16),
                           child: Container(
-                            decoration: BoxDecoration(color: AppColors.grey3),
+                            decoration: budgetView.budgetStatusEnum.type == BudgetService.paidOut ?
+                            BoxDecoration(color: Colors.green[400], borderRadius: BorderRadius.circular(8)) :
+                            BoxDecoration(color: AppColors.grey3, borderRadius: BorderRadius.circular(8)),
                             height: 40,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 budgetData.iconByStatus(
-                                    widget.budgetView.budgetStatusEnum.type),
+                                    budgetView.budgetStatusEnum.type),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 10),
                                   child: Text(
-                                    widget.budgetView.budgetStatusEnum.status,
-                                    style: const TextStyle(color: Colors.black),
+                                    budgetView.budgetStatusEnum.status,
+                                    style: budgetView.budgetStatusEnum.type == BudgetService.paidOut ?
+                                    const TextStyle(color: Colors.white) :
+                                    const TextStyle(color: Colors.black),
                                   ),
                                 )
                               ],
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: SizedBox(
-                            height: 20,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4),
-                                    child: LinearProgressIndicator(
-                                      backgroundColor: Colors.white,
-                                      color: Colors.green,
-                                      value: controller1.value,
-                                      semanticsLabel: 'Linear progress indicator',
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4),
-                                    child: LinearProgressIndicator(
-                                      backgroundColor: AppColors.grey3,
-                                      color: Colors.green,
-                                      value: controller2.value,
-                                      semanticsLabel: 'Linear progress indicator',
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4),
-                                    child: LinearProgressIndicator(
-                                      backgroundColor: AppColors.grey3,
-                                      color: Colors.green,
-                                      value: controller3.value,
-                                      semanticsLabel: 'Linear progress indicator',
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        BudgetLinearProgressComponent(budgetView: budgetView,),
                         Padding(
                           padding: const EdgeInsets.all(16),
                           child: Flex(
@@ -188,7 +141,7 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
                                 shrinkWrap: true,
                                 physics: const BouncingScrollPhysics(),
                                 itemCount:
-                                widget.budgetView.productReservedViewList.length,
+                                budgetView.productReservedViewList.length,
                                 itemBuilder: (BuildContext itemBuilder, index) {
                                   BudgetProductReservedView reserved = widget
                                       .budgetView.productReservedViewList[index];
@@ -277,7 +230,7 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
                                     ),
                                     Text(
                                       UtilBrasilFields.obterReal(
-                                          widget.budgetView.subTotal,
+                                          budgetView.subTotal,
                                           moeda: true,
                                           decimal: 2),
                                       style: const TextStyle(
@@ -299,7 +252,7 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
                                     ),
                                     Text(
                                       UtilBrasilFields.obterReal(
-                                          widget.budgetView.freightCost,
+                                          budgetView.freightCost,
                                           moeda: true,
                                           decimal: 2),
                                       style: const TextStyle(
@@ -308,7 +261,7 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
                                   ],
                                 ),
                               ),
-                              widget.budgetView.cupom != null ? Padding(
+                              budgetView.cupom != null ? Padding(
                                 padding: const EdgeInsets.only(top: 10),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -321,7 +274,7 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
                                     ),
                                     Text(
                                       UtilBrasilFields.obterReal(
-                                          widget.budgetView.cupom.cupomValue,
+                                          budgetView.cupom.cupomValue,
                                           moeda: true,
                                           decimal: 2),
                                       style: const TextStyle(
@@ -343,7 +296,7 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
                                     ),
                                     Text(
                                       UtilBrasilFields.obterReal(
-                                          widget.budgetView.amount,
+                                          budgetView.amount,
                                           moeda: true,
                                           decimal: 2),
                                       style: const TextStyle(
@@ -362,7 +315,7 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
                         ),
                         Padding(
                           padding:
-                          const EdgeInsets.only(top: 10, bottom: 10, left: 20),
+                          const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: const [
@@ -372,6 +325,11 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
                                     color: Color.fromARGB(229, 0, 0, 0),
                                     fontSize: 13),
                               ),
+                              Image(
+                                  image: AssetImage(tPayPalImage),
+                                  width: 100,
+                                  height: 25,
+                                  color: AppColors.berimbau)
                             ],
                           ),
                         ),
@@ -391,7 +349,7 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
                         Padding(
                           padding: const EdgeInsets.only(left: 16, right: 16),
                           child: Text(
-                            '${widget.budgetView.address.addressType} ${widget.budgetView.address.addressName}, ${widget.budgetView.address.number} - ${widget.budgetView.address.complement}',
+                            '${budgetView.address.addressType} ${budgetView.address.addressName}, ${budgetView.address.number} - ${budgetView.address.complement}',
                             style: const TextStyle(
                                 color: Color.fromARGB(175, 0, 0, 0), fontSize: 13),
                           ),
@@ -399,11 +357,15 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
                         Padding(
                           padding: const EdgeInsets.only(left: 16, right: 16),
                           child: Text(
-                            '${widget.budgetView.address.district} - ${widget.budgetView.address.city} - ${widget.budgetView.address.state}',
+                            '${budgetView.address.district} - ${budgetView.address.city} - ${budgetView.address.state}',
                             style: const TextStyle(
                                 color: Color.fromARGB(175, 0, 0, 0), fontSize: 13),
                           ),
                         ),
+                        budgetView.budgetStatusEnum.type == BudgetService.awaitPayment ? Padding(
+                          padding: const EdgeInsets.only(left: 16, right: 16, top: 20),
+                          child: PixPaymentButtonComponent(budgetView: budgetView),
+                        ) : WhatsappButtonComponent(budgetView: budgetView),
                       ],
                     ),
                   )
@@ -414,5 +376,36 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
         ),
       ),
     );
+  }
+
+  Timer _schedulerEvent() {
+    return Timer.periodic(const Duration(seconds: 5), (timer) {
+      _getEventPixPayment();
+    });
+  }
+
+
+  _getBudgetByUserAndById() async {
+    ApiResponse<BudgetView> response =
+        await _blocBudget.getBudgetByUserAndById(budgetView.id);
+
+    if (response.ok) {
+      setState(() {
+        budgetView = response.result;
+      });
+    } else {
+      // ignore: use_build_context_synchronously
+      alertToast(context, response.erros[0].toString(), 8, Colors.grey, false);
+    }
+  }
+
+  _getEventPixPayment() async {
+    Future<EventMessageView?> event = EventMessageView.get();
+    event.then((value) {
+      if(value != null) {
+        EventMessageView.clear();
+        _getBudgetByUserAndById();
+      }
+    });
   }
 }

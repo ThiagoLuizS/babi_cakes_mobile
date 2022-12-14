@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:babi_cakes_mobile/src/constants/colors.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/shopping_cart/shopping_cart_controller.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/product/product_view.dart';
+import 'package:babi_cakes_mobile/src/features/core/models/shopping_cart/shopping_cart.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_typography.dart';
@@ -83,15 +84,15 @@ class _ProductState extends State<Product> {
                               children: [
                                 Text(
                                   widget.productView.name,
-                                  style: GoogleFonts.lobsterTwo(
-                                      textStyle: const TextStyle(
-                                        fontSize: 24,
-                                      )),
+                                  style: GoogleFonts.notoSansCarian(fontSize: 20),
                                 ),
-                                Text(
-                                  widget.productView.description,
-                                  textAlign: TextAlign.start,
-                                  style: const TextStyle(fontSize: 16, color: Colors.grey),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 16),
+                                  child: Text(
+                                    widget.productView.description,
+                                    textAlign: TextAlign.start,
+                                    style: const TextStyle(fontSize: 16, color: Colors.grey),
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 20),
@@ -283,7 +284,7 @@ class _ProductState extends State<Product> {
                                           backgroundColor: Colors.white,
                                           side: const BorderSide(color: Colors.white),
                                         ),
-                                        onPressed: () {_subtractQuantityProduct();},
+                                        onPressed: () {cart.removeItem(widget.productView);},
                                         child: Icon(
                                           Icons.remove,
                                           color: _quantity > 1 ? Colors.red : Colors.grey,
@@ -292,7 +293,7 @@ class _ProductState extends State<Product> {
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(left: 2),
-                                        child: Text(_quantity.toString()),
+                                        child: Text(cart.getQuantityByItem(widget.productView).toString()),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(left: 2, right: 2),
@@ -301,7 +302,7 @@ class _ProductState extends State<Product> {
                                             backgroundColor: Colors.white,
                                             side: const BorderSide(color: Colors.white),
                                           ),
-                                          onPressed: () {_incrementeQuantityProduct();},
+                                          onPressed: () {cart.add(ShoppingCart(widget.productView, 1, widget.productView.value));},
                                           child: Icon(
                                             Icons.add,
                                             color: _quantity > 0 ? Colors.red : Colors.grey,
@@ -315,7 +316,7 @@ class _ProductState extends State<Product> {
                                               backgroundColor: AppColors.berimbau,
                                               side: const BorderSide(color: Colors.white),
                                             ),
-                                            onPressed: () {},
+                                            onPressed: () {cart.add(ShoppingCart(widget.productView, 1, widget.productView.value));},
                                             child: Padding(
                                               padding: const EdgeInsets.only(left: 10, right: 10),
                                               child: Row(

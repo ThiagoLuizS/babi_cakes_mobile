@@ -78,10 +78,11 @@ class _DashboardComponentState extends State<DashboardComponent> with SingleTick
 
     if (response.ok) {
       response.result.content.insert(0, CategoryView(id: 0, name: "Início", show: false));
-
-      setState(() {
-        contentCategory = response.result;
-      });
+      if(mounted) {
+        setState(() {
+          contentCategory = response.result;
+        });
+      }
     } else {
       // ignore: use_build_context_synchronously
       alertToast(context, response.erros[0].toString(), 3, Colors.grey, false);

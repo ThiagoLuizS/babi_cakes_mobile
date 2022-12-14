@@ -3,6 +3,7 @@ import 'package:babi_cakes_mobile/src/features/core/models/category/category_vie
 import 'package:babi_cakes_mobile/src/features/core/models/product/content_product.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/product/filter_param.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/app_bar_default_component.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/components/liquid_refresh_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/message_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/product_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/search_product_component.dart';
@@ -74,7 +75,7 @@ class _ProductListCategoryState extends State<ProductListCategory> {
           ),
         ),
         extendBody: true,
-        body: RefreshIndicator(
+        body: LiquidRefreshComponent(
           onRefresh: () async {
             return _refreshIndicator();
           },

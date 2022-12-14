@@ -116,6 +116,36 @@ class ProfileController {
     }
   }
 
+  static Future<ApiResponse<bool>> deleteAddress(int id) async {
+    try {
+
+      Uri uri = Uri.http(Config.apiURL, '/api/address/$id');
+
+      TokenDTO token = await TokenDTO.get();
+
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${token.token}"
+      };
+
+      var response = await http.delete(uri, headers: headers);
+
+      if (response.statusCode == 200) {
+        return ApiResponse.okNotResult();
+      } else {
+        Map<String, dynamic> mapResponse = json.decode(response.body);
+        ErrorView error = ErrorView.fromJson(mapResponse);
+        return ApiResponse.errors(error.messages);
+      }
+    } on TimeoutException catch (e) {
+      return ApiResponse.errors([msgTimeOutGlobal]);
+    } on SocketException catch (e) {
+      return ApiResponse.errors([msgNotConnectionGlobal]);
+    } catch (e) {
+      return ApiResponse.errors([msgGlobalError]);
+    }
+  }
+
   static Future<ApiResponse<AddressForm>> getAddressByCep(String cep) async {
     try {
 

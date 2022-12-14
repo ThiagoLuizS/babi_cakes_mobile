@@ -3,6 +3,7 @@ import 'package:babi_cakes_mobile/src/constants/text_strings.dart';
 import 'package:babi_cakes_mobile/src/constants/variables.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/profile/profile_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/profile/address_form.dart';
+import 'package:babi_cakes_mobile/src/features/core/models/profile/address_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/app_bar_default_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/address/profile_address_screen.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/profile_screen.dart';
@@ -14,7 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfileAddressFormScreen extends StatefulWidget {
-  const ProfileAddressFormScreen({Key? key}) : super(key: key);
+  final AddressView addressView;
+  const ProfileAddressFormScreen({Key? key, required this.addressView,}) : super(key: key);
 
   @override
   State<ProfileAddressFormScreen> createState() =>
@@ -52,6 +54,7 @@ class _ProfileAddressFormScreenState extends State<ProfileAddressFormScreen> {
     isLoading = false;
     isLoadingSave = false;
     isShowForm = false;
+    _setUpdate();
   }
 
   @override
@@ -99,6 +102,7 @@ class _ProfileAddressFormScreenState extends State<ProfileAddressFormScreen> {
                                 }
                                 return null;
                               },
+                              enabled: widget.addressView.id < 0,
                               controller: _cepController,
                               keyboardType: TextInputType.number,
                               decoration: const InputDecoration(
@@ -107,7 +111,7 @@ class _ProfileAddressFormScreenState extends State<ProfileAddressFormScreen> {
                               ),
                             ),
                             const SizedBox(height: tFormHeight - 25),
-                            !isLoading
+                            widget.addressView.id < 0 ? !isLoading
                                 ? SizedBox(
                                     width: double.infinity,
                                     child: ElevatedButton(
@@ -133,7 +137,7 @@ class _ProfileAddressFormScreenState extends State<ProfileAddressFormScreen> {
                                     width: 50,
                                     child: CircularProgressIndicator(
                                         color: AppColors.berimbau),
-                                  ),
+                                  ) : Container(),
                           ],
                         ),
                       ),
@@ -213,7 +217,7 @@ class _ProfileAddressFormScreenState extends State<ProfileAddressFormScreen> {
                                           _saveAddress();
                                         }
                                       },
-                                      child: Text(tSignup.toUpperCase()),
+                                      child: Text("SALVAR".toUpperCase()),
                                     ),
                                   ) : const SizedBox(
                                     height: 50,
@@ -256,6 +260,15 @@ class _ProfileAddressFormScreenState extends State<ProfileAddressFormScreen> {
         _districtController.text = response.result.district;
         _cityController.text = response.result.city;
         _stateController.text = response.result.state;
+
+        if(widget.addressView.id > 0) {
+          _numberController.text = widget.addressView.number;
+          _complementController.text = widget.addressView.complement;
+
+          addressForm.id = widget.addressView.id;
+          addressForm.number = widget.addressView.number;
+          addressForm.complement = widget.addressView.complement;
+        }
       });
     } else {
       setState(() {
@@ -284,5 +297,11 @@ class _ProfileAddressFormScreenState extends State<ProfileAddressFormScreen> {
     setState(() {
       isLoadingSave = false;
     });
+  }
+
+  _setUpdate() {
+    if(widget.addressView.id > 0) {
+      _getAddressByCep(widget.addressView.cep.toString());
+    }
   }
 }

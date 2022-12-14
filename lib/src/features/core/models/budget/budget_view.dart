@@ -4,12 +4,14 @@ import 'package:babi_cakes_mobile/src/features/core/models/budget/budget_product
 import 'package:babi_cakes_mobile/src/features/core/models/cupom/cupom_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/property_string.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/user/address_view.dart';
+import 'package:babi_cakes_mobile/src/features/core/models/user/user_view.dart';
 import 'package:babi_cakes_mobile/src/utils/general/prefs.dart';
 
 class BudgetView {
   late int id;
   late AddressView address;
   late CupomView cupom;
+  late UserView user;
   late int code;
   late DateTime dateCreateBudget;
   late DateTime dateFinalizedBudget;
@@ -38,6 +40,7 @@ class BudgetView {
 
     }
     cupom = json['cupom'] != null ? CupomView.fromJson(json['cupom']) : json['cupom'];
+    user = UserView.fromJson(json['user']);
     code = json['code'];
     dateCreateBudget = DateTime.parse(json['dateCreateBudget'].toString());
     if(json['dateFinalizedBudget'] != null) {
@@ -55,6 +58,7 @@ class BudgetView {
     data['id'] = id;
     data['address'] = address;
     data['cupom'] = cupom;
+    data['user'] = user;
     data['code'] = code;
     data['dateCreateBudget'] = dateCreateBudget;
     data['dateFinalizedBudget'] = dateFinalizedBudget;

@@ -1,7 +1,13 @@
+import 'dart:convert' as convert;
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:babi_cakes_mobile/src/features/core/controllers/device/device_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/device/device_form.dart';
+import 'package:babi_cakes_mobile/src/features/core/models/event/event_message_view.dart';
+import 'package:babi_cakes_mobile/src/features/core/models/event/event_view.dart';
+import 'package:babi_cakes_mobile/src/utils/general/prefs.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -43,5 +49,10 @@ class DeviceService {
     DeviceForm deviceForm = DeviceForm(brand, model!, token);
 
     return deviceForm;
+  }
+
+  static savePrefsEventMessage(Map<String, dynamic> json) {
+    final event = EventMessageView.fromJson(json);
+    event.save();
   }
 }

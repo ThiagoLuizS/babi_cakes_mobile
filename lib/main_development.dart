@@ -4,11 +4,15 @@ import 'dart:async';
 import 'package:babi_cakes_mobile/config.dart';
 import 'package:babi_cakes_mobile/firebase_options.dart';
 import 'package:babi_cakes_mobile/src/features/authentication/screens/splash_screen/splash_screen.dart';
+import 'package:babi_cakes_mobile/src/features/core/controllers/budget/budget_provider_controller.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/shopping_cart/shopping_cart_controller.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/components/paypal_payment_button_component.dart';
+import 'package:babi_cakes_mobile/src/service/device_service.dart';
 import 'package:babi_cakes_mobile/src/utils/theme/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:provider/provider.dart';
@@ -18,22 +22,34 @@ import 'package:provider/provider.dart';
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   print('Handling a background message: ${message.data}');
+  if(message.data.isNotEmpty) {
+    DeviceService.savePrefsEventMessage(message.data);
+  }
 }
 
 Future<void> main() async {
   Config.buildMode = Modo.development;
+
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   FirebaseMessaging.onMessage.listen(firebaseMessagingBackgroundHandler);
+
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ShoppingCartController(),
-      child: MyApp(),
-    )
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => ShoppingCartController(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => BudgetProviderController(),
+          )
+        ],
+        child: MyApp(),
+      )
   );
 }
 
@@ -60,6 +76,7 @@ Future<void> notificationSettingAuthorized() async {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -73,3 +90,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

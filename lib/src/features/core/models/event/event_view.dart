@@ -1,3 +1,6 @@
+import 'package:babi_cakes_mobile/src/utils/general/prefs.dart';
+import 'dart:convert' as convert;
+
 class EventView {
 
   late int id;
@@ -24,5 +27,25 @@ class EventView {
     data['image'] = image;
     data['dateSend'] = dateSend;
     return data;
+  }
+
+  void save() {
+    Map map = toJson();
+    String json = convert.json.encode(map);
+    Prefs.setString("EventView.prefs", json);
+  }
+
+  static Future<EventView?> get() async {
+    String json = await Prefs.getString("EventView.prefs");
+
+    if (json.isEmpty) {
+      return null;
+    }
+
+    Map<String, dynamic> map = convert.json.decode(json);
+
+    EventView view = EventView.fromJson(map);
+
+    return view;
   }
 }

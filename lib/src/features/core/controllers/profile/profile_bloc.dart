@@ -21,6 +21,13 @@ class ProfileBloc extends SimpleBloc<bool> {
     return response;
   }
 
+  Future<ApiResponse<bool>> deleteAddress(int id) async {
+    add(true);
+    ApiResponse<bool> response = await ProfileController.deleteAddress(id);
+    add(false);
+    return response;
+  }
+
   Future<ApiResponse<AddressForm>> getAddressByCep(String cep) async {
     add(true);
     ApiResponse<AddressForm> response = await ProfileController.getAddressByCep(cep);

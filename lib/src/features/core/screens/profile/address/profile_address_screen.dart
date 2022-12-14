@@ -2,9 +2,11 @@ import 'package:babi_cakes_mobile/src/features/core/controllers/profile/profile_
 import 'package:babi_cakes_mobile/src/features/core/models/profile/address_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/profile/content_address.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/app_bar_default_component.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/components/body_show_bar_shopping_cart_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/liquid_refresh_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/message_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/shimmer_component.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/components/shopping_cart_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/address/profile_address_form_screen.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/component/profile_address_card_component.dart';
@@ -17,7 +19,8 @@ import 'package:get/get.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class ProfileAddressScreen extends StatefulWidget {
-  const ProfileAddressScreen({Key? key}) : super(key: key);
+  final bool originShoppingCart;
+  const ProfileAddressScreen({Key? key, this.originShoppingCart = false}) : super(key: key);
 
   @override
   State<ProfileAddressScreen> createState() => _ProfileAddressScreenState();
@@ -50,7 +53,14 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: FloatingActionButton.small(
-        onPressed: () => Get.offAll(() => const Dashboard(indexBottomNavigationBar: 3)),
+        onPressed: () {
+          if(widget.originShoppingCart) {
+            Get.offAll(() => const BodyShowBarShoppingCartComponent());
+          } else {
+            Get.offAll(() => const Dashboard(indexBottomNavigationBar: 3));
+          }
+
+          },
         backgroundColor: Colors.white,
         child: const Icon(
           Icons.arrow_back_ios_new_outlined,
@@ -78,7 +88,7 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: AppColors.greyTransp200, side: BorderSide(width: 0, color: Colors.white)),
-                      onPressed: () => Get.offAll(() => const ProfileAddressFormScreen()),
+                      onPressed: () => Get.offAll(() => ProfileAddressFormScreen(addressView: AddressView(-1),)),
                       child: const Icon(Icons.add, color: Colors.black87,),
                     ),
                   ),
@@ -100,8 +110,9 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
                         return ShimmerComponent(
                           isLoading: isLoading,
                           child: ProfileAddressCardComponent(
-                            onTapUpdateMain: () =>
-                                _updateAddressMain(address.id),
+                            onTapUpdateMain: () => _updateAddressMain(address.id),
+                            onTabDeleteAddress: () {_deleteAddress(address.id);},
+                            onUpdateAddress: () {Get.offAll(() => ProfileAddressFormScreen(addressView: contentAddress.content[index],));},
                             addressView: address,
                           ),
                         );
@@ -115,6 +126,17 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
         ),
       ),
     );
+  }
+
+  _deleteAddress(id) async {
+    ApiResponse<bool> response =
+    await _blocAddress.deleteAddress(id);
+
+    if (response.ok) {
+      _getAddressPageByUser();
+    } else {
+      alertToast(context, response.erros[0].toString(), 3, Colors.grey, false);
+    }
   }
 
   _getAddressPageByUser() async {
