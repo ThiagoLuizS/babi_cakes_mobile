@@ -14,7 +14,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 class DashboardComponent extends StatefulWidget {
-  const DashboardComponent({Key? key}) : super(key: key);
+  final ContentCategory contentCategory;
+  const DashboardComponent({Key? key, required this.contentCategory}) : super(key: key);
 
   @override
   State<DashboardComponent> createState() => _DashboardComponentState();
@@ -36,22 +37,21 @@ class _DashboardComponentState extends State<DashboardComponent> with SingleTick
   @override
   void initState() {
     super.initState();
-    _onGetCategoryAll();
+    //_onGetCategoryAll();
   }
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     return LiquidRefreshComponent(
       onRefresh: () async => Get.offAll(() => const Dashboard()),
       child: SizedBox(
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
-            CategorySession(categories: contentCategory.content, categoryBloc: _categoryBloc),
+            CategorySession(categories: widget.contentCategory.content, categoryBloc: _categoryBloc),
             SliverList(
               delegate: SliverChildListDelegate(
-                contentCategory.content
+                widget.contentCategory.content
                     .map(
                       (e) => CategoryGroupItemComponent(
                     categoryView: _setStateCategoryView(e)),

@@ -144,7 +144,6 @@ class _ProductTabComponentState extends State<ProductTabComponent> {
                 ),
               ],
             ),
-
             Expanded(
               child: NotificationListener<ScrollNotification>(
                 onNotification: (scrollNotification) =>
@@ -204,10 +203,12 @@ class _ProductTabComponentState extends State<ProductTabComponent> {
             0, pageSize, categoryId, productName, filterParam.param!);
 
     if (response.ok) {
-      setState(() {
-        contentProduct = response.result;
-        isLoading = false;
-      });
+      if(mounted) {
+        setState(() {
+          contentProduct = response.result;
+          isLoading = false;
+        });
+      }
     }
   }
 }

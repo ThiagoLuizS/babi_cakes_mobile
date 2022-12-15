@@ -79,13 +79,6 @@ class _BudgetListViewState extends State<BudgetListView> {
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         children: [
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Histórico",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          ),
                           ListView.builder(
                             itemCount: contentBudget.content.length,
                             shrinkWrap: true,

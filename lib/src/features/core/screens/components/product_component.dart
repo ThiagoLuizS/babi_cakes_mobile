@@ -35,8 +35,8 @@ class _ProductComponentState extends State<ProductComponent> {
             ShimmerComponent(
               isLoading: widget.isLoading,
               child: Container(
-                height: 150,
-                width: 150,
+                height: 120,
+                width: 120,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                       image: MemoryImage(base64Decode(
@@ -47,8 +47,8 @@ class _ProductComponentState extends State<ProductComponent> {
               ),
             ),
             Container(
-              height: 155,
-              width: 180,
+              height: 135,
+              width: 160,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: tWhiteColor,
@@ -58,7 +58,7 @@ class _ProductComponentState extends State<ProductComponent> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 10),
+                    padding: const EdgeInsets.only(left: 20),
                     child: Column(
                       children: [
                         ShimmerComponent(
@@ -110,8 +110,7 @@ class _ProductComponentState extends State<ProductComponent> {
                                       color: tSecondaryColor,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w900),
-                                ) : Container(height: 18,
-                                    width: 38),
+                                ) : const SizedBox(),
                               ],
                             )
                         ),
@@ -125,11 +124,11 @@ class _ProductComponentState extends State<ProductComponent> {
                                 Flexible(
                                   child: Text(
                                     widget.productView.name,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: tDarkColor,
                                         fontSize: 13,
                                         fontWeight: FontWeight.w500,
-                                        overflow: widget.productView.name.length > 43 ? TextOverflow.ellipsis : TextOverflow.ellipsis),
+                                        overflow: TextOverflow.ellipsis),
                                   ),
                                 ),
                               ],
@@ -145,7 +144,7 @@ class _ProductComponentState extends State<ProductComponent> {
                               children: const [
                                 Flexible(
                                   child: Text(
-                                    '15-30 min * R\$ 4,30',
+                                    '15-120 min * R\$ 4,00',
                                     style: TextStyle(
                                         color: tSecondaryColorV1,
                                         fontSize: 12,

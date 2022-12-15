@@ -6,6 +6,7 @@ import 'package:babi_cakes_mobile/src/features/core/models/product/product_view.
 import 'package:babi_cakes_mobile/src/features/core/screens/components/product_for_category_dashboard_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/shimmer_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/product/product.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/product/product_list_category.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_typography.dart';
 import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
@@ -66,15 +67,13 @@ class _CategoryGroupItemComponentState
               padding: const EdgeInsets.only(left: 12, bottom: 10),
               child: Text(
                 widget.categoryView.name,
-                style: AppTypography.sessionTitle(
-                  context,
-                ),
+                style: const TextStyle(fontSize: 14, color: AppColors.grey),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(right: 12, bottom: 10),
               child: GestureDetector(
-                onTap: () {},
+                onTap: () => Get.offAll(() => ProductListCategory(categoryView: widget.categoryView)),
                 child: const Text(
                   "Ver mais",
                   style: TextStyle(fontSize: 13, color: AppColors.berimbau),
@@ -100,13 +99,10 @@ class _CategoryGroupItemComponentState
                     itemBuilder: (BuildContext context, int index) =>
                         GestureDetector(
                           onTap: () => Get.offAll(() => Product(productView: contentProduct.content[index])),
-                      child: SizedBox(
-                        height: 260,
-                        child: ProductForCategoryDashboardComponent(
-                          isLoadingProducts: isLoadingProducts,
-                          productView: contentProduct.content[index],
-                          txtTheme: txtTheme,
-                        ),
+                      child: ProductForCategoryDashboardComponent(
+                        isLoadingProducts: isLoadingProducts,
+                        productView: contentProduct.content[index],
+                        txtTheme: txtTheme,
                       ),
                     ),
                   ),

@@ -1,3 +1,4 @@
+import 'package:babi_cakes_mobile/src/service/global_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:babi_cakes_mobile/src/constants/sizes.dart';
@@ -10,22 +11,37 @@ import '../../../../utils/animations/fade_in_animation/fade_in_animation_control
 import '../../../../utils/animations/fade_in_animation/fade_in_animation_model.dart';
 import '../login/login_screen.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  late bool isShowWelcome = true;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    GlobalService.getWelcome().then((value) => {
+      if(value) {
+        Get.to(() => const LoginScreen())
+      } else {
+        GlobalService.saveWelcome()
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(FadeInAnimationController());
     controller.animationIn();
-
-    var mediaQuery = MediaQuery.of(context);
-    var height = mediaQuery.size.height;
-    var brightness = mediaQuery.platformBrightness;
-    final isDarkMode = brightness == Brightness.dark;
+    var height = MediaQuery.of(context).size.height;
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: isDarkMode ? tSecondaryColor : tPrimaryColor,
+        backgroundColor: tPrimaryColor,
         body: Stack(
           children: [
             TFadeInAnimation(
@@ -40,7 +56,7 @@ class WelcomeScreen extends StatelessWidget {
                 rightAfter: 0,
                 rightBefore: 0,
               ),
-              child: Container(
+              child: isShowWelcome ? Container(
                 padding: const EdgeInsets.all(tDefaultSize),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -48,7 +64,7 @@ class WelcomeScreen extends StatelessWidget {
                     Hero(
                         tag: 'welcome-image-tag',
                         child: Image(
-                            image: const AssetImage(tWelcomeScreenImage),
+                            image: const AssetImage(tSplashImage),
                             height: height * 0.6)),
                     Column(
                       children: [
@@ -78,7 +94,7 @@ class WelcomeScreen extends StatelessWidget {
                     )
                   ],
                 ),
-              ),
+              ) : Container(),
             ),
           ],
         ),

@@ -37,7 +37,6 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     return WillPopScope(
       onWillPop: () {
         return Future(() => false);
@@ -93,8 +92,9 @@ class _DashboardState extends State<Dashboard> {
                             },
                           );
                         },
-                      ),)
-                )
+                      ),
+                  ),
+                ),
               ],
             ),
           ),

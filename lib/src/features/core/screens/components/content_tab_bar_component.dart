@@ -1,3 +1,4 @@
+import 'package:babi_cakes_mobile/src/constants/image_strings.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/banner/banner_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/category/category_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/content_controller.dart';
@@ -9,9 +10,12 @@ import 'package:babi_cakes_mobile/src/features/core/screens/components/product_t
 import 'package:babi_cakes_mobile/src/features/core/screens/dashboard/widgets/banner_session.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_typography.dart';
+import 'package:babi_cakes_mobile/src/utils/animations/fade_in_animation/animation_design.dart';
+import 'package:babi_cakes_mobile/src/utils/animations/fade_in_animation/fade_in_animation_model.dart';
 import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:flutter/material.dart';
+
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
@@ -55,106 +59,127 @@ class _ContentTabBarComponentState extends State<ContentTabBarComponent>
     List<Tab> tabs =
         contentCategory.content.map((e) => Tab(child: Text(e.name))).toList();
     double height = MediaQuery.of(context).size.height;
-    return DefaultTabController(
+    return contentCategory.content.isNotEmpty ?
+      DefaultTabController(
       length: tabs.length,
-      child: bannerList.isNotEmpty ? Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 209, 174, 139),
-          bottomOpacity: 0.0,
-          elevation: 0.0,
-          automaticallyImplyLeading: false,
-          toolbarHeight: 306,
-          flexibleSpace: const SizedBox(),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(700)),
-          ),
-          actions: [
-            Expanded(child: BannerSession(bannerList: bannerList))
-          ],
-        ),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 10, left: 16, right: 16),
-          child: Scaffold(
-            backgroundColor: Colors.white,
-            appBar: TabBar(
-              onTap: (index) {},
-              indicatorPadding: EdgeInsets.zero,
-              overlayColor: MaterialStateProperty.all(Colors.transparent),
-              labelColor: AppColors.berimbau,
-              unselectedLabelColor: AppColors.black54,
-              labelStyle: AppTypography.tabBarStyle(context),
-              indicator: MaterialIndicator(
-                color: AppColors.berimbau,
-                height: 5,
-                bottomLeftRadius: 5,
-                bottomRightRadius: 5,
+      child: bannerList.isNotEmpty
+          ? Scaffold(
+              backgroundColor: Colors.white,
+              appBar: AppBar(
+                backgroundColor: Color.fromARGB(255, 209, 174, 139),
+                bottomOpacity: 0.0,
+                elevation: 0.0,
+                automaticallyImplyLeading: false,
+                toolbarHeight: 306,
+                flexibleSpace: const SizedBox(),
+                shape: const RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.vertical(bottom: Radius.circular(700)),
+                ),
+                actions: [
+                  Expanded(child: BannerSession(bannerList: bannerList))
+                ],
               ),
-              isScrollable: true,
-              tabs: tabs,
-            ),
-            body: SizedBox(
-              height: height,
-              child: TabBarView(
+              body: Padding(
+                padding: const EdgeInsets.only(top: 10, left: 16, right: 16),
+                child: Scaffold(
+                  backgroundColor: Colors.white,
+                  appBar: TabBar(
+                    onTap: (index) {},
+                    indicatorPadding: EdgeInsets.zero,
+                    overlayColor: MaterialStateProperty.all(Colors.transparent),
+                    labelColor: AppColors.berimbau,
+                    unselectedLabelColor: AppColors.black54,
+                    labelStyle: AppTypography.tabBarStyle(context),
+                    indicator: MaterialIndicator(
+                      color: AppColors.berimbau,
+                      height: 5,
+                      bottomLeftRadius: 5,
+                      bottomRightRadius: 5,
+                    ),
+                    isScrollable: true,
+                    tabs: tabs,
+                  ),
+                  body: SizedBox(
+                    height: height,
+                    child: TabBarView(
+                        children: contentCategory.content.map((e) {
+                      if (e.id == 0) {
+                        return DashboardComponent(
+                          contentCategory: contentCategory,
+                        );
+                      }
+                      return ProductTabComponent(categoryView: e);
+                    }).toList()),
+                  ),
+                ),
+              ),
+            )
+          : Padding(
+              padding: const EdgeInsets.only(top: 10, left: 16, right: 16),
+              child: Scaffold(
+                backgroundColor: Colors.white,
+                appBar: TabBar(
+                  onTap: (index) {},
+                  indicatorPadding: EdgeInsets.zero,
+                  overlayColor: MaterialStateProperty.all(Colors.transparent),
+                  labelColor: AppColors.berimbau,
+                  unselectedLabelColor: AppColors.black54,
+                  labelStyle: AppTypography.tabBarStyle(context),
+                  indicator: MaterialIndicator(
+                    color: AppColors.berimbau,
+                    height: 5,
+                    bottomLeftRadius: 5,
+                    bottomRightRadius: 5,
+                  ),
+                  isScrollable: true,
+                  tabs: tabs,
+                ),
+                body: TabBarView(
                   children: contentCategory.content.map((e) {
-                if (e.id == 0) {
-                  return const DashboardComponent();
-                }
-                return ProductTabComponent(categoryView: e);
-              }).toList()),
+                    if (e.id == 0) {
+                      return DashboardComponent(
+                        contentCategory: contentCategory,
+                      );
+                    }
+                    return ProductTabComponent(categoryView: e);
+                  }).toList(),
+                ),
+              ),
             ),
+    ) :
+      Scaffold(
+        backgroundColor: AppColors.milkCream,
+        body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: const [
+          SizedBox(
+            height: 220,
+            child: Image(image: AssetImage(tSplashImage)),
           ),
-        ),
-      ) : Padding(
-        padding: const EdgeInsets.only(top: 10, left: 16, right: 16),
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: TabBar(
-            onTap: (index) {},
-            indicatorPadding: EdgeInsets.zero,
-            overlayColor: MaterialStateProperty.all(Colors.transparent),
-            labelColor: AppColors.berimbau,
-            unselectedLabelColor: AppColors.black54,
-            labelStyle: AppTypography.tabBarStyle(context),
-            indicator: MaterialIndicator(
-              color: AppColors.berimbau,
-              height: 5,
-              bottomLeftRadius: 5,
-              bottomRightRadius: 5,
-            ),
-            isScrollable: true,
-            tabs: tabs,
-          ),
-          body: SizedBox(
-            height: height,
-            child: TabBarView(
-                children: contentCategory.content.map((e) {
-                  if (e.id == 0) {
-                    return const DashboardComponent();
-                  }
-                  return ProductTabComponent(categoryView: e);
-                }).toList()),
-          ),
-        ),
-      ),
-    );
+          Text("Estamos preparando tudo e em breve estaremos disponivel!",
+            style: TextStyle(color: AppColors.berimbau, fontSize: 30), textAlign: TextAlign.center,)
+        ],
+    ),
+      );
   }
 
-  _refreshIndicator() {}
-
   _onGetCategoryAll() async {
-    ApiResponse<ContentCategory> response = await _categoryBloc.getAllByPage(0, 10);
+    ApiResponse<ContentCategory> response =
+        await _categoryBloc.getAllByPage(0, 10);
 
     if (response.ok) {
-      response.result.content
-          .insert(0, CategoryView(id: 0, name: "Inicio", show: false));
-      TabController tab =
-          TabController(length: contentCategory.content.length, vsync: this);
-
-      setState(() {
-        contentCategory = response.result;
-        tabController = tab;
-      });
+      if (response.result.content.isNotEmpty) {
+        response.result.content
+            .insert(0, CategoryView(id: 0, name: "Inicio", show: false));
+        TabController tab =
+            TabController(length: contentCategory.content.length, vsync: this);
+        setState(() {
+          contentCategory = response.result;
+          tabController = tab;
+        });
+      }
     } else {
       alertToast(context, response.erros[0].toString(), 3, Colors.grey, false);
     }

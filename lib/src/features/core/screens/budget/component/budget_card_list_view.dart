@@ -32,7 +32,7 @@ class _BudgetCardListViewState extends State<BudgetCardListView> {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              DateFormat.yMMMEd().format(widget.budgetView.dateCreateBudget),
+              DateFormat('dd/MM/yyyy HH:mm').format(widget.budgetView.dateCreateBudget),
               style: const TextStyle(color: Colors.black54, fontSize: 12),
             ),
           ),
