@@ -23,8 +23,8 @@ allprojects {
             credentials {
                 // Be sure to add these non-sensitive credentials in order to retrieve dependencies from
                 // the private repository.
-                username 'sb-ybx54323352552@business.example.com'
-                password 'access_token$sandbox$9rrq96hrs5cnhkxv$068694677a7b6cfbd1bab0ed825f398b'
+                username 'braintree_team_sdk'
+                password 'AKCp8jQcoDy2hxSWhDAUQKXLDPDx6NYRkqrgFLRc3qDrayg6rrCbJpsKKyMwaykVL8FWusJpp'
             }
         }
     }

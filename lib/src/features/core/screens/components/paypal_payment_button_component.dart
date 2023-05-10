@@ -8,7 +8,7 @@ import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:clipboard/clipboard.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
 import 'package:flutter/services.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
@@ -71,22 +71,6 @@ class _PixPaymentButtonComponentState extends State<PixPaymentButtonComponent> {
                                                 Column(
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
-                                                    Stack(
-                                                      children: const [
-                                                        Image(
-                                                            image: AssetImage(tCheckImage),
-                                                            width: 155,
-                                                            height: 155,
-                                                            color: Color.fromARGB(
-                                                                108, 23, 175, 23)
-                                                        ),
-                                                        SizedBox(
-                                                          width: 155,
-                                                          height: 155,
-                                                          child: CircularProgressIndicator(color: Colors.green,),
-                                                        )
-                                                      ],
-                                                    ),
                                                     const Padding(
                                                       padding: EdgeInsets.only(top: 15),
                                                       child: Text("Copie o pix para o pagamento"),
@@ -102,24 +86,27 @@ class _PixPaymentButtonComponentState extends State<PixPaymentButtonComponent> {
                                                         child: Center(child: Text("Pix copiado para área de transferência")),
                                                       ),
                                                     ) : Container(),
-                                                    Row(
-                                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                                      mainAxisAlignment: MainAxisAlignment.end,
-                                                      children: [
-                                                        GestureDetector(
-                                                            onTap: () {
-                                                              setState(() {isDurationMessaCopy = true;});
-                                                              Future.delayed(const Duration(seconds: 5), () async {
-                                                                setState(() {isDurationMessaCopy = false;});
-                                                              });
-                                                              Clipboard.setData(ClipboardData(text: charge.brCode));
-                                                            },
-                                                            child: Text("copiar", style: TextStyle(color: AppColors.grey5),)
-                                                        )
-                                                      ],
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(top: 20),
+                                                      child: Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                        children: [
+                                                          GestureDetector(
+                                                              onTap: () {
+                                                                setState(() {isDurationMessaCopy = true;});
+                                                                Future.delayed(const Duration(seconds: 5), () async {
+                                                                  setState(() {isDurationMessaCopy = false;});
+                                                                });
+                                                                Clipboard.setData(ClipboardData(text: charge.brCode));
+                                                              },
+                                                              child: Text("copiar", style: TextStyle(color: AppColors.grey5),)
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
                                                     Padding(
-                                                      padding: const EdgeInsets.only(top: 2),
+                                                      padding: const EdgeInsets.only(top: 25),
                                                       child: Container(
                                                         width: double.infinity,
                                                         decoration: BoxDecoration(
@@ -131,7 +118,38 @@ class _PixPaymentButtonComponentState extends State<PixPaymentButtonComponent> {
                                                           child: Text(charge.brCode),
                                                         ),
                                                       ),
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      children: [
+                                                         Padding(
+                                                           padding: const EdgeInsets.only(left: 10, top: 20),
+                                                           child: Stack(
+                                                              children: const [
+                                                                Image(
+                                                                    image: AssetImage(tClockImage),
+                                                                    width: 50,
+                                                                    height: 50,
+                                                                    color: Colors.grey
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 50,
+                                                                  height: 50,
+                                                                  child: CircularProgressIndicator(color: Colors.green,),
+                                                                )
+                                                              ],
+                                                            ),
+                                                         ),
+                                                          const Padding(
+                                                            padding: EdgeInsets.only(left: 10, top: 20),
+                                                            child: Center(
+                                                                  child: Text(
+                                                                      "Aguardando pagamento...")),
+                                                          )
+                                                      ],
                                                     )
+                                                   
                                                   ],
                                                 ),
                                               ]

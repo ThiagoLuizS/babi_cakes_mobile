@@ -16,9 +16,10 @@ import 'package:provider/provider.dart';
 
 class BodyShowBarCupomShoppingCartComponent extends StatefulWidget {
   final ContentCupom contentCupom;
+  final double subTotalOrder;
 
   const BodyShowBarCupomShoppingCartComponent(
-      {Key? key, required this.contentCupom})
+      {Key? key, required this.contentCupom, required this.subTotalOrder})
       : super(key: key);
 
   @override
@@ -124,8 +125,13 @@ class _BodyShowBarCupomShoppingCartComponentState
                           CupomView cupom = widget.contentCupom.content[index];
                           return ProfileCupomCardComponent(
                             onTap: () {
-                              cart.addCupom(cupom);
-                              Navigator.pop(context);
+                              if(_validatedSelectedCupom(cupom)) {
+                                cart.addCupom(cupom);
+                                Navigator.pop(context);
+                              } else {
+                                alertToast(context, "Não é possivel selecionar o cupom, consulte as regras!", 8, Colors.grey, false);
+                              }
+                              
                             },
                             cupomView: cupom,
                             textButtomSelected: "Selecionar",
@@ -140,5 +146,9 @@ class _BodyShowBarCupomShoppingCartComponentState
         );
       },
     );
+  }
+
+  _validatedSelectedCupom(CupomView cupom) {
+    return !cupom.cupomIsValueMin || (cupom.cupomIsValueMin && (widget.subTotalOrder >= cupom.cupomValueMin));
   }
 }

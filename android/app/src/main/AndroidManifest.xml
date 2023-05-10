@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.com.babi_cakes_mobile">
    <application
-        android:label="babi_cakes_mobile"
+        android:label="Babi Cakes"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         tools:replace="android:label"

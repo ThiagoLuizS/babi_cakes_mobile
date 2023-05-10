@@ -6,38 +6,41 @@ import 'package:babi_cakes_mobile/firebase_options.dart';
 import 'package:babi_cakes_mobile/src/features/authentication/screens/splash_screen/splash_screen.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/budget/budget_provider_controller.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/shopping_cart/shopping_cart_controller.dart';
-import 'package:babi_cakes_mobile/src/features/core/screens/components/paypal_payment_button_component.dart';
-import 'package:babi_cakes_mobile/src/service/device_service.dart';
+import 'package:babi_cakes_mobile/src/features/core/models/event/event_message_view.dart';
+import 'package:babi_cakes_mobile/src/features/core/service/event/providers_service.dart';
+import 'package:babi_cakes_mobile/src/features/core/service/notification/firebase_messaging_service.dart';
+import 'package:babi_cakes_mobile/src/features/core/service/notification/notification_service.dart';
 import 'package:babi_cakes_mobile/src/utils/theme/theme.dart';
+import 'package:event_bus/event_bus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:provider/provider.dart';
 
 
+
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  print('Handling a background message: ${message.data}');
+  debugPrint('Handling a background message: ${message.data}');
   if(message.data.isNotEmpty) {
-    DeviceService.savePrefsEventMessage(message.data);
+    getIt<EventBus>().fire(EventMessageView.fromJson(message.data));
   }
 }
 
-Future<void> main() async {
+main() {
   Config.buildMode = Modo.development;
 
   WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   FirebaseMessaging.onMessage.listen(firebaseMessagingBackgroundHandler);
 
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
+  setupProviders();
+  
   runApp(
       MultiProvider(
         providers: [
@@ -46,7 +49,9 @@ Future<void> main() async {
           ),
           ChangeNotifierProvider(
             create: (context) => BudgetProviderController(),
-          )
+          ),
+          Provider<NotificationService>(create: (context) => NotificationService(),),
+          Provider<FirebaseMessagingService>(create: (context) => FirebaseMessagingService(context.read<NotificationService>()),)
         ],
         child: MyApp(),
       )
@@ -66,11 +71,11 @@ Future<void> notificationSettingAuthorized() async {
   );
 
   if(settings.authorizationStatus == AuthorizationStatus.authorized) {
-    print('Permissão concedida pelo usuário ${settings.authorizationStatus}');
+    debugPrint('Permissão concedida pelo usuário ${settings.authorizationStatus}');
   } else if(settings.authorizationStatus == AuthorizationStatus.provisional) {
-    print('Permissão concedida provisoriamente pelo usuário ${settings.authorizationStatus}');
+    debugPrint('Permissão concedida provisoriamente pelo usuário ${settings.authorizationStatus}');
   } else {
-    print('Permissão negada pelo usuário');
+    debugPrint('Permissão negada pelo usuário');
   }
 }
 

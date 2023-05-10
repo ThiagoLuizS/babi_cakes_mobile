@@ -110,7 +110,7 @@ class _BudgetCardListViewState extends State<BudgetCardListView> {
                               widget.budgetView.budgetStatusEnum.status,
                               style: const TextStyle(
                                   color: tSecondaryColorV1,
-                                  fontSize: 12,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
@@ -153,7 +153,7 @@ class _BudgetCardListViewState extends State<BudgetCardListView> {
                                             .toUpperCase(),
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
-                                            color: Colors.grey, fontSize: 12),
+                                            color: Colors.grey, fontSize: 13),
                                       ),
                                     ),
                                   ),

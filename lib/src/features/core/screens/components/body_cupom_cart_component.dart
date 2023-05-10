@@ -4,14 +4,15 @@ import 'package:babi_cakes_mobile/src/features/core/models/cupom/content_cupom.d
 import 'package:babi_cakes_mobile/src/features/core/screens/components/body_show_bar_cupom_shopping_cart_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:brasil_fields/brasil_fields.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 class BodyCupomCartComponent extends StatefulWidget {
   final ContentCupom contentCupom;
+  final double subTotalOrder;
 
-  const BodyCupomCartComponent({Key? key, required this.contentCupom})
+  const BodyCupomCartComponent({Key? key, required this.contentCupom, required this.subTotalOrder})
       : super(key: key);
 
   @override
@@ -26,7 +27,7 @@ class _BodyCupomCartComponentState extends State<BodyCupomCartComponent> {
         return ElevatedButton(
           onPressed: () {
             if (widget.contentCupom.content.isNotEmpty) {
-              _showBarCupom();
+              _showBarCupom(cart.totalPrice);
             }
           },
           style: ElevatedButton.styleFrom(
@@ -108,13 +109,13 @@ class _BodyCupomCartComponentState extends State<BodyCupomCartComponent> {
     );
   }
 
-  _showBarCupom() {
+  _showBarCupom(totalPrice) {
     Future<void> future = showBarModalBottomSheet<void>(
       expand: true,
       context: context,
       builder: (BuildContext context) {
         return BodyShowBarCupomShoppingCartComponent(
-            contentCupom: widget.contentCupom);
+            contentCupom: widget.contentCupom, subTotalOrder: totalPrice);
       },
     );
     future.then((value) => {});

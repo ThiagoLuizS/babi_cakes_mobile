@@ -16,14 +16,18 @@ import 'package:babi_cakes_mobile/src/features/core/screens/components/paypal_pa
 import 'package:babi_cakes_mobile/src/features/core/screens/components/whatsapp_button_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:babi_cakes_mobile/src/features/core/service/budget/budget_service.dart';
+import 'package:babi_cakes_mobile/src/features/core/service/event/providers_service.dart';
+import 'package:babi_cakes_mobile/src/features/core/service/notification/notification_service.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class BudgetDetailsComponent extends StatefulWidget {
   final BudgetView budgetView;
@@ -40,12 +44,10 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
   final BudgetData budgetData = BudgetData();
   final BudgetBloc _blocBudget = BudgetBloc();
   late BudgetView budgetView;
-  late Timer _timer;
 
   @override
   void dispose() {
     _blocBudget.dispose();
-    _timer.cancel();
     super.dispose();
   }
 
@@ -55,7 +57,7 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
     setState(() {
       budgetView = widget.budgetView;
     });
-    _timer = _schedulerEvent();
+    _getEventPixPayment();
   }
 
   @override
@@ -131,7 +133,7 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
                             ),
                           ),
                         ),
-                        BudgetLinearProgressComponent(budgetView: budgetView,),
+                        // BudgetLinearProgressComponent(budgetView: budgetView,),
                         Padding(
                           padding: const EdgeInsets.all(16),
                           child: Flex(
@@ -378,13 +380,6 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
     );
   }
 
-  Timer _schedulerEvent() {
-    return Timer.periodic(const Duration(seconds: 5), (timer) {
-      _getEventPixPayment();
-    });
-  }
-
-
   _getBudgetByUserAndById() async {
     ApiResponse<BudgetView> response =
         await _blocBudget.getBudgetByUserAndById(budgetView.id);
@@ -400,12 +395,13 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
   }
 
   _getEventPixPayment() async {
-    Future<EventMessageView?> event = EventMessageView.get();
-    event.then((value) {
-      if(value != null) {
-        EventMessageView.clear();
-        _getBudgetByUserAndById();
-      }
+    getIt<EventBus>().on<EventMessageView>().listen((event) {
+      _getBudgetByUserAndById();
+      _pushNotificationEventPixPayment(event);
     });
+  }
+
+  _pushNotificationEventPixPayment(EventMessageView event) {
+    Provider.of<NotificationService>(context, listen: false).showNotification(event);
   }
 }

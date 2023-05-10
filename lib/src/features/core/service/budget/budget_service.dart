@@ -5,12 +5,13 @@ import 'package:babi_cakes_mobile/src/features/core/models/shopping_cart/shoppin
 
 class BudgetService {
 
-  static String awaitPayment = "AWAITING_PAYMENT";
-  static String paidOut = "PAID_OUT";
-  static String orderDelivered = "ORDER_DELIVERED";
-  static String preparingOrder = "PREPARING_ORDER";
-  static String waitingForDelivery = "WAITING_FOR_DELIVERY";
-  static String orderIsOutForDelivery = "ORDER_IS_OUT_FOR_DELIVERY";
+  static const String awaitPayment = "AWAITING_PAYMENT";
+  static const String paidOut = "PAID_OUT";
+  static const String orderDelivered = "ORDER_DELIVERED";
+  static const String preparingOrder = "PREPARING_ORDER";
+  static const String waitingForDelivery = "WAITING_FOR_DELIVERY";
+  static const String orderIsOutForDelivery = "ORDER_IS_OUT_FOR_DELIVERY";
+  static const String canceledOrder = "CANCELED_ORDER";
 
 
   static BudgetBodySend createOrderForSend(List<ShoppingCart> list, CupomView? cupomView) {

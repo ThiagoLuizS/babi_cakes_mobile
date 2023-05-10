@@ -1,3 +1,4 @@
+import 'package:babi_cakes_mobile/src/constants/image_strings.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/budget/budget_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/event/event_message_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/service/budget/budget_service.dart';
@@ -6,119 +7,107 @@ import 'package:flutter/material.dart';
 
 class BudgetLinearProgressComponent extends StatefulWidget {
   final BudgetView budgetView;
-  const BudgetLinearProgressComponent({Key? key, required this.budgetView}) : super(key: key);
+  const BudgetLinearProgressComponent({Key? key, required this.budgetView})
+      : super(key: key);
 
   @override
-  State<BudgetLinearProgressComponent> createState() => _BudgetLinearProgressComponentState();
+  State<BudgetLinearProgressComponent> createState() =>
+      _BudgetLinearProgressComponentState();
 }
 
-class _BudgetLinearProgressComponentState extends State<BudgetLinearProgressComponent>
-    with TickerProviderStateMixin{
-
-  late AnimationController controller1;
-  late AnimationController controller2;
+class _BudgetLinearProgressComponentState
+    extends State<BudgetLinearProgressComponent> with TickerProviderStateMixin {
   late String status;
+  late bool showStatusWait = true;
+  late bool orderDelivered = false;
 
   @override
   void dispose() {
-    controller1.dispose();
-    controller2.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    controller1 = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 0),
-    )..addListener(() {
-      setState(() {});
-    });
-    controller2 = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 2),
-    )..addListener(() {
-      setState(() {});
-    });
-    controller1.forward().orCancel;
-    controller2.repeat(reverse: true);
+    _getLabelLoading(widget.budgetView.budgetStatusEnum.type);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    var budgetType = widget.budgetView.budgetStatusEnum.type;
+
+    return showStatusWait ? Padding(
       padding: const EdgeInsets.all(16),
       child: SizedBox(
-        height: 20,
+        width: double.infinity,
+        height: 80,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(4),
-                child: LinearProgressIndicator(
-                  backgroundColor: Colors.white,
-                  color: Colors.green,
-                  value: controller1.value,
-                  semanticsLabel: 'Linear progress indicator',
-                ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, top: 10),
+              child: Stack(
+                children: [
+                  Image(
+                      image: AssetImage(orderDelivered ? tCheckImage : tClockImage),
+                      width: 50,
+                      height: 50,),
+                  orderDelivered ? Container() : const SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: CircularProgressIndicator(
+                      color: Colors.green,
+                    ),
+                  )
+                ],
               ),
             ),
-            Expanded(
+            Flexible(
               child: Padding(
-                padding: const EdgeInsets.all(4),
-                child: LinearProgressIndicator(
-                  backgroundColor: AppColors.grey3,
-                  color: Colors.green,
-                  value: widget.budgetView.budgetStatusEnum.type == BudgetService.awaitPayment ? controller2.value : controller1.value,
-                  semanticsLabel: 'Linear progress indicator',
-                ),
+                padding: const EdgeInsets.only(top: 10),
+                child: Center(child: _getLabelLoading(budgetType)),
               ),
-            ),
-            widget.budgetView.budgetStatusEnum.type == BudgetService.paidOut ?
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(4),
-                child: LinearProgressIndicator(
-                  backgroundColor: AppColors.grey3,
-                  color: Colors.green,
-                  value: widget.budgetView.budgetStatusEnum.type == BudgetService.paidOut ? controller1.value : controller2.value,
-                  semanticsLabel: 'Linear progress indicator',
-                ),
-              ),
-            ): Container(),
-            widget.budgetView.budgetStatusEnum.type == BudgetService.preparingOrder ||
-                widget.budgetView.budgetStatusEnum.type == BudgetService.waitingForDelivery ||
-                widget.budgetView.budgetStatusEnum.type == BudgetService.orderIsOutForDelivery ||
-                widget.budgetView.budgetStatusEnum.type == BudgetService.orderDelivered ?
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(4),
-                child: LinearProgressIndicator(
-                  backgroundColor: AppColors.grey3,
-                  color: Colors.green,
-                  value: widget.budgetView.budgetStatusEnum.type == BudgetService.preparingOrder ||
-                      widget.budgetView.budgetStatusEnum.type == BudgetService.waitingForDelivery ||
-                      widget.budgetView.budgetStatusEnum.type == BudgetService.orderIsOutForDelivery ? controller2.value : controller1.value,
-                  semanticsLabel: 'Linear progress indicator',
-                ),
-              ),
-            ) : Container(),
-            widget.budgetView.budgetStatusEnum.type == BudgetService.orderDelivered ?
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(4),
-                child: LinearProgressIndicator(
-                  backgroundColor: AppColors.grey3,
-                  color: Colors.green,
-                  value: widget.budgetView.budgetStatusEnum.type == BudgetService.orderDelivered ? controller1.value : controller2.value,
-                  semanticsLabel: 'Linear progress indicator',
-                ),
-              ),
-            ) : Container(),
+            )
           ],
         ),
       ),
-    );
+    ) : Container();
+  }
+
+  Text _getLabelLoading(budgetType) {
+    var text = "";
+    switch (budgetType) {
+      case BudgetService.awaitPayment:
+        text = "Aguardando pagamento...";
+        break;
+      case BudgetService.paidOut:
+        text = "Aguardando a loja...";
+        break;
+      case BudgetService.preparingOrder:
+        text = "A loja está preparando seu pedido!";
+        break;
+      case BudgetService.waitingForDelivery:
+        text =
+            "O seu pedido está pronto! Aguardando o entregador pegar o seu pedido.";
+        break;
+      case BudgetService.orderIsOutForDelivery:
+        text = "Pedido saiu para entrega!";
+        break;
+      case BudgetService.orderDelivered:
+        text = "Pedido entregue!";
+        setState(() {
+          orderDelivered = true;
+        });
+        break;
+      case BudgetService.canceledOrder:
+        text = "Pedido cancelado!";
+        setState(() {
+          showStatusWait = false;
+        });
+        break;
+    }
+
+    return Text(text);
   }
 }

@@ -20,7 +20,7 @@ class BudgetData {
         icon = const Icon(
           Icons.check_circle_outline,
           size: 15,
-          color: Colors.white,
+          color: Colors.green,
         );
         break;
       case 'PREPARING_ORDER':

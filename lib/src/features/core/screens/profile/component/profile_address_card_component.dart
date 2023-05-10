@@ -1,7 +1,7 @@
 import 'package:babi_cakes_mobile/src/features/core/models/profile/address_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/address/component/profile_address_description_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class ProfileAddressCardComponent extends StatefulWidget {

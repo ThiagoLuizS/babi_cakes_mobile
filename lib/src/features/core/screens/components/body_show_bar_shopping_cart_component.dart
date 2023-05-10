@@ -23,7 +23,7 @@ import 'package:babi_cakes_mobile/src/features/core/theme/app_icons.dart';
 import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:brasil_fields/brasil_fields.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -197,8 +197,7 @@ class _BodyShowBarShoppingCartComponentState
                                 padding: EdgeInsets.all(6),
                                 child: Divider(color: AppColors.grey),
                               ),
-                              BodyCupomCartComponent(
-                                  contentCupom: contentCupom),
+                              BodyCupomCartComponent(contentCupom: contentCupom, subTotalOrder: cart.totalPrice),
                               const Padding(
                                 padding: EdgeInsets.all(6),
                                 child: Divider(color: AppColors.grey),
@@ -530,7 +529,7 @@ class _BodyShowBarShoppingCartComponentState
                               fontSize: 14, fontWeight: FontWeight.bold)),
                       Text(
                         UtilBrasilFields.obterReal(
-                            cart.totalPrice - freightCost - (cart.cupomView != null ? cart.cupomView!.cupomValue : 0.0),
+                            cart.totalPrice + freightCost - (cart.cupomView != null ? cart.cupomView!.cupomValue : 0.0),
                             moeda: true,
                             decimal: 2),
                         style: const TextStyle(
@@ -660,7 +659,7 @@ class _BodyShowBarShoppingCartComponentState
                     children: [
                       const Text("Total", style: TextStyle(fontWeight: FontWeight.bold),),
                       Text(UtilBrasilFields.obterReal(
-                          subtotal - freightCost - (cupomView != null ? cupomView.cupomValue : 0.0),
+                          subtotal + freightCost - (cupomView != null ? cupomView.cupomValue : 0.0),
                           moeda: true,
                           decimal: 2), style: const TextStyle(fontWeight: FontWeight.bold))
                     ],
