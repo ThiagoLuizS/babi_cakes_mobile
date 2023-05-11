@@ -16,7 +16,7 @@ class ProductController {
     try {
 
       Uri uri = Uri.http(
-          Config.apiURL, '/api/products/pageable/$categoryId', {'page': page.toString(), 'size': size.toString(), 'productName': productName, 'sort': sort});
+          Config.apiURL, '/api/products/pageable/category/$categoryId', {'page': page.toString(), 'size': size.toString(), 'productName': productName, 'excluded': 'false', 'sort': sort});
 
       TokenDTO token = await TokenDTO.get();
 
@@ -56,7 +56,7 @@ class ProductController {
     try {
 
       Uri uri = Uri.http(
-          Config.apiURL, '/api/products/pageable/all', {'page': page.toString(), 'size': size.toString(), 'productName': productName, 'sort': sort});
+          Config.apiURL, '/api/products/pageable/all', {'page': page.toString(), 'size': size.toString(), 'productName': productName, 'excluded': 'false', 'sort': sort});
 
       TokenDTO? token = await TokenDTO.get();
       Map<String, String> headers = {

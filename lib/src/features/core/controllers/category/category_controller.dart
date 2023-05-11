@@ -15,7 +15,7 @@ class CategoryController {
       int size) async {
     try {
       Uri uri = Uri.http(
-          Config.apiURL, '/api/categories/pageable', {'page': '0'});
+          Config.apiURL, '/api/categories/pageable/all', {'page': '0', 'show': 'true'});
 
       TokenDTO token = await TokenDTO.get();
 
