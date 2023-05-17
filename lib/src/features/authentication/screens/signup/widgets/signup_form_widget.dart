@@ -1,6 +1,7 @@
 import 'package:babi_cakes_mobile/src/features/authentication/controllers/user/user_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/authentication/models/user/user_form.dart';
 import 'package:babi_cakes_mobile/src/features/authentication/screens/login/login_screen.dart';
+import 'package:babi_cakes_mobile/src/features/core/models/user/user_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';

@@ -8,6 +8,7 @@ import 'package:babi_cakes_mobile/src/features/core/models/category/content_cate
 import 'package:babi_cakes_mobile/src/features/core/screens/components/dashboard_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/product_tab_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/dashboard/widgets/banner_session.dart';
+import 'package:babi_cakes_mobile/src/features/core/service/dashboard/dashboard_service.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_typography.dart';
 import 'package:babi_cakes_mobile/src/utils/animations/fade_in_animation/animation_design.dart';
@@ -34,10 +35,11 @@ class _ContentTabBarComponentState extends State<ContentTabBarComponent>
   final controller = ContentController();
   final CategoryBloc _categoryBloc = CategoryBloc();
   final BannerBloc _bannerBloc = BannerBloc();
-  late ContentCategory contentCategory = ContentCategory(content: []);
-  late CategoryView categoryView;
+  late List<CategoryView> categoryViews = [];
+  late CategoryView categoryView = CategoryView();
   late int currentIndexTab = 0;
   late List<BannerView> bannerList = [];
+  late bool isLoading = true;
 
   @override
   void dispose() {
@@ -56,133 +58,41 @@ class _ContentTabBarComponentState extends State<ContentTabBarComponent>
 
   @override
   Widget build(BuildContext context) {
-    List<Tab> tabs =
-        contentCategory.content.map((e) => Tab(child: Text(e.name))).toList();
+    List<Tab> tabs = categoryViews.map((e) => Tab(child: Text(e.name!))).toList();
     double height = MediaQuery.of(context).size.height;
-    return contentCategory.content.isNotEmpty ?
-      DefaultTabController(
+    return DefaultTabController(
       length: tabs.length,
       child: bannerList.isNotEmpty
-          ? Scaffold(
-              backgroundColor: Colors.white,
-              appBar: AppBar(
-                backgroundColor: Color.fromARGB(255, 209, 174, 139),
-                bottomOpacity: 0.0,
-                elevation: 0.0,
-                automaticallyImplyLeading: false,
-                toolbarHeight: 306,
-                flexibleSpace: const SizedBox(),
-                shape: const RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.vertical(bottom: Radius.circular(700)),
-                ),
-                actions: [
-                  Expanded(child: BannerSession(bannerList: bannerList))
-                ],
-              ),
-              body: Padding(
-                padding: const EdgeInsets.only(top: 10, left: 16, right: 16),
-                child: Scaffold(
-                  backgroundColor: Colors.white,
-                  appBar: TabBar(
-                    onTap: (index) {},
-                    indicatorPadding: EdgeInsets.zero,
-                    overlayColor: MaterialStateProperty.all(Colors.transparent),
-                    labelColor: AppColors.berimbau,
-                    unselectedLabelColor: AppColors.black54,
-                    labelStyle: AppTypography.tabBarStyle(context),
-                    indicator: MaterialIndicator(
-                      color: AppColors.berimbau,
-                      height: 5,
-                      bottomLeftRadius: 5,
-                      bottomRightRadius: 5,
-                    ),
-                    isScrollable: true,
-                    tabs: tabs,
-                  ),
-                  body: SizedBox(
-                    height: height,
-                    child: TabBarView(
-                        children: contentCategory.content.map((e) {
-                      if (e.id == 0) {
-                        return DashboardComponent(
-                          contentCategory: contentCategory,
-                        );
-                      }
-                      return ProductTabComponent(categoryView: e);
-                    }).toList()),
-                  ),
-                ),
-              ),
-            )
-          : Padding(
-              padding: const EdgeInsets.only(top: 10, left: 16, right: 16),
-              child: Scaffold(
-                backgroundColor: Colors.white,
-                appBar: TabBar(
-                  onTap: (index) {},
-                  indicatorPadding: EdgeInsets.zero,
-                  overlayColor: MaterialStateProperty.all(Colors.transparent),
-                  labelColor: AppColors.berimbau,
-                  unselectedLabelColor: AppColors.black54,
-                  labelStyle: AppTypography.tabBarStyle(context),
-                  indicator: MaterialIndicator(
-                    color: AppColors.berimbau,
-                    height: 5,
-                    bottomLeftRadius: 5,
-                    bottomRightRadius: 5,
-                  ),
-                  isScrollable: true,
-                  tabs: tabs,
-                ),
-                body: TabBarView(
-                  children: contentCategory.content.map((e) {
-                    if (e.id == 0) {
-                      return DashboardComponent(
-                        contentCategory: contentCategory,
-                      );
-                    }
-                    return ProductTabComponent(categoryView: e);
-                  }).toList(),
-                ),
-              ),
-            ),
-    ) :
-      Scaffold(
-        backgroundColor: AppColors.milkCream,
-        body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: const [
-          SizedBox(
-            height: 220,
-            child: Image(image: AssetImage(tSplashImage)),
-          ),
-          Text("Estamos preparando tudo e em breve estaremos disponivel!",
-            style: TextStyle(color: AppColors.berimbau, fontSize: 30), textAlign: TextAlign.center,)
-        ],
-    ),
-      );
+          ? DashboardService.getScreenBannerForCategory(context, categoryView, bannerList, tabs, height, categoryViews, isLoading: isLoading)
+          : DashboardService.getScreenForCategory(context, categoryView, bannerList, tabs, height, categoryViews, isLoading: isLoading),
+    );
   }
 
   _onGetCategoryAll() async {
-    ApiResponse<ContentCategory> response =
-        await _categoryBloc.getAllByPage(0, 10);
+    setState(() {
+      isLoading = true;
+    });
+    ApiResponse<List<CategoryView>> response =
+        await _categoryBloc.getAllCategoryAndFechProduct();
 
     if (response.ok) {
-      if (response.result.content.isNotEmpty) {
-        response.result.content
+      if (response.result.isNotEmpty && mounted) {
+        response.result
             .insert(0, CategoryView(id: 0, name: "Inicio", show: false));
         TabController tab =
-            TabController(length: contentCategory.content.length, vsync: this);
+            TabController(length: response.result.length, vsync: this);
         setState(() {
-          contentCategory = response.result;
+          categoryViews = response.result;
           tabController = tab;
         });
       }
     } else {
       alertToast(context, response.erros[0].toString(), 3, Colors.grey, false);
     }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   _onGetBannerAll() async {

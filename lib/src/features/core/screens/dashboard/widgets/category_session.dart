@@ -17,7 +17,7 @@ class CategorySession extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: SizedBox(
-        height: 100,
+        height: 150,
         child: NotificationListener<ScrollNotification>(
           child: StreamBuilder<Object>(
             stream: categoryBloc.stream,

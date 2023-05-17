@@ -1,5 +1,3 @@
-import 'dart:convert' as convert;
-
 class PropertyString {
   late String type;
   late String status;

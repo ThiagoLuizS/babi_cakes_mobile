@@ -12,11 +12,11 @@ class Config {
       case Modo.development:
         return '192.168.10.69:8080';
       case Modo.homologation:
-        return '<SUA API RELEASE>';
+        return '192.168.10.69:8080';
       case Modo.production:
-        return '<SUA API DEV>';
+        return 'http://44.212.255.3:8080';
       default:
-        return '<SUA API DEV>';
+        return 'http://44.212.255.3:8080';
     }
   }
 }

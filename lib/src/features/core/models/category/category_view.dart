@@ -1,23 +1,26 @@
 import 'dart:convert' as convert;
 
 import 'package:babi_cakes_mobile/src/features/core/models/category/category_file_view.dart';
+import 'package:babi_cakes_mobile/src/features/core/models/product/product_view.dart';
 import 'package:babi_cakes_mobile/src/utils/general/prefs.dart';
 
 class CategoryView {
 
-  late int id;
+  late int? id;
   late CategoryFileView? categoryFileView;
-  late String name;
+  late String? name;
   late String? description;
-  late bool show = true; //transient
+  late bool? show = true; //transient
+  late List<ProductView>? productViews = [];
 
 
   CategoryView({
-    required this.id,
+     this.id,
     this.categoryFileView,
-    required this.name,
+     this.name,
     this.description,
-    required this.show
+     this.show,
+    this.productViews
   });
 
   CategoryView.fromJson(Map<String, dynamic> json) {
@@ -26,6 +29,12 @@ class CategoryView {
     name = json['name'];
     description = json['description'];
     show = json['show'];
+    if(json['productViews'] != null) {
+      String map = convert.json.encode(json);
+      productViews = convert.json.decode(map)['productViews'].map<ProductView>((data) =>  ProductView.fromJson(data)).toList();
+    } else {
+      productViews = [];
+    }
   }
 
   Map<String, dynamic> toJson() {

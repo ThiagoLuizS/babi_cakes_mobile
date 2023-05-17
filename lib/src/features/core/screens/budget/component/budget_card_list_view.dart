@@ -10,9 +10,9 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 
 class BudgetCardListView extends StatefulWidget {
-  final BudgetView budgetView;
+  final BudgetView? budgetView;
 
-  const BudgetCardListView({Key? key, required this.budgetView})
+  const BudgetCardListView({Key? key, this.budgetView})
       : super(key: key);
 
   @override
@@ -24,7 +24,6 @@ class _BudgetCardListViewState extends State<BudgetCardListView> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     return Column(
       children: [
         Padding(
@@ -32,13 +31,13 @@ class _BudgetCardListViewState extends State<BudgetCardListView> {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              DateFormat('dd/MM/yyyy HH:mm').format(widget.budgetView.dateCreateBudget),
+              DateFormat('dd/MM/yyyy HH:mm').format(widget.budgetView!.dateCreateBudget!),
               style: const TextStyle(color: Colors.black54, fontSize: 12),
             ),
           ),
         ),
         GestureDetector(
-          onTap: () => Get.offAll(() => BudgetDetailsComponent(budgetView: widget.budgetView)),
+          onTap: () => Get.offAll(() => BudgetDetailsComponent(budgetView: widget.budgetView!)),
           child: Padding(
             padding: const EdgeInsets.only(top: 16),
             child: Container(
@@ -78,7 +77,7 @@ class _BudgetCardListViewState extends State<BudgetCardListView> {
                             Padding(
                               padding: const EdgeInsets.only(left: 20),
                               child: Text(
-                                'Pedido Nº ${widget.budgetView.code}',
+                                'Pedido Nº ${widget.budgetView!.code}',
                                 style: const TextStyle(
                                     fontSize: 14, color: AppColors.black),
                               ),
@@ -103,11 +102,11 @@ class _BudgetCardListViewState extends State<BudgetCardListView> {
                       padding: const EdgeInsets.only(top: 8),
                       child: Row(
                         children: [
-                          budgetData.iconByStatus(widget.budgetView.budgetStatusEnum.type),
+                          budgetData.iconByStatus(widget.budgetView!.budgetStatusEnum!.type),
                           Padding(
                             padding: const EdgeInsets.only(left: 10),
                             child: Text(
-                              widget.budgetView.budgetStatusEnum.status,
+                              widget.budgetView!.budgetStatusEnum!.status,
                               style: const TextStyle(
                                   color: tSecondaryColorV1,
                                   fontSize: 14,
@@ -121,7 +120,7 @@ class _BudgetCardListViewState extends State<BudgetCardListView> {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 5, bottom: 5),
                         child: ListView.builder(
-                          itemCount: widget.budgetView.productReservedViewList.length,
+                          itemCount: widget.budgetView!.productReservedViewList!.length,
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
                           physics: const AlwaysScrollableScrollPhysics(),
@@ -148,7 +147,7 @@ class _BudgetCardListViewState extends State<BudgetCardListView> {
                                     child: Padding(
                                       padding: const EdgeInsets.only(left: 2),
                                       child: Text(
-                                        widget.budgetView.productReservedViewList[index]
+                                        widget.budgetView!.productReservedViewList![index]
                                             .productView.name
                                             .toUpperCase(),
                                         overflow: TextOverflow.ellipsis,
@@ -170,7 +169,7 @@ class _BudgetCardListViewState extends State<BudgetCardListView> {
                       children: [
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(backgroundColor: Colors.white, side: BorderSide.none, foregroundColor: AppColors.grey3),
-                          onPressed: () => Get.offAll(() => BudgetDetailsComponent(budgetView: widget.budgetView)),
+                          onPressed: () => Get.offAll(() => BudgetDetailsComponent(budgetView: widget.budgetView!)),
                           child: const Padding(
                             padding: EdgeInsets.only(left: 12, right: 12),
                             child: Text("Veja mais", style: TextStyle(color: AppColors.berimbau),),

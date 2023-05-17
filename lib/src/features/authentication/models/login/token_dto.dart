@@ -6,15 +6,17 @@ class TokenDTO {
   late String token;
   late String name;
   late String phone;
+  late String email;
   late String type;
 
   TokenDTO(
-      {required this.token, required this.name, required this.phone, required this.type});
+      {required this.token, required this.name, required this.phone, required this.email, required this.type});
 
   TokenDTO.fromJson(Map<String, dynamic> json) {
     token = json['token'];
     name = json['name'];
     phone = json['phone'];
+    email = json['email'];
     type = json['type'];
   }
 
@@ -23,6 +25,7 @@ class TokenDTO {
     data['token'] = token;
     data['name'] = name;
     data['phone'] = phone;
+    data['email'] = email;
     data['type'] = type;
     return data;
   }

@@ -1,7 +1,10 @@
 import 'package:babi_cakes_mobile/src/features/authentication/models/login/token_dto.dart';
 import 'package:babi_cakes_mobile/src/features/authentication/screens/login/login_screen.dart';
+import 'package:babi_cakes_mobile/src/features/authentication/screens/components/sign_in_button_google.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class ProfileCardComponent extends StatefulWidget {
   final VoidCallback onTap;
@@ -27,6 +30,19 @@ class ProfileCardComponent extends StatefulWidget {
 }
 
 class _ProfileCardComponentState extends State<ProfileCardComponent> {
+
+  static const List<String> scopes = [
+    'email',
+    'https://www.googleapis.com/auth/contacts.readonly',
+  ];
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: scopes);
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return !widget.isDialog
@@ -139,6 +155,9 @@ class _ProfileCardComponentState extends State<ProfileCardComponent> {
 
   _exist() {
     TokenDTO.clear();
+    _handleSignOut();
     Get.offAll(() => const LoginScreen());
   }
+
+  Future<void> _handleSignOut() => _googleSignIn.disconnect();
 }

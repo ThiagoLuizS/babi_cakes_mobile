@@ -13,21 +13,24 @@ class CategoryItemComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return category.show ? Column(
+    return category.show! ? Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          height: 60,
-          width: 60,
-          decoration: BoxDecoration(
-            image: DecorationImage(image: MemoryImage(base64Decode(category.categoryFileView!.photoBase64ToString)))
+        Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Container(
+            height: 50,
+            width: 50,
+            decoration: BoxDecoration(
+              image: DecorationImage(image: MemoryImage(base64Decode(category.categoryFileView!.photoBase64ToString)))
+            ),
           ),
         ),
         Flexible(
           child: Padding(
             padding: const EdgeInsets.only(top: 5.0),
             child: Text(
-              category.name,
+              category.name!,
               style:
                   AppTypography.medium(context)?.copyWith(color: AppColors.black54),
             ),

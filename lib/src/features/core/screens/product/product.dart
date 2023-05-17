@@ -204,7 +204,7 @@ class _ProductState extends State<Product> {
                                                   Padding(
                                                     padding: const EdgeInsets.only(left: 20),
                                                     child: Text(
-                                                      widget.productView.categoryView.name,
+                                                      widget.productView.categoryView.name!,
                                                       style: const TextStyle(
                                                           fontSize: 14, color: AppColors.black54),
                                                     ),

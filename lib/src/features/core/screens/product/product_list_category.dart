@@ -46,7 +46,7 @@ class _ProductListCategoryState extends State<ProductListCategory> {
   void initState() {
     filterParam = FilterParam();
     productFilterParams = FilterParam.listFilterProduct;
-    _onGetProductAll(widget.categoryView.id, productName, pageSize);
+    _onGetProductAll(widget.categoryView.id!, productName, pageSize);
     super.initState();
   }
 
@@ -71,7 +71,7 @@ class _ProductListCategoryState extends State<ProductListCategory> {
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60),
           child: AppBarDefaultComponent(
-            title: widget.categoryView.name.toUpperCase(),
+            title: widget.categoryView.name!.toUpperCase(),
           ),
         ),
         extendBody: true,
@@ -104,7 +104,7 @@ class _ProductListCategoryState extends State<ProductListCategory> {
                                 productFilterParams[index].selected = true;
                                 filterParam = productFilterParams[index];
                               });
-                              _onGetProductAll(widget.categoryView.id, productName, pageSize);
+                              _onGetProductAll(widget.categoryView.id!, productName, pageSize);
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(8),
@@ -158,7 +158,7 @@ class _ProductListCategoryState extends State<ProductListCategory> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        _onGetProductAll(widget.categoryView.id,
+                        _onGetProductAll(widget.categoryView.id!,
                             filterController.text, pageSize);
                       },
                       style: ElevatedButton.styleFrom(backgroundColor: Colors.white, side: BorderSide.none, foregroundColor: AppColors.grey3),
@@ -214,13 +214,13 @@ class _ProductListCategoryState extends State<ProductListCategory> {
   }
 
   _refreshIndicator() {
-    _onGetProductAll(widget.categoryView.id, productName, pageSize);
+    _onGetProductAll(widget.categoryView.id!, productName, pageSize);
   }
 
   bool onNotification(ScrollNotification scrollInfo) {
     if (scrollInfo is ScrollEndNotification && !isLoading && scrollInfo.metrics.pixels ==
         scrollInfo.metrics.maxScrollExtent) {
-      _onGetProductAll(widget.categoryView.id, productName, pageSize += 1);
+      _onGetProductAll(widget.categoryView.id!, productName, pageSize += 1);
     }
     return false;
   }

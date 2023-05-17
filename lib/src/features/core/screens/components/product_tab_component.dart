@@ -34,8 +34,8 @@ class _ProductTabComponentState extends State<ProductTabComponent> {
 
   @override
   void dispose() {
-    super.dispose();
     _productBloc.dispose();
+    super.dispose();
   }
 
   @override
@@ -43,7 +43,7 @@ class _ProductTabComponentState extends State<ProductTabComponent> {
     super.initState();
     filterParam = FilterParam();
     productFilterParams = FilterParam.listFilterProduct;
-    _onGetProductAll(widget.categoryView!.id, productName, pageSize);
+    _onGetProductAll(widget.categoryView!.id!, productName, pageSize);
   }
 
   @override
@@ -79,7 +79,7 @@ class _ProductTabComponentState extends State<ProductTabComponent> {
                         filterParam = productFilterParams[index];
                       });
                       _onGetProductAll(
-                          widget.categoryView!.id, productName, pageSize);
+                          widget.categoryView!.id!, productName, pageSize);
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(8),
@@ -134,7 +134,7 @@ class _ProductTabComponentState extends State<ProductTabComponent> {
                 ElevatedButton(
                   onPressed: () {
                     _onGetProductAll(
-                        widget.categoryView!.id, filterController.text, pageSize);
+                        widget.categoryView!.id!, filterController.text, pageSize);
                   },
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.white, side: BorderSide.none, foregroundColor: AppColors.grey3),
                   child: const Padding(
@@ -184,13 +184,13 @@ class _ProductTabComponentState extends State<ProductTabComponent> {
     if (scrollInfo is ScrollEndNotification &&
         !isLoading &&
         scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
-      _onGetProductAll(widget.categoryView!.id, productName, pageSize += 1);
+      _onGetProductAll(widget.categoryView!.id!, productName, pageSize += 1);
     }
     return false;
   }
 
   _refreshIndicator() {
-    _onGetProductAll(widget.categoryView!.id, productName, pageSize);
+    _onGetProductAll(widget.categoryView!.id!, productName, pageSize);
   }
 
   _onGetProductAll(int categoryId, String productName, pageSize) async {
@@ -203,12 +203,10 @@ class _ProductTabComponentState extends State<ProductTabComponent> {
             0, pageSize, categoryId, productName, filterParam.param!);
 
     if (response.ok) {
-      if(mounted) {
-        setState(() {
-          contentProduct = response.result;
-          isLoading = false;
-        });
-      }
+      setState(() {
+        contentProduct = response.result;
+        isLoading = false;
+      });
     }
   }
 }

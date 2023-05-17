@@ -3,6 +3,7 @@ import 'dart:convert' as convert;
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:babi_cakes_mobile/src/features/authentication/models/login/login_form.dart';
 import 'package:babi_cakes_mobile/src/features/authentication/models/login/token_dto.dart';
 import 'package:babi_cakes_mobile/src/models/dto/error_view.dart';
 import 'package:babi_cakes_mobile/src/service/device_service.dart';
@@ -30,6 +31,10 @@ class LoginController {
 
       if (response.statusCode == 200) {
         Map<String, dynamic> mapResponse = json.decode(response.body);
+
+        final loginForm = LoginForm(email: email, password: password);
+
+        loginForm.save();
 
         final user = TokenDTO.fromJson(mapResponse);
 

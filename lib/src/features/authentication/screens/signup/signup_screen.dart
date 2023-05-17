@@ -1,3 +1,4 @@
+import 'package:babi_cakes_mobile/src/features/core/models/user/user_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:babi_cakes_mobile/src/constants/image_strings.dart';

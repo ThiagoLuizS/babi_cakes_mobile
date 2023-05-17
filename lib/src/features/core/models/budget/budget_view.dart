@@ -8,29 +8,28 @@ import 'package:babi_cakes_mobile/src/features/core/models/user/user_view.dart';
 import 'package:babi_cakes_mobile/src/utils/general/prefs.dart';
 
 class BudgetView {
-  late int id;
-  late AddressView address;
-  late CupomView cupom;
-  late UserView user;
-  late int code;
-  late DateTime dateCreateBudget;
-  late DateTime dateFinalizedBudget;
-  late PropertyString budgetStatusEnum;
-  late List<BudgetProductReservedView> productReservedViewList = [];
-  late double subTotal;
-  late double amount;
-  late double freightCost;
+  late int? id;
+  late AddressView? address;
+  late CupomView? cupom;
+  late UserView? user;
+  late int? code;
+  late DateTime? dateCreateBudget;
+  late DateTime? dateFinalizedBudget;
+  late PropertyString? budgetStatusEnum;
+  late List<BudgetProductReservedView>? productReservedViewList = [];
+  late double? subTotal;
+  late double? amount;
+  late double? freightCost;
 
   BudgetView(
-      {required this.id,
-      required this.address,
-        required this.cupom,
-      required this.code,
-      required this.dateCreateBudget,
-      required this.dateFinalizedBudget,
-      required this.budgetStatusEnum,
-      required this.productReservedViewList,
-      required this.freightCost});
+      { this.id,
+       this.address,
+         this.cupom,
+       this.code,
+       this.dateCreateBudget,
+       this.dateFinalizedBudget,
+       this.budgetStatusEnum,
+       this.productReservedViewList, this.freightCost});
 
   BudgetView.fromJson(Map<String, dynamic> json) {
     String map = convert.json.encode(json);
@@ -46,8 +45,11 @@ class BudgetView {
     if(json['dateFinalizedBudget'] != null) {
       dateFinalizedBudget = DateTime.parse(json['dateFinalizedBudget'].toString());
     }
+
     budgetStatusEnum = PropertyString.fromJson(json['budgetStatusEnum']);
-    productReservedViewList = convert.json.decode(map)['productReservedViewList'].map<BudgetProductReservedView>((data) =>  BudgetProductReservedView.fromJson(data)).toList();
+    if(json['productReservedViewList'] != null) {
+      productReservedViewList = convert.json.decode(map)['productReservedViewList'].map<BudgetProductReservedView>((data) =>  BudgetProductReservedView.fromJson(data)).toList();
+    }
     subTotal = json['subTotal'];
     amount = json['amount'];
     freightCost = json['freightCost'];

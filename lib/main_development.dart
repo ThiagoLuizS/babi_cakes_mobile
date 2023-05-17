@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:babi_cakes_mobile/config.dart';
 import 'package:babi_cakes_mobile/firebase_options.dart';
 import 'package:babi_cakes_mobile/src/features/authentication/screens/splash_screen/splash_screen.dart';
+import 'package:babi_cakes_mobile/src/features/core/controllers/budget/budget_bloc_state.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/budget/budget_provider_controller.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/shopping_cart/shopping_cart_controller.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/event/event_message_view.dart';
@@ -15,8 +16,10 @@ import 'package:event_bus/event_bus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
+import 'package:flutter_bloc/flutter_bloc.dart' as bloc;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:get/get_navigation/src/routes/transitions_type.dart' as transe;
 import 'package:provider/provider.dart';
 
 
@@ -51,7 +54,8 @@ main() {
             create: (context) => BudgetProviderController(),
           ),
           Provider<NotificationService>(create: (context) => NotificationService(),),
-          Provider<FirebaseMessagingService>(create: (context) => FirebaseMessagingService(context.read<NotificationService>()),)
+          Provider<FirebaseMessagingService>(create: (context) => FirebaseMessagingService(context.read<NotificationService>()),),
+          BlocProvider<BudgetBlocState>(create: (context) => BudgetBlocState(),)
         ],
         child: MyApp(),
       )
@@ -89,7 +93,7 @@ class MyApp extends StatelessWidget {
       theme: TAppTheme.lightTheme,
       darkTheme: TAppTheme.darkTheme,
       debugShowCheckedModeBanner: false,
-      defaultTransition: Transition.leftToRightWithFade,
+      defaultTransition: transe.Transition.leftToRightWithFade,
       transitionDuration: const Duration(milliseconds: 500),
       home: const SplashScreen(),
     );

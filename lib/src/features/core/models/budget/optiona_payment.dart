@@ -1,0 +1,3 @@
+enum OptionalPayment {
+  PAYPAL, PIX
+}

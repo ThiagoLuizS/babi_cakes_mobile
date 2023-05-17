@@ -8,6 +8,7 @@ import 'package:babi_cakes_mobile/src/features/core/models/cupom/content_cupom.d
 import 'package:babi_cakes_mobile/src/features/core/models/profile/address_form.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/profile/address_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/profile/content_address.dart';
+import 'package:babi_cakes_mobile/src/features/core/models/user/user_view.dart';
 import 'package:babi_cakes_mobile/src/models/dto/error_view.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:babi_cakes_mobile/src/utils/general/constants.dart';
@@ -245,4 +246,5 @@ class ProfileController {
       return ApiResponse.errors([msgGlobalError]);
     }
   }
+
 }

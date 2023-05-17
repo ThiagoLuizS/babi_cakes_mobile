@@ -2,21 +2,20 @@ import 'package:babi_cakes_mobile/src/features/core/controllers/profile/profile_
 import 'package:babi_cakes_mobile/src/features/core/models/profile/address_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/profile/content_address.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/app_bar_default_component.dart';
-import 'package:babi_cakes_mobile/src/features/core/screens/components/body_show_bar_shopping_cart_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/liquid_refresh_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/message_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/shimmer_component.dart';
-import 'package:babi_cakes_mobile/src/features/core/screens/components/shopping_cart_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/address/profile_address_form_screen.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/component/profile_address_card_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
-import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+
+import '../../shopping_cart/body_show_bar_shopping_cart_component.dart';
 
 class ProfileAddressScreen extends StatefulWidget {
   final bool originShoppingCart;

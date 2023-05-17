@@ -11,4 +11,10 @@ class CategoryBloc extends SimpleBloc<bool> {
     add(false);
     return response;
   }
+  Future<ApiResponse<List<CategoryView>>> getAllCategoryAndFechProduct() async {
+    add(true);
+    ApiResponse<List<CategoryView>> response = await CategoryController.getAllCategoryAndFechProduct();
+    add(false);
+    return response;
+  }
 }

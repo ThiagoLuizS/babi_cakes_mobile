@@ -29,12 +29,12 @@ class _BudgetLinearProgressComponentState
   @override
   void initState() {
     super.initState();
-    _getLabelLoading(widget.budgetView.budgetStatusEnum.type);
+    _getLabelLoading(widget.budgetView.budgetStatusEnum!.type);
   }
 
   @override
   Widget build(BuildContext context) {
-    var budgetType = widget.budgetView.budgetStatusEnum.type;
+    var budgetType = widget.budgetView.budgetStatusEnum!.type;
 
     return showStatusWait ? Padding(
       padding: const EdgeInsets.all(16),

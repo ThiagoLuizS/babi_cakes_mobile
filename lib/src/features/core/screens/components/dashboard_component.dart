@@ -13,9 +13,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
+import '../../service/dashboard/dashboard_service.dart';
+
 class DashboardComponent extends StatefulWidget {
-  final ContentCategory contentCategory;
-  const DashboardComponent({Key? key, required this.contentCategory}) : super(key: key);
+  final List<CategoryView> categoryViews;
+  final bool isLoadingProducts;
+  const DashboardComponent({Key? key, required this.categoryViews, this.isLoadingProducts = false}) : super(key: key);
 
   @override
   State<DashboardComponent> createState() => _DashboardComponentState();
@@ -25,7 +28,7 @@ class _DashboardComponentState extends State<DashboardComponent> with SingleTick
   final _productBloc = ProductBloc();
   final _categoryBloc = CategoryBloc();
   late ContentCategory contentCategory = ContentCategory(content: []);
-  late bool isLoadingProducts = false;
+
 
   @override
   void dispose() {
@@ -37,7 +40,6 @@ class _DashboardComponentState extends State<DashboardComponent> with SingleTick
   @override
   void initState() {
     super.initState();
-    //_onGetCategoryAll();
   }
 
   @override
@@ -48,13 +50,13 @@ class _DashboardComponentState extends State<DashboardComponent> with SingleTick
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
-            CategorySession(categories: widget.contentCategory.content, categoryBloc: _categoryBloc),
+            CategorySession(categories: widget.categoryViews, categoryBloc: _categoryBloc),
             SliverList(
               delegate: SliverChildListDelegate(
-                widget.contentCategory.content
+                widget.categoryViews
                     .map(
                       (e) => CategoryGroupItemComponent(
-                    categoryView: _setStateCategoryView(e)),
+                    categoryView: _setStateCategoryView(e), isLoading: widget.isLoadingProducts),
                 ).toList(),
               ),
             ),
@@ -69,23 +71,6 @@ class _DashboardComponentState extends State<DashboardComponent> with SingleTick
     setState(() {
       categoryView = categoryView;
     });
-
     return categoryView;
-  }
-
-  _onGetCategoryAll() async {
-    ApiResponse<ContentCategory> response = await _categoryBloc.getAllByPage(0, 10);
-
-    if (response.ok) {
-      response.result.content.insert(0, CategoryView(id: 0, name: "Início", show: false));
-      if(mounted) {
-        setState(() {
-          contentCategory = response.result;
-        });
-      }
-    } else {
-      // ignore: use_build_context_synchronously
-      alertToast(context, response.erros[0].toString(), 3, Colors.grey, false);
-    }
   }
 }

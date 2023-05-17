@@ -29,7 +29,7 @@ class LoginForm {
   static Future<LoginForm?> get() async {
     String json = await Prefs.getString("LoginForm.prefs");
 
-    if (json.isEmpty) {
+    if(json.isEmpty) {
       return null;
     }
 
@@ -42,5 +42,10 @@ class LoginForm {
 
   static void clear() {
     Prefs.setString("LoginForm.prefs", "");
+  }
+
+  @override
+  String toString() {
+    return super.toString();
   }
 }

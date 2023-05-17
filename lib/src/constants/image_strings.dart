@@ -41,5 +41,6 @@ const String tProfileCupomImage = "assets/images/profile/cupom.png";
 
 // -- Budget
 const String tPayPalImage = "assets/images/budget/paypal.png";
+const String tPixImage = "assets/images/budget/image_pix.png";
 const String tCheckImage = "assets/images/budget/image-check.png";
 const String tClockImage = "assets/images/budget/clock.png";

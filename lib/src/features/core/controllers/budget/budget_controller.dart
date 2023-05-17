@@ -87,7 +87,7 @@ class BudgetController {
     }
   }
 
-  static Future<ApiResponse<Object>> createNewOrder(BudgetBodySend budgetBodySend) async {
+  static Future<ApiResponse<BudgetView>> createNewOrder(BudgetBodySend budgetBodySend) async {
     try {
 
       Uri uri = Uri.http(Config.apiURL, '/api/budgets/new-order', {'cupomCode': budgetBodySend.cupomCode});
@@ -102,7 +102,11 @@ class BudgetController {
       var response = await http.post(uri, body: json.encode(budgetBodySend.listItems), headers: headers);
 
       if (response.statusCode == 201) {
-        return ApiResponse.okNotResult();
+        Map<String, dynamic> mapResponse = json.decode(response.body);
+
+        final contentBudget = BudgetView.fromJson(mapResponse);
+
+        return ApiResponse.ok(contentBudget);
       } else {
         Map<String, dynamic> mapResponse = json.decode(response.body);
         ErrorView error = ErrorView.fromJson(mapResponse);

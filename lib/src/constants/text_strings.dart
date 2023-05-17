@@ -7,11 +7,19 @@ const String tLogin = "Entrar";
 const String tEmail = "E-Mail";
 const String tBirdhDate = "Data de nascimento";
 const String tSignup = "Increver-se";
+const String tSave = "Salvar";
 const String tPhoneNo = "Celular";
 const String tPassword = "Sua senha";
 const String tFullName = "Nome completo";
 const String tForgetPassword = "Esqueceu a senha";
 const String tSignInWithGoogle = "Logar com o google";
+const String tPayPal = "PayPal";
+const String tPayPalDescription = "Pagamento por cartão de crédito";
+
+const String tPix = "PIX";
+const String tPixDescription = "Pagamento por meil de uma chave pix";
+const String tSelectFormPayment = "Selecionar forma de pagamento!";
+const String tSelectFormPaymentDescription = "Selecionar forma de pagamento de sua preferência.";
 
 
 // -- Splash Screen Text
@@ -47,6 +55,9 @@ const String tDontHaveAnAccount = "Não tem uma conta? ";
 const String tSignUpTitle = "Faça seu cadastro!";
 const String tSignUpSubTitle = "Crie seu perfil para ter acesso a todas os produtos.";
 const String tAlreadyHaveAnAccount = "Já tem uma conta? ";
+
+const String tMyAccountTitle = "Meus dados";
+const String tMyAccountSubTitle = "Complete todas informações para não perder cupons com descontos";
 
 
 // -- Forget Password Text

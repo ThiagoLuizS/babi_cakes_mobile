@@ -18,10 +18,11 @@ import 'package:get/get_core/src/get_main.dart';
 
 class CategoryGroupItemComponent extends StatefulWidget {
   final CategoryView categoryView;
+  final bool isLoading;
 
   const CategoryGroupItemComponent(
       {Key? key,
-      required this.categoryView})
+      required this.categoryView, required this.isLoading})
       : super(key: key);
 
   @override
@@ -33,30 +34,27 @@ class _CategoryGroupItemComponentState
     extends State<CategoryGroupItemComponent> {
   final CategoryBloc _bloc = CategoryBloc();
   final ProductBloc _productBloc = ProductBloc();
-  late ContentProduct contentProduct = ContentProduct(content: []);
-  late bool isLoadingProducts = true;
   late String productName = '';
   int pageSize = 4;
 
   @override
-  void initState() {
-    super.initState();
-    _onGetProductAll(widget.categoryView.id, productName, pageSize);
+  void dispose() {
+    _bloc.dispose();
+    _productBloc.dispose();
+    super.dispose();
+
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    _bloc.dispose();
-    _productBloc.dispose();
+  void initState() {
+    super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
     final txtTheme = Theme.of(context).textTheme;
 
-    return contentProduct.content.isNotEmpty ? Column(
+    return widget.categoryView.productViews != null && widget.categoryView.productViews!.isNotEmpty ? Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
@@ -66,7 +64,7 @@ class _CategoryGroupItemComponentState
             Padding(
               padding: const EdgeInsets.only(left: 12, bottom: 10),
               child: Text(
-                widget.categoryView.name,
+                widget.categoryView.name!,
                 style: const TextStyle(fontSize: 14, color: AppColors.grey),
               ),
             ),
@@ -92,16 +90,16 @@ class _CategoryGroupItemComponentState
                 child: NotificationListener<ScrollNotification>(
                   onNotification: (scrollNotification) => onNotification(scrollNotification),
                   child: ListView.builder(
-                    itemCount: contentProduct.content.length,
+                    itemCount: widget.categoryView.productViews?.length,
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     physics: const AlwaysScrollableScrollPhysics(),
                     itemBuilder: (BuildContext context, int index) =>
                         GestureDetector(
-                          onTap: () => Get.offAll(() => Product(productView: contentProduct.content[index])),
+                          onTap: () => Get.offAll(() => Product(productView: widget.categoryView.productViews![index])),
                       child: ProductForCategoryDashboardComponent(
-                        isLoadingProducts: isLoadingProducts,
-                        productView: contentProduct.content[index],
+                        isLoadingProducts: widget.isLoading,
+                        productView: widget.categoryView.productViews![index],
                         txtTheme: txtTheme,
                       ),
                     ),
@@ -116,27 +114,9 @@ class _CategoryGroupItemComponentState
   }
 
   bool onNotification(ScrollNotification scrollInfo) {
-    if (scrollInfo is ScrollEndNotification && !isLoadingProducts && scrollInfo.metrics.pixels ==
+    if (scrollInfo is ScrollEndNotification && scrollInfo.metrics.pixels ==
         scrollInfo.metrics.maxScrollExtent) {
-      _onGetProductAll(widget.categoryView.id, productName, pageSize += 1);
     }
     return false;
-  }
-
-  _onGetProductAll(int categoryId, String productName, pageSize) async {
-    setState(() {
-      isLoadingProducts = true;
-    });
-    ApiResponse<ContentProduct> response =
-    await _productBloc.getAllByCategoryPage(0, pageSize, categoryId, productName, '');
-
-    if (response.ok) {
-      setState(() {
-        isLoadingProducts = false;
-        contentProduct = response.result;
-      });
-    } else {
-      alertToast(context, response.erros[0].toString(), 3, Colors.grey, false);
-    }
   }
 }

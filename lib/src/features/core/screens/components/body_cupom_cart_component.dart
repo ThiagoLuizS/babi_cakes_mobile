@@ -1,7 +1,7 @@
 import 'package:babi_cakes_mobile/src/constants/image_strings.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/shopping_cart/shopping_cart_controller.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/cupom/content_cupom.dart';
-import 'package:babi_cakes_mobile/src/features/core/screens/components/body_show_bar_cupom_shopping_cart_component.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/shopping_cart/body_show_bar_cupom_shopping_cart_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart' hide ModalBottomSheetRoute;

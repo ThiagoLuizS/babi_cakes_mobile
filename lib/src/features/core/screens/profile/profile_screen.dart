@@ -1,16 +1,20 @@
 import 'package:babi_cakes_mobile/src/constants/image_strings.dart';
 import 'package:babi_cakes_mobile/src/features/authentication/models/login/token_dto.dart';
+import 'package:babi_cakes_mobile/src/features/authentication/screens/signup/widgets/signup_form_widget.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/event/event_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/app_bar_default_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/liquid_refresh_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/shimmer_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/address/profile_address_screen.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/budget/component/pay_pal_integration.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/component/profile_card_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/cupom/profile_cupom_screen.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/notification/profile_notification_screen.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import 'account/my_account.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -97,10 +101,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ProfileCardComponent(
-                            onTap: () {},
-                            icon: const Icon(Icons.chat_outlined),
-                            title: 'Chats',
-                            subTitle: 'Minhas conversas',
+                            onTap: () => Get.offAll(() => const ProfileAddressScreen()),
+                            icon: Icon(Icons.location_on_outlined),
+                            title: 'Endereço',
+                            subTitle: 'Meus endereços de entrega',
                             isDialog: false, notification: false,
                           ),
                           ShimmerComponent(
@@ -122,15 +126,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ProfileCardComponent(
-                            onTap: () => Get.offAll(() => const ProfileAddressScreen()),
-                            icon: Icon(Icons.location_on_outlined),
-                            title: 'Endereço',
-                            subTitle: 'Meus endereços de entrega',
+                            onTap: () => Get.offAll(() => const MyAccount()),
+                            icon: const Icon(Icons.location_on_outlined),
+                            title: 'Meus dados',
+                            subTitle: 'Minhas informações da conta',
                             isDialog: false, notification: false,
                           ),
                           ProfileCardComponent(
                             onTap: () => Get.offAll(() => const ProfileCupomScreen()),
-                            icon: Icon(Icons.notification_add_outlined),
+                            icon: const Icon(Icons.notification_add_outlined),
                             title: 'Cupons',
                             subTitle: 'Meus cupons de desconto',
                             isDialog: false, notification: false,
@@ -143,13 +147,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          ProfileCardComponent(
-                            onTap: () {},
-                            icon: Icon(Icons.location_on_outlined),
-                            title: 'Meus dados',
-                            subTitle: 'Minhas informações da conta',
-                            isDialog: false, notification: false,
-                          ),
+
                           ProfileCardComponent(
                             onTap: () {},
                             icon: Icon(Icons.exit_to_app),

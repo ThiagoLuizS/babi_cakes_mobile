@@ -3,6 +3,7 @@ import 'package:babi_cakes_mobile/src/features/core/controllers/budget/budget_pr
 import 'package:babi_cakes_mobile/src/features/core/controllers/charge/charge_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/budget/budget_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/charge/charge.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/budget/component/pay_pal_integration.dart';
 import 'package:babi_cakes_mobile/src/features/core/service/budget/budget_service.dart';
 import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
@@ -13,19 +14,22 @@ import 'package:flutter/services.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
-class PixPaymentButtonComponent extends StatefulWidget {
+import '../../models/budget/optiona_payment.dart';
+
+class PaymentButtonComponent extends StatefulWidget {
   final BudgetView budgetView;
   final String value;
+  final OptionalPayment optionalPayment;
 
-  const PixPaymentButtonComponent({Key? key, required this.budgetView, this.value = ""})
+  const PaymentButtonComponent({Key? key, required this.budgetView, required this.optionalPayment, this.value = ""})
       : super(key: key);
 
   @override
-  State<PixPaymentButtonComponent> createState() =>
-      _PixPaymentButtonComponentState();
+  State<PaymentButtonComponent> createState() =>
+      _PaymentButtonComponentState();
 }
 
-class _PixPaymentButtonComponentState extends State<PixPaymentButtonComponent> {
+class _PaymentButtonComponentState extends State<PaymentButtonComponent> {
   late bool isDurationMessaCopy = false;
   final ChargeBloc _blocCharge = ChargeBloc();
   late Charge charge;
@@ -36,7 +40,6 @@ class _PixPaymentButtonComponentState extends State<PixPaymentButtonComponent> {
     // TODO: implement initState
     super.initState();
     isLoading = false;
-    _createImmediateCharge();
   }
 
   @override
@@ -48,123 +51,7 @@ class _PixPaymentButtonComponentState extends State<PixPaymentButtonComponent> {
             width: double.infinity,
             child: ElevatedButton(
                 onPressed: () {
-                  showBarModalBottomSheet<void>(
-                    backgroundColor: Colors.white,
-                    expand: false,
-                    context: context,
-                    builder: (BuildContext context) {
-                      return StatefulBuilder(
-                          builder: (BuildContext context, setState){
-                            return SizedBox(
-                              height: height / 2,
-                              child: CustomScrollView(
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                slivers: [
-                                  SliverList(
-                                    delegate: SliverChildListDelegate(
-                                      [
-                                        Padding(
-                                          padding: const EdgeInsets.all(20),
-                                          child: Flex(
-                                              direction: Axis.vertical,
-                                              children: [
-                                                Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    const Padding(
-                                                      padding: EdgeInsets.only(top: 15),
-                                                      child: Text("Copie o pix para o pagamento"),
-                                                    ),
-                                                    isDurationMessaCopy ? Container(
-                                                      width: double.infinity,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius: BorderRadius.circular(4),
-                                                          color: AppColors.grey2
-                                                      ),
-                                                      child: const Padding(
-                                                        padding: EdgeInsets.all(8.0),
-                                                        child: Center(child: Text("Pix copiado para área de transferência")),
-                                                      ),
-                                                    ) : Container(),
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(top: 20),
-                                                      child: Row(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
-                                                        children: [
-                                                          GestureDetector(
-                                                              onTap: () {
-                                                                setState(() {isDurationMessaCopy = true;});
-                                                                Future.delayed(const Duration(seconds: 5), () async {
-                                                                  setState(() {isDurationMessaCopy = false;});
-                                                                });
-                                                                Clipboard.setData(ClipboardData(text: charge.brCode));
-                                                              },
-                                                              child: Text("copiar", style: TextStyle(color: AppColors.grey5),)
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(top: 25),
-                                                      child: Container(
-                                                        width: double.infinity,
-                                                        decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.circular(5),
-                                                            color: AppColors.grey2
-                                                        ),
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.all(8.0),
-                                                          child: Text(charge.brCode),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                                      children: [
-                                                         Padding(
-                                                           padding: const EdgeInsets.only(left: 10, top: 20),
-                                                           child: Stack(
-                                                              children: const [
-                                                                Image(
-                                                                    image: AssetImage(tClockImage),
-                                                                    width: 50,
-                                                                    height: 50,
-                                                                    color: Colors.grey
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 50,
-                                                                  height: 50,
-                                                                  child: CircularProgressIndicator(color: Colors.green,),
-                                                                )
-                                                              ],
-                                                            ),
-                                                         ),
-                                                          const Padding(
-                                                            padding: EdgeInsets.only(left: 10, top: 20),
-                                                            child: Center(
-                                                                  child: Text(
-                                                                      "Aguardando pagamento...")),
-                                                          )
-                                                      ],
-                                                    )
-                                                   
-                                                  ],
-                                                ),
-                                              ]
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }
-                      );
-                    },
-                  );
+                  _optionalShowPayment(height);
                 },
                 style: ElevatedButton.styleFrom(
                   primary: AppColors.milkCream,
@@ -186,18 +73,27 @@ class _PixPaymentButtonComponentState extends State<PixPaymentButtonComponent> {
 
   }
 
-  _createImmediateCharge() async {
-    if(widget.budgetView.budgetStatusEnum.type == BudgetService.awaitPayment) {
+  _optionalShowPayment(double height) {
+    if(widget.optionalPayment == OptionalPayment.PIX) {
+      _createImmediateChargeAndGetPix(height);
+    } else {
+      PayPalIntegration.getPaypal(context);
+    }
+  }
+
+  _createImmediateChargeAndGetPix(double height) async {
+    if(widget.budgetView.budgetStatusEnum!.type == BudgetService.awaitPayment) {
       setState(() {
         isLoading = true;
       });
       ApiResponse<Charge> response =
-      await _blocCharge.createImmediateCharge(widget.budgetView.id);
+      await _blocCharge.createImmediateCharge(widget.budgetView.id!);
 
       if (response.ok) {
         setState(() {
           charge = response.result;
         });
+        PayPalIntegration.getPix(context, height, isDurationMessaCopy, charge);
       } else {
         alertToast(context, response.erros[0].toString(), 8, Colors.grey, false);
       }

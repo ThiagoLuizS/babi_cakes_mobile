@@ -1,5 +1,11 @@
+
+
+import 'dart:async';
+
 import 'package:babi_cakes_mobile/src/constants/colors.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/budget/budget_bloc.dart';
+import 'package:babi_cakes_mobile/src/features/core/controllers/budget/budget_event.dart';
+import 'package:babi_cakes_mobile/src/features/core/controllers/budget/budget_state.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/budget/budget_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/budget/content_budget.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/budget/component/budget_card_list_view.dart';
@@ -13,8 +19,11 @@ import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
 import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+
+import '../../controllers/budget/budget_bloc_state.dart';
 
 class BudgetListView extends StatefulWidget {
 
@@ -26,14 +35,17 @@ class BudgetListView extends StatefulWidget {
 
 class _BudgetListViewState extends State<BudgetListView> {
   final _blocBudget = BudgetBloc();
-  late ContentBudget contentBudget = ContentBudget(content: []);
+  // late ContentBudget contentBudget = ContentBudget(content: []);
   late bool isLoadingBudget = true;
+
+  late final BudgetBlocState budgetBlocState;
 
   final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey =
   GlobalKey<LiquidPullToRefreshState>();
 
   @override
   void dispose() {
+    budgetBlocState.close();
     _blocBudget.dispose();
     super.dispose();
   }
@@ -41,13 +53,16 @@ class _BudgetListViewState extends State<BudgetListView> {
   @override
   void initState() {
     super.initState();
-    isLoadingBudget = true;
-    _getBudgetPageByUser();
+    budgetBlocState = BudgetBlocState();
+    budgetBlocState.add(LoadBudgetEvent(page: 0, size: 50));
+
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      _listenBloc();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     return WillPopScope(
       onWillPop: () {
         return Future(() => false);
@@ -69,45 +84,50 @@ class _BudgetListViewState extends State<BudgetListView> {
             )),
         backgroundColor: Colors.white,
         body: LiquidRefreshComponent(
-          onRefresh: () => _getBudgetPageByUser(),
+          onRefresh: () => budgetBlocState.add(LoadBudgetEvent(page: 0, size: 50)),
           child: CustomScrollView(
             slivers: [
               SliverList(
                 delegate: SliverChildListDelegate(
                   [
-                    !isLoadingBudget ? Padding(
+                    Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         children: [
-                          ListView.builder(
-                            itemCount: contentBudget.content.length,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            physics: const BouncingScrollPhysics(),
-                            itemBuilder: (BuildContext context, int index) =>
-                                GestureDetector(
-                              child: ShimmerComponent(
-                                isLoading: isLoadingBudget,
-                                child: BudgetCardListView(
-                                  budgetView: contentBudget.content[index],
-                                ),
-                              ),
-                            ),
+                          BlocBuilder<BudgetBlocState, BudgetState>(
+                              bloc: budgetBlocState,
+                              buildWhen: (previousState, state) {
+                                return true;
+                              },
+                              builder: (context, state) {
+                                final contentBudget = state.contentBudget;
+
+                                if(state is BudgetErrorState) {
+                                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                                    var data = state.error;
+                                    alertToast(context, data, 3, Colors.grey, false);
+                                  });
+                                }
+                                return ListView.builder(
+                                  itemCount: contentBudget!.content.length,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemBuilder: (BuildContext context, int index) =>
+                                      GestureDetector(
+                                        child: ShimmerComponent(
+                                          isLoading: false,
+                                          child: BudgetCardListView(
+                                            budgetView: contentBudget.content[index],
+                                          ),
+                                        ),
+                                      ),
+                                );
+                            }
                           ),
                         ],
                       ),
-                    ) : ShimmerComponent(child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: ListView.builder(
-                          itemCount: 4,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          physics: const BouncingScrollPhysics(),
-                          itemBuilder: (BuildContext context, int index) => Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Container(height: 200, color: Colors.black,),
-                          )),
-                    )),
+                    ),
                   ],
                 ),
               ),
@@ -118,24 +138,14 @@ class _BudgetListViewState extends State<BudgetListView> {
     );
   }
 
-  _getBudgetPageByUser() async {
-    setState(() {
-      isLoadingBudget = true;
-    });
-
-    ApiResponse<ContentBudget> response =
-        await _blocBudget.getBudgetPageByUser(0, 10);
-
-    if (response.ok) {
-      setState(() {
-        contentBudget = response.result;
-      });
-    } else {
-      alertToast(context, response.erros[0].toString(), 3, Colors.grey, false);
-    }
-
-    setState(() {
-      isLoadingBudget = false;
+  _listenBloc() {
+    budgetBlocState.stream.listen((event) {
+      if(event is BudgetErrorState) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          var data = event.error;
+          alertToast(context, data, 3, Colors.grey, false);
+        });
+      }
     });
   }
 }

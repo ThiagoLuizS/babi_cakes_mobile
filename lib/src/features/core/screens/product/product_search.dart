@@ -208,7 +208,7 @@ class _ProductSearchState extends State<ProductSearch> {
     ApiResponse<ContentProduct> response =
         await _productBloc.getAllByPage(0, pageSize, productName, filterParam.param!);
 
-    if (response.ok) {
+    if (response.ok && mounted) {
       setState(() {
         contentProduct = response.result;
         isLoading = false;

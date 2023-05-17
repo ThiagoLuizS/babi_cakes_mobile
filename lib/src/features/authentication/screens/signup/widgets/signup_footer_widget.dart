@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../../constants/image_strings.dart';
+import 'package:babi_cakes_mobile/src/features/authentication/screens/components/sign_in_button_google.dart';
 import '../../../../../constants/text_strings.dart';
 import '../../login/login_screen.dart';
 
@@ -14,17 +14,7 @@ class SignUpFooterWidget extends StatelessWidget {
     return Column(
       children: [
         const Text("OR"),
-        SizedBox(
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: () {},
-            icon: const Image(
-              image: AssetImage(tGoogleLogoImage),
-              width: 20.0,
-            ),
-            label: Text(tSignInWithGoogle.toUpperCase()),
-          ),
-        ),
+        const SignInButtonGoogle(),
         TextButton(
           onPressed: () => Get.offAll(() => const LoginScreen()),
           child: Text.rich(TextSpan(children: [
