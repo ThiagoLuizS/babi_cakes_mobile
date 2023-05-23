@@ -52,6 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60),
@@ -67,7 +68,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           slivers: [
             SliverToBoxAdapter(
               child: SizedBox(
-                height: height,
                 child: Column(
                   children: [
                     Padding(
@@ -95,68 +95,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ProfileCardComponent(
-                            onTap: () => Get.offAll(() => const ProfileAddressScreen()),
-                            icon: Icon(Icons.location_on_outlined),
-                            title: 'Endereço',
-                            subTitle: 'Meus endereços de entrega',
-                            isDialog: false, notification: false,
-                          ),
-                          ShimmerComponent(
-                            isLoading: isLoading,
-                            child: ProfileCardComponent(
-                              onTap: () => Get.offAll(() => const ProfileNotificationScreen()),
-                              icon: const Icon(Icons.notification_add_outlined),
-                              title: 'Notificações',
-                              subTitle: 'Minha central de notificações',
-                              isDialog: false, notification: true, quantityNotification: countEvent,
-                            ),
-                          )
-                        ],
-                      ),
+                    Row(
+                      children: [
+                        ProfileCardComponent(
+                          onTap: () => Get.offAll(() => const ProfileAddressScreen()),
+                          icon: const Icon(Icons.location_on_outlined),
+                          title: 'Endereço',
+                          subTitle: 'Meus endereços de entrega',
+                          isDialog: false, notification: false,
+                        )
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ProfileCardComponent(
-                            onTap: () => Get.offAll(() => const MyAccount()),
-                            icon: const Icon(Icons.location_on_outlined),
-                            title: 'Meus dados',
-                            subTitle: 'Minhas informações da conta',
-                            isDialog: false, notification: false,
-                          ),
-                          ProfileCardComponent(
-                            onTap: () => Get.offAll(() => const ProfileCupomScreen()),
-                            icon: const Icon(Icons.notification_add_outlined),
-                            title: 'Cupons',
-                            subTitle: 'Meus cupons de desconto',
-                            isDialog: false, notification: false,
-                          )
-                        ],
-                      ),
+                    Row(
+                      children: [
+                        ProfileCardComponent(
+                          onTap: () => Get.offAll(() => const ProfileNotificationScreen()),
+                          icon: const Icon(Icons.notification_add_outlined),
+                          title: 'Notificações',
+                          subTitle: 'Minha central de notificações',
+                          isDialog: false, notification: true, quantityNotification: countEvent,
+                        )
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-
-                          ProfileCardComponent(
-                            onTap: () {},
-                            icon: Icon(Icons.exit_to_app),
-                            title: 'Sair',
-                            subTitle: 'Sair do Babi Cakes',
-                            isDialog: true, notification: false,
-                          ),
-                        ],
-                      ),
+                    Row(
+                      children: [
+                        ProfileCardComponent(
+                          onTap: () => Get.offAll(() => const MyAccount()),
+                          icon: const Icon(Icons.location_on_outlined),
+                          title: 'Meus dados',
+                          subTitle: 'Minhas informações da conta',
+                          isDialog: false, notification: false,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        ProfileCardComponent(
+                          onTap: () => Get.offAll(() => const ProfileCupomScreen()),
+                          icon: const Icon(Icons.notification_add_outlined),
+                          title: 'Cupons',
+                          subTitle: 'Meus cupons de desconto',
+                          isDialog: false, notification: false,
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        ProfileCardComponent(
+                          onTap: () {},
+                          icon: Icon(Icons.exit_to_app),
+                          title: 'Sair',
+                          subTitle: 'Sair do Babi Cakes',
+                          isDialog: true, notification: false,
+                        ),
+                      ],
                     ),
                   ],
                 ),

@@ -101,6 +101,7 @@ class _BudgetListViewState extends State<BudgetListView> {
                               },
                               builder: (context, state) {
                                 final contentBudget = state.contentBudget;
+                                final itemCount = contentBudget!.content.length;
 
                                 if(state is BudgetErrorState) {
                                   WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -108,18 +109,23 @@ class _BudgetListViewState extends State<BudgetListView> {
                                     alertToast(context, data, 3, Colors.grey, false);
                                   });
                                 }
+
+                                if(state.isLoading) {
+                                  return ShimmerComponent(
+                                    isLoading: true,
+                                    child: SizedBox(width: double.infinity, height: 200, child: Container(decoration: BoxDecoration(color: AppColors.grey3),)),
+                                  );
+                                }
+
                                 return ListView.builder(
-                                  itemCount: contentBudget!.content.length,
+                                  itemCount: itemCount,
                                   shrinkWrap: true,
                                   scrollDirection: Axis.vertical,
                                   physics: const BouncingScrollPhysics(),
                                   itemBuilder: (BuildContext context, int index) =>
                                       GestureDetector(
-                                        child: ShimmerComponent(
-                                          isLoading: false,
-                                          child: BudgetCardListView(
-                                            budgetView: contentBudget.content[index],
-                                          ),
+                                        child:BudgetCardListView(
+                                          budgetView: contentBudget.content[index],
                                         ),
                                       ),
                                 );

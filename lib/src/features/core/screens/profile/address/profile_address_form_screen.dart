@@ -82,7 +82,6 @@ class _ProfileAddressFormScreenState extends State<ProfileAddressFormScreen> {
         slivers: [
           SliverToBoxAdapter(
             child: Container(
-              height: height,
               padding: tPageWithTopIconPadding,
               child: Form(
                 key: _formSaveKey,

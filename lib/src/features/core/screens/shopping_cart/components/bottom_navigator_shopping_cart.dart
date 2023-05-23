@@ -2,8 +2,10 @@
 
 import 'dart:async';
 
+import 'package:babi_cakes_mobile/src/features/core/controllers/parameterization/parameterization_event.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +15,7 @@ import '../../../controllers/budget/budget_bloc_state.dart';
 import '../../../controllers/budget/budget_event.dart';
 import '../../../controllers/budget/budget_state.dart';
 import '../../../controllers/parameterization/parameterization_bloc.dart';
+import '../../../controllers/parameterization/parameterization_state.dart';
 import '../../../controllers/shopping_cart/shopping_cart_controller.dart';
 import '../../../models/budget/budget_body_send.dart';
 import '../../../models/cupom/cupom_view.dart';
@@ -44,7 +47,7 @@ class _BottomNavigatorShoppingCartState extends State<BottomNavigatorShoppingCar
     blocParameterization = ParameterizationBloc();
     budgetBlocState = BudgetBlocState();
 
-    _getFreightCost();
+    blocParameterization.add(LoadParameterizationEvent());
 
     Timer.periodic(const Duration(seconds: 1), (timer) {
       _listenBloc();
@@ -53,92 +56,100 @@ class _BottomNavigatorShoppingCartState extends State<BottomNavigatorShoppingCar
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-
-    blocParameterization.dispose();
+    blocParameterization.close();
     budgetBlocState.close();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ShoppingCartController>(
         builder: (context, cart, child) {
-          return Container(
-            height: 150,
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(20),
-                  topLeft: Radius.circular(20),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0x32989191),
-                    offset: Offset(0.4, 0.4),
-                    blurRadius: 1.4,
-                    spreadRadius: 1.4,
-                  ),
-                ],
-                color: Colors.white),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16, top: 30),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text("Total com a entrega",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold)),
-                      Text(
-                        UtilBrasilFields.obterReal(
-                            cart.totalPrice + freightCost - (cart.cupomView != null ? cart.cupomView!.cupomValue : 0.0),
-                            moeda: true,
-                            decimal: 2),
-                        style: const TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.bold),
-                      ),
-                      RotationTransition(
-                        turns: const AlwaysStoppedAnimation(90 / 360),
-                        child: IconButton(
-                            onPressed: () => {_showBarAmountDetails(cart.totalPrice, freightCost, cart.cupomView)},
-                            icon: const Icon(
-                              Icons.arrow_forward_ios_outlined,
-                              size: 15,
-                            )),
+          return BlocBuilder<ParameterizationBloc, ParameterizationState>(
+            bloc: blocParameterization,
+            buildWhen: (previousState, state) {
+              return true;
+            },
+            builder: (context, state) {
+              late double freightCost = state.parameterizationView.freightCost!;
+
+              return Container(
+                height: 150,
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      topLeft: Radius.circular(20),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0x32989191),
+                        offset: Offset(0.4, 0.4),
+                        blurRadius: 1.4,
+                        spreadRadius: 1.4,
                       ),
                     ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: isLoadingBudget
-                          ? ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                              primary: AppColors.berimbau,
-                                  side: BorderSide.none),
-                              onPressed: () {
-                                _createNewOrder(cart);
-                              },
-                              child: const Text("Continuar"),
-                            )
-                          : const SizedBox(
-                        height: 25,
-                        child: Center(
-                          child: SizedBox(
+                    color: Colors.white),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 30),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text("Total com a entrega",
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.bold)),
+                          Text(
+                            UtilBrasilFields.obterReal(
+                                cart.totalPrice + freightCost - (cart.cupomView != null ? cart.cupomView!.cupomValue : 0.0),
+                                moeda: true,
+                                decimal: 2),
+                            style: const TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.bold),
+                          ),
+                          RotationTransition(
+                            turns: const AlwaysStoppedAnimation(90 / 360),
+                            child: IconButton(
+                                onPressed: () => {_showBarAmountDetails(cart.totalPrice, freightCost, cart.cupomView)},
+                                icon: const Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                  size: 15,
+                                )),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: isLoadingBudget
+                              ? ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: AppColors.berimbau,
+                                side: BorderSide.none),
+                            onPressed: () {
+                              _createNewOrder(cart);
+                            },
+                            child: const Text("Continuar"),
+                          )
+                              : const SizedBox(
                             height: 25,
-                            width: 25,
-                            child: CircularProgressIndicator(
-                                color: AppColors.berimbau),
+                            child: Center(
+                              child: SizedBox(
+                                height: 25,
+                                width: 25,
+                                child: CircularProgressIndicator(
+                                    color: AppColors.berimbau),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
+                ),
+              );
+            }
           );
         }
     );
@@ -228,16 +239,6 @@ class _BottomNavigatorShoppingCartState extends State<BottomNavigatorShoppingCar
       BudgetBodySend budgetBodySend = BudgetService.createOrderForSend(cart.items, cart.cupomView);
       budgetBlocState.add(CreateNewOrder(budgetBodySend: budgetBodySend));
       cart.removeAll();
-    }
-  }
-
-  _getFreightCost() async {
-    ApiResponse<double> response = await blocParameterization.getFreightCost();
-
-    if (response.ok) {
-      setState(() {
-        freightCost = response.result;
-      });
     }
   }
 

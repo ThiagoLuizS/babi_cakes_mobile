@@ -58,40 +58,47 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
               child: isShowWelcome ? Container(
                 padding: const EdgeInsets.all(tDefaultSize),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Hero(
-                        tag: 'welcome-image-tag',
-                        child: Image(
-                            image: const AssetImage(tSplashImage),
-                            height: height * 0.6)),
-                    Column(
-                      children: [
-                        Text(tWelcomeTitle,
-                            style: Theme.of(context).textTheme.headline2),
-                        Text(tWelcomeSubTitle,
-                            style: Theme.of(context).textTheme.bodyText1,
-                            textAlign: TextAlign.center),
-                      ],
+                child: CustomScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  slivers: [
+                    SliverToBoxAdapter(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Hero(
+                                tag: 'welcome-image-tag',
+                                child: Image(
+                                    image: const AssetImage(tSplashImage),
+                                    height: height * 0.6)),
+                            Column(
+                              children: [
+                                Text(tWelcomeTitle,
+                                    style: Theme.of(context).textTheme.headline2),
+                                Text(tWelcomeSubTitle,
+                                    style: Theme.of(context).textTheme.bodyText1,
+                                    textAlign: TextAlign.center),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: OutlinedButton(
+                                    onPressed: () => Get.to(() => const LoginScreen()),
+                                    child: Text(tLogin.toUpperCase()),
+                                  ),
+                                ),
+                                const SizedBox(width: 10.0),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: () => Get.to(() => const SignUpScreen()),
+                                    child: Text(tSignup.toUpperCase()),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: OutlinedButton(
-                            onPressed: () => Get.to(() => const LoginScreen()),
-                            child: Text(tLogin.toUpperCase()),
-                          ),
-                        ),
-                        const SizedBox(width: 10.0),
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () => Get.to(() => const SignUpScreen()),
-                            child: Text(tSignup.toUpperCase()),
-                          ),
-                        ),
-                      ],
-                    )
                   ],
                 ),
               ) : Container(),

@@ -11,7 +11,7 @@ import 'budget_state.dart';
 
 class BudgetBlocState extends Bloc<BudgetEvent, BudgetState> {
 
-  BudgetBlocState() : super(BudgetInitialState(contentBudget: ContentBudget(content: []), budgetView: BudgetView(), error: '')) {
+  BudgetBlocState() : super(BudgetInitialState(contentBudget: ContentBudget(content: []), budgetView: BudgetView(), error: '', isLoading: true)) {
 
     on<LoadBudgetEvent>((event, emit) => eventLoad(event, emit));
 
@@ -24,18 +24,18 @@ class BudgetBlocState extends Bloc<BudgetEvent, BudgetState> {
   eventLoad(LoadBudgetEvent event, Emitter emitter) async {
     ApiResponse<ContentBudget> contentBudget = await BudgetController.getBudgetPageByUser(event.size, event.page);
     if(contentBudget.ok) {
-      emitter(BudgetSuccessState(contentBudget: contentBudget.result, budgetView: BudgetView(), error: ''));
+      emitter(BudgetSuccessState(contentBudget: contentBudget.result, budgetView: BudgetView(), error: '', isLoading: false));
     } else {
-      emitter(BudgetErrorState(error: contentBudget.erros[0], contentBudget: ContentBudget(content: []), budgetView: BudgetView()));
+      emitter(BudgetErrorState(error: contentBudget.erros[0], contentBudget: ContentBudget(content: []), budgetView: BudgetView(), isLoading: false));
     }
   }
 
   eventLoadId(LoadBudgetIdEvent event, Emitter emitter) async {
     ApiResponse<BudgetView> budgetView = await BudgetController.getBudgetByUserAndById(event.id);
     if(budgetView.ok) {
-      emitter(BudgetSuccessViewState(budgetView: budgetView.result, contentBudget: ContentBudget(content: []), error: ''));
+      emitter(BudgetSuccessViewState(budgetView: budgetView.result, contentBudget: ContentBudget(content: []), error: '', isLoading: false));
     } else {
-      emitter(BudgetErrorState(error: budgetView.erros[0], contentBudget: ContentBudget(content: []), budgetView: BudgetView()));
+      emitter(BudgetErrorState(error: budgetView.erros[0], contentBudget: ContentBudget(content: []), budgetView: BudgetView(), isLoading: false));
     }
   }
 
@@ -43,9 +43,9 @@ class BudgetBlocState extends Bloc<BudgetEvent, BudgetState> {
   eventCreate(CreateNewOrder event, Emitter emitter) async {
     ApiResponse<BudgetView> budgetView = await BudgetController.createNewOrder(event.budgetBodySend);
     if(budgetView.ok) {
-      emitter(BudgetSuccessViewState(budgetView: budgetView.result, contentBudget: ContentBudget(content: []), error: '' ));
+      emitter(BudgetSuccessViewState(budgetView: budgetView.result, contentBudget: ContentBudget(content: []), error: '', isLoading: false));
     } else {
-      emitter(BudgetErrorState(error: budgetView.erros[0], contentBudget: ContentBudget(content: []), budgetView: BudgetView()));
+      emitter(BudgetErrorState(error: budgetView.erros[0], contentBudget: ContentBudget(content: []), budgetView: BudgetView(), isLoading: false));
     }
   }
 }

@@ -52,12 +52,10 @@ class _BodyShowBarShoppingCartComponentState
     extends State<BodyShowBarShoppingCartComponent> {
   late ContentCupom contentCupom = ContentCupom(content: []);
   final BudgetBloc _blocBudget = BudgetBloc();
-  final ParameterizationBloc _blocParameterization = ParameterizationBloc();
   final ProfileBloc _blocProfile = ProfileBloc();
   AddressView? addressView;
   late bool isLoading = true;
   late bool isLoadingBudget = true;
-  late double freightCost = 0.0;
 
   late final BudgetBlocState budgetBlocState;
 
@@ -66,7 +64,6 @@ class _BodyShowBarShoppingCartComponentState
     budgetBlocState.close();
     _blocBudget.dispose();
     _blocProfile.dispose();
-    _blocParameterization.dispose();
     super.dispose();
   }
 

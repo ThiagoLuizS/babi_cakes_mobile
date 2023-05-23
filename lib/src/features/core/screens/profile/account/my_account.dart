@@ -16,6 +16,8 @@ import '../../../../../common_widgets/form/form_header_widget.dart';
 import '../../../../../constants/text_strings.dart';
 import '../../../../authentication/screens/signup/widgets/signup_footer_widget.dart';
 import '../../../../authentication/screens/welcome/welcome_screen.dart';
+import '../../components/app_bar_default_component.dart';
+import '../../dashboard/dashboard.dart';
 import 'my_account_form.dart';
 
 class MyAccount extends StatefulWidget {
@@ -57,26 +59,36 @@ class _MyAccountState extends State<MyAccount> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
+        floatingActionButton: FloatingActionButton.small(
+          onPressed: () {
+            Get.offAll(() => const Dashboard(indexBottomNavigationBar: 3));
+          },
+          backgroundColor: Colors.white,
+          child: const Icon(
+            Icons.arrow_back_ios_new_outlined,
+            color: AppColors.berimbau,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(60),
+          child: AppBarDefaultComponent(
+            title: "Meus Dados",
+          ),
+        ),
         body: SingleChildScrollView(
           child: Container(
             padding: tPageWithTopIconPadding,
             child: Column(
-              children: [
-                /// <- Back arrow button
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Align(
-                      alignment: Alignment.topLeft,
-                      child: GestureDetector(onTap: () => Get.offAll(() => const ProfileScreen()),child: const Icon(Icons.keyboard_backspace))
-                  ),
-                ),
-                const FormHeaderWidget(
+              children: const [
+                FormHeaderWidget(
                   image: tSplashImage,
                   title: tMyAccountTitle,
                   subTitle: tMyAccountSubTitle,
                   imageHeight: 0.15,
                 ),
-                const MyAccountForm(),
+                MyAccountForm(),
               ],
             ),
           ),

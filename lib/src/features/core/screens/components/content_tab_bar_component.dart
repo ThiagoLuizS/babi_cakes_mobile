@@ -62,9 +62,19 @@ class _ContentTabBarComponentState extends State<ContentTabBarComponent>
     double height = MediaQuery.of(context).size.height;
     return DefaultTabController(
       length: tabs.length,
-      child: bannerList.isNotEmpty
-          ? DashboardService.getScreenBannerForCategory(context, categoryView, bannerList, tabs, height, categoryViews, isLoading: isLoading)
-          : DashboardService.getScreenForCategory(context, categoryView, bannerList, tabs, height, categoryViews, isLoading: isLoading),
+      child: CustomScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        slivers: [
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: height,
+              child: bannerList.isNotEmpty
+                  ? DashboardService.getScreenBannerForCategory(context, categoryView, bannerList, tabs, height, categoryViews, isLoading: isLoading)
+                  : DashboardService.getScreenForCategory(context, categoryView, bannerList, tabs, height, categoryViews, isLoading: isLoading),
+            ),
+          )
+        ]
+      ),
     );
   }
 
