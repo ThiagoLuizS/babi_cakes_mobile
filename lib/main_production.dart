@@ -37,6 +37,8 @@ main() {
 
   WidgetsFlutterBinding.ensureInitialized();
 
+  Firebase.initializeApp();
+
   FirebaseMessaging.onMessage.listen(firebaseMessagingBackgroundHandler);
 
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);

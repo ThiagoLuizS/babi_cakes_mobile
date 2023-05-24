@@ -14,6 +14,7 @@ import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../models/user/photo_google_sign.dart';
 import 'account/my_account.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -26,6 +27,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   late Future<TokenDTO> future = TokenDTO.get();
   late String name = '';
+  late String photo = '';
   late bool isLoading = true;
   late int countEvent = 0;
   final EventBloc _blocEvent = EventBloc();
@@ -40,12 +42,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    future = TokenDTO.get();
-    future.then((TokenDTO token) => {
-          setState(() {
-            name = token.name;
-          })
-        });
+
+    _getUserSession();
     _countByDeviceUserAndVisualizedIsFalse();
   }
 
@@ -76,7 +74,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          const CircleAvatar(
+
+                          photo.isNotEmpty ? CircleAvatar(
+                            radius: 50,
+                            backgroundImage: NetworkImage(photo),
+                          ) : const CircleAvatar(
                             radius: 50,
                             backgroundImage: AssetImage(tProfileImage),
                           ),
@@ -143,7 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         ProfileCardComponent(
                           onTap: () {},
-                          icon: Icon(Icons.exit_to_app),
+                          icon: const Icon(Icons.exit_to_app),
                           title: 'Sair',
                           subTitle: 'Sair do Babi Cakes',
                           isDialog: true, notification: false,
@@ -176,5 +178,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       isLoading = false;
     });
+  }
+
+  _getUserSession() async {
+    TokenDTO tokenDTO = await TokenDTO.get();
+    PhotoGoogleSign photoGoogleSign = await PhotoGoogleSign.get();
+    if(tokenDTO!.name != null) {
+      setState(() {
+        name = tokenDTO.name!;
+      });
+    }
+    if(photoGoogleSign!.photo != null) {
+      setState(() {
+        photo = photoGoogleSign.photo!;
+      });
+    }
   }
 }

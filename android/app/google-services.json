@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1033023825210-718vsk6264hdkjpo8v3fpt0u3uj51t5m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.babi_cakes_mobile",
+            "certificate_hash": "70168027f375e9fe1d7d7f11f17e45a688fc8d68"
+          }
+        },
+        {
           "client_id": "1033023825210-21lsm9967k5a7b0djc0g9fqihjfi83kq.apps.googleusercontent.com",
           "client_type": 3
         }

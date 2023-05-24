@@ -3,14 +3,13 @@ import 'dart:convert' as convert;
 import 'package:babi_cakes_mobile/src/utils/general/prefs.dart';
 
 class TokenDTO {
-  late String token;
-  late String name;
-  late String phone;
-  late String email;
-  late String type;
+  late String token = "";
+  late String? name = "";
+  late String? phone = "";
+  late String? email = "";
+  late String? type = "";
 
-  TokenDTO(
-      {required this.token, required this.name, required this.phone, required this.email, required this.type});
+  TokenDTO();
 
   TokenDTO.fromJson(Map<String, dynamic> json) {
     token = json['token'];

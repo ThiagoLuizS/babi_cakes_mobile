@@ -1,3 +1,5 @@
+import 'package:babi_cakes_mobile/src/features/authentication/controllers/login/login_controller.dart';
+import 'package:babi_cakes_mobile/src/features/authentication/models/login/login_form.dart';
 import 'package:babi_cakes_mobile/src/features/authentication/models/login/token_dto.dart';
 import 'package:babi_cakes_mobile/src/features/authentication/screens/login/login_screen.dart';
 import 'package:babi_cakes_mobile/src/features/authentication/screens/components/sign_in_button_google.dart';
@@ -31,13 +33,6 @@ class ProfileCardComponent extends StatefulWidget {
 }
 
 class _ProfileCardComponentState extends State<ProfileCardComponent> {
-  static const List<String> scopes = [
-    'email',
-    'https://www.googleapis.com/auth/contacts.readonly',
-  ];
-
-  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: scopes);
-
   @override
   void initState() {
     super.initState();
@@ -47,137 +42,170 @@ class _ProfileCardComponentState extends State<ProfileCardComponent> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Flexible(
-      child: Container(child: !widget.isDialog
-          ? GestureDetector(
-        onTap: widget.onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            width: width,
-            height: 80,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: Colors.white,
-              boxShadow: const [
-                BoxShadow(
-                  color: Color(0x32989191),
-                  offset: Offset(0.4, 0.4),
-                  blurRadius: 1.4,
-                  spreadRadius: 1.4,
+      child: Container(
+        child: !widget.isDialog
+            ? GestureDetector(
+                onTap: widget.onTap,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: width,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: Colors.white,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x32989191),
+                          offset: Offset(0.4, 0.4),
+                          blurRadius: 1.4,
+                          spreadRadius: 1.4,
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        widget.notification && widget.quantityNotification > 0
+                            ? Expanded(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundColor: Colors.red,
+                                      radius: 20,
+                                      child: Center(
+                                          child: Text(
+                                        widget.quantityNotification.toString(),
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      )),
+                                    )
+                                  ],
+                                ),
+                              )
+                            : Container(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: widget.icon,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget.title,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 5),
+                                    child: Text(
+                                      widget.subTitle,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ],
-            ),
-            child: Column(
-              children: [
-                widget.notification && widget.quantityNotification > 0
-                    ? Expanded(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.end,
+              )
+            : GestureDetector(
+          onTap: widget.onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              width: width,
+              height: 80,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: Colors.white,
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0x32989191),
+                    offset: Offset(0.4, 0.4),
+                    blurRadius: 1.4,
+                    spreadRadius: 1.4,
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  widget.notification && widget.quantityNotification > 0
+                      ? Expanded(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.red,
+                          radius: 20,
+                          child: Center(
+                              child: Text(
+                                widget.quantityNotification.toString(),
+                                style: const TextStyle(
+                                    color: Colors.white),
+                              )),
+                        )
+                      ],
+                    ),
+                  )
+                      : Container(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.red,
-                        radius: 20,
-                        child: Center(
-                            child: Text(
-                              widget.quantityNotification.toString(),
-                              style: const TextStyle(color: Colors.white),
-                            )),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: widget.icon,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.title,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 5),
+                              child: Text(
+                                widget.subTitle,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
                       )
                     ],
                   ),
-                )
-                    : Container(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: widget.icon,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.title,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 5),
-                            child: Text(
-                              widget.subTitle,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-      )
-          : TextButton(
-        onPressed: () => showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            title: const Text('Sair'),
-            content: const Text('Deseja realmente sair?'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Não'),
-              ),
-              TextButton(
-                onPressed: () => _exist(),
-                child: const Text('Sim'),
-              ),
-            ],
-          ),
-        ),
-        child: Container(
-          width: width,
-          height: 150,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            color: Colors.white,
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0x32989191),
-                offset: Offset(0.4, 0.4),
-                blurRadius: 1.4,
-                spreadRadius: 1.4,
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                widget.icon,
-                Text(widget.title),
-                Text(widget.subTitle),
-              ],
-            ),
-          ),
-        ),
-      )),
+      ),
     );
   }
 
-  _exist() {
+  _exist() async {
     TokenDTO.clear();
-    _handleSignOut();
+    LoginForm.clear();
+    LoginController.logoutGoogle();
     Get.offAll(() => const LoginScreen());
   }
-
-  Future<void> _handleSignOut() => _googleSignIn.disconnect();
 }

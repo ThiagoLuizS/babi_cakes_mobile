@@ -13,6 +13,7 @@ import 'package:babi_cakes_mobile/src/features/core/service/notification/firebas
 import 'package:babi_cakes_mobile/src/features/core/service/notification/notification_service.dart';
 import 'package:babi_cakes_mobile/src/utils/theme/theme.dart';
 import 'package:event_bus/event_bus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
@@ -37,6 +38,8 @@ main() {
   Config.buildMode = Modo.development;
 
   WidgetsFlutterBinding.ensureInitialized();
+
+  Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   FirebaseMessaging.onMessage.listen(firebaseMessagingBackgroundHandler);
 
@@ -84,8 +87,6 @@ Future<void> notificationSettingAuthorized() async {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
