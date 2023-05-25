@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 
 class SearchProductComponent extends StatefulWidget {
   final TextEditingController filterController;
-  late ProductBloc productBloc;
 
-  SearchProductComponent({
+  const SearchProductComponent({
     Key? key,
-    required this.filterController,
-    required this.productBloc
+    required this.filterController
   }) : super(key: key);
 
   @override
@@ -20,7 +18,6 @@ class _SearchProductComponentState extends State<SearchProductComponent> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 

@@ -26,7 +26,7 @@ class FormHeaderWidget extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Column(
-      crossAxisAlignment: crossAxisAlignment,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Image(image: AssetImage(image), color: imageColor, height: size.height * imageHeight),
         SizedBox(height: heightBetween),

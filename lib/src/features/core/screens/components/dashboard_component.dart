@@ -5,7 +5,7 @@ import 'package:babi_cakes_mobile/src/features/core/models/category/content_cate
 import 'package:babi_cakes_mobile/src/features/core/screens/components/category_group_item_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/liquid_refresh_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/dashboard/dashboard.dart';
-import 'package:babi_cakes_mobile/src/features/core/screens/dashboard/widgets/category_session.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/dashboard/widgets/category_session_view.dart';
 import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:babi_cakes_mobile/src/utils/general/nav.dart';
@@ -25,17 +25,7 @@ class DashboardComponent extends StatefulWidget {
 }
 
 class _DashboardComponentState extends State<DashboardComponent> with SingleTickerProviderStateMixin {
-  final _productBloc = ProductBloc();
-  final _categoryBloc = CategoryBloc();
   late ContentCategory contentCategory = ContentCategory(content: []);
-
-
-  @override
-  void dispose() {
-    _categoryBloc.dispose();
-    _productBloc.dispose();
-    super.dispose();
-  }
 
   @override
   void initState() {
@@ -50,7 +40,7 @@ class _DashboardComponentState extends State<DashboardComponent> with SingleTick
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
-            CategorySession(categories: widget.categoryViews, categoryBloc: _categoryBloc),
+            //CategorySession(categories: widget.categoryViews, categoryBloc: _categoryBloc),
             SliverList(
               delegate: SliverChildListDelegate(
                 widget.categoryViews

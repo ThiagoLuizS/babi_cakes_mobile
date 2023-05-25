@@ -38,11 +38,15 @@ class TokenDTO {
   static Future<TokenDTO> get() async {
     String json = await Prefs.getString("TokenDTO.prefs");
 
-    Map<String, dynamic> map = convert.json.decode(json);
+    if(json.isNotEmpty) {
+      Map<String, dynamic> map = convert.json.decode(json);
 
-    TokenDTO loginForm = TokenDTO.fromJson(map);
+      TokenDTO loginForm = TokenDTO.fromJson(map);
 
-    return loginForm;
+      return loginForm;
+    }
+
+    return TokenDTO();
   }
 
   static void clear() {

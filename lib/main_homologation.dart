@@ -3,9 +3,11 @@ import 'dart:async';
 
 import 'package:babi_cakes_mobile/config.dart';
 import 'package:babi_cakes_mobile/firebase_options.dart';
+import 'package:babi_cakes_mobile/src/features/authentication/controllers/login/login_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/authentication/screens/splash_screen/splash_screen.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/budget/budget_bloc_state.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/budget/budget_provider_controller.dart';
+import 'package:babi_cakes_mobile/src/features/core/controllers/parameterization/parameterization_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/shopping_cart/shopping_cart_controller.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/event/event_message_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/service/event/providers_service.dart';
@@ -17,8 +19,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
 import 'package:flutter_bloc/flutter_bloc.dart' as bloc;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:get/get_navigation/src/routes/transitions_type.dart' as transe;
 import 'package:provider/provider.dart';
 
 
@@ -56,7 +59,9 @@ main() {
           ),
           Provider<NotificationService>(create: (context) => NotificationService(),),
           Provider<FirebaseMessagingService>(create: (context) => FirebaseMessagingService(context.read<NotificationService>()),),
-          bloc.BlocProvider<BudgetBlocState>(create: (context) => BudgetBlocState(),)
+          BlocProvider<BudgetBlocState>(create: (context) => BudgetBlocState(),),
+          BlocProvider<LoginBloc>(create: (context) => LoginBloc(),),
+          BlocProvider<ParameterizationBloc>(create: (context) => ParameterizationBloc(),),
         ],
         child: MyApp(),
       )
@@ -85,8 +90,7 @@ Future<void> notificationSettingAuthorized() async {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-
+  const MyApp({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -94,7 +98,7 @@ class MyApp extends StatelessWidget {
       theme: TAppTheme.lightTheme,
       darkTheme: TAppTheme.darkTheme,
       debugShowCheckedModeBanner: false,
-      defaultTransition: Transition.leftToRightWithFade,
+      defaultTransition: transe.Transition.leftToRightWithFade,
       transitionDuration: const Duration(milliseconds: 500),
       home: const SplashScreen(),
     );

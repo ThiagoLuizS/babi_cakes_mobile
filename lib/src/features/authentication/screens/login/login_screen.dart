@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: GestureDetector(onTap: () => Get.offAll(() => const LoginScreen()), child: const Icon(Icons.keyboard_backspace))
                     ),
                     const FormHeaderWidget(
-                      image: tWelcomeScreenImage,
+                      image: tSplashImage,
                       title: tLoginTitle,
                       subTitle: tLoginSubTitle,
                     ),
@@ -110,5 +110,6 @@ class _LoginScreenState extends State<LoginScreen> {
       loginBloc.add(LoadLoginEvent(email: loginForm!.email!, password: loginForm!.password!));
     }
   }
+
 }
 

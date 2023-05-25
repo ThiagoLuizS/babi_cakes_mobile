@@ -6,7 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 @JsonSerializable()
 class ContentProduct {
-  late List<ProductView> content = [];
+  late List<ProductView>? content = [];
   late int? size;
   late int? totalPages;
   late int? totalElements;
@@ -14,7 +14,7 @@ class ContentProduct {
   late bool? empty;
 
   ContentProduct(
-      { required this.content,
+      { this.content,
          this.size,
          this.totalPages,
          this.totalElements,

@@ -44,14 +44,12 @@ class BudgetDetailsComponent extends StatefulWidget {
 class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
     with TickerProviderStateMixin {
   final BudgetData budgetData = BudgetData();
-  final BudgetBloc _blocBudget = BudgetBloc();
   late final BudgetBlocState budgetBlocState;
   late BudgetView budgetView;
 
   @override
   void dispose() {
     budgetBlocState.close();
-    _blocBudget.dispose();
     super.dispose();
   }
 
@@ -411,9 +409,9 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
   }
 
   _getBudgetByUserAndById() {
-    if(!budgetBlocState.isClosed) {
+    Future.delayed(const Duration(seconds: 3), () async {
       budgetBlocState.add(LoadBudgetIdEvent(id: budgetView.id!));
-    }
+    });
   }
 
   _getEventPixPayment() async {

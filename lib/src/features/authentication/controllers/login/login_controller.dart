@@ -14,6 +14,7 @@ import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 
 import 'package:babi_cakes_mobile/src/utils/general/constants.dart';
 
+import '../../../../service/network_service.dart';
 import '../../models/login/login_form_biometric.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -21,8 +22,18 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginController {
 
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   static Future<ApiResponse<TokenDTO>> login(String email, String password) async {
     try {
+
+      bool isNetwork = await NetworkService.isNetworkConnection();
+
+      if(!isNetwork) {
+        return ApiResponse.errors([msgNotConnectionGlobal]);
+      }
+
       Uri uri = Uri.http(Config.apiURL, '/api/auth');
 
       Map<String, String> headers = {"Content-Type": "application/json"};
@@ -56,26 +67,23 @@ class LoginController {
       }
     } on TimeoutException catch (e) {
       return ApiResponse.errors([msgTimeOutGlobal]);
-    } on SocketException catch (e) {
-      return ApiResponse.errors([msgNotConnectionGlobal]);
     } catch (e) {
       return ApiResponse.errors([msgGlobalError]);
     }
   }
 
-  static Future<ApiResponse<User>> signGoogle() async {
+  Future<ApiResponse<User>> signGoogle() async {
     try {
-      GoogleSignIn googleSignIn = GoogleSignIn();
-      FirebaseAuth auth = FirebaseAuth.instance;
 
-      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
 
       print("Google User: ${googleUser!.email}");
 
       final AuthCredential credential = GoogleAuthProvider.credential(accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
 
-      UserCredential result = await auth.signInWithCredential(credential);
+      UserCredential result = await _auth.signInWithCredential(credential);
 
       final firebaseUser = result.user;
 
@@ -90,11 +98,8 @@ class LoginController {
     }
   }
 
-  static void logoutGoogle() async {
-    GoogleSignIn googleSignIn = GoogleSignIn();
-    FirebaseAuth auth = FirebaseAuth.instance;
-
-    await auth.signOut();
-    await googleSignIn.signOut();
+  void logoutGoogle() async {
+    await _auth.signOut();
+    await _googleSignIn.signOut();
   }
 }

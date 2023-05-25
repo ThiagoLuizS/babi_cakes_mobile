@@ -24,13 +24,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    GlobalService.getWelcome().then((value) => {
-      if(value) {
-        Get.to(() => const LoginScreen())
-      } else {
-        GlobalService.saveWelcome()
-      }
-    });
+
+    _redirectWelcomeToDashboard();
   }
 
   @override
@@ -107,5 +102,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         ),
       ),
     );
+  }
+
+  _redirectWelcomeToDashboard() {
+    GlobalService.getWelcome().then((value) => {
+      if(value) {
+        Get.to(() => const LoginScreen())
+      }
+    });
+
+    GlobalService.saveWelcome();
   }
 }

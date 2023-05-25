@@ -13,30 +13,39 @@ class CategoryItemComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return category.show! ? Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 20),
-          child: Container(
-            height: 50,
-            width: 50,
-            decoration: BoxDecoration(
-              image: DecorationImage(image: MemoryImage(base64Decode(category.categoryFileView!.photoBase64ToString)))
+    return category.show! ? Container(
+      width: 100,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: Container(
+              height: 65,
+              width: double.infinity,
+              color: Colors.grey.shade200,
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(image: MemoryImage(base64Decode(category.categoryFileView!.photoBase64ToString))),
+                ),
+              ),
             ),
           ),
-        ),
-        Flexible(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 5.0),
-            child: Text(
-              category.name!,
-              style:
-                  AppTypography.medium(context)?.copyWith(color: AppColors.black54),
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 5.0),
+              child: Text(
+                category.name!,
+                style:
+                    AppTypography.medium(context)?.copyWith(color: AppColors.black54),
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     ) : Container();
   }
 }

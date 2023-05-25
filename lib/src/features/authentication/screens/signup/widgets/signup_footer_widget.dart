@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:babi_cakes_mobile/src/features/authentication/screens/components/sign_in_button_google.dart';
+import '../../../../../constants/sizes.dart';
 import '../../../../../constants/text_strings.dart';
 import '../../login/login_screen.dart';
 
@@ -13,7 +14,8 @@ class SignUpFooterWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text("OR"),
+        const Text("OU"),
+        const SizedBox(height: tFormHeight - 20),
         const SignInButtonGoogle(),
         TextButton(
           onPressed: () => Get.offAll(() => const LoginScreen()),

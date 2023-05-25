@@ -32,29 +32,15 @@ class CategoryGroupItemComponent extends StatefulWidget {
 
 class _CategoryGroupItemComponentState
     extends State<CategoryGroupItemComponent> {
-  final CategoryBloc _bloc = CategoryBloc();
-  final ProductBloc _productBloc = ProductBloc();
   late String productName = '';
   int pageSize = 4;
-
-  @override
-  void dispose() {
-    _bloc.dispose();
-    _productBloc.dispose();
-    super.dispose();
-
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     final txtTheme = Theme.of(context).textTheme;
 
-    return widget.categoryView.productViews != null && widget.categoryView.productViews!.isNotEmpty ? Column(
+    return widget.categoryView.productViews != null && widget.categoryView.productViews!.isNotEmpty ?
+    Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(

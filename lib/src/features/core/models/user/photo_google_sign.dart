@@ -4,16 +4,19 @@ import 'package:babi_cakes_mobile/src/utils/general/prefs.dart';
 
 class PhotoGoogleSign {
   late String? photo;
+  late String? email;
 
-  PhotoGoogleSign({required this.photo});
+  PhotoGoogleSign({this.photo, this.email});
 
   PhotoGoogleSign.fromJson(Map<String, dynamic> json) {
     photo = json['photo'];
+    email = json['email'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['photo'] = photo;
+    data['email'] = email;
     return data;
   }
 
@@ -26,10 +29,17 @@ class PhotoGoogleSign {
   static Future<PhotoGoogleSign> get() async {
     String json = await Prefs.getString("PhotoGoogleSign.prefs");
 
-    Map<String, dynamic> map = convert.json.decode(json);
+    if(json.isNotEmpty) {
+      Map<String, dynamic> map = convert.json.decode(json);
+      PhotoGoogleSign photoGoogleSign = PhotoGoogleSign.fromJson(map);
 
-    PhotoGoogleSign photoGoogleSign = PhotoGoogleSign.fromJson(map);
+      return photoGoogleSign;
+    }
 
-    return photoGoogleSign;
+    return PhotoGoogleSign();
+  }
+
+  static void clear() {
+    Prefs.setString("PhotoGoogleSign.prefs", "");
   }
 }

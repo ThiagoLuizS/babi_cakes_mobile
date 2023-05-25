@@ -37,7 +37,7 @@ class _LoginFooterWidgetState extends State<LoginFooterWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Text("OR"),
+        const Text("OU"),
         const SizedBox(height: tFormHeight - 20),
         const SignInButtonGoogle(),
         const SizedBox(height: tFormHeight - 20),

@@ -2,21 +2,22 @@ import 'package:babi_cakes_mobile/src/features/authentication/controllers/login/
 import 'package:babi_cakes_mobile/src/features/authentication/models/login/login_form.dart';
 import 'package:babi_cakes_mobile/src/features/authentication/models/login/token_dto.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/shimmer_component.dart';
-import 'package:babi_cakes_mobile/src/features/core/theme/app_colors.dart';
+import 'package:babi_cakes_mobile/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:babi_cakes_mobile/src/utils/general/alert.dart';
-import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:babi_cakes_mobile/src/features/core/screens/dashboard/dashboard.dart';
+import 'package:local_auth/local_auth.dart';
+
 import '../../../../../constants/sizes.dart';
 import '../../../../../constants/text_strings.dart';
 import '../../../controllers/login/login_event.dart';
 import '../../../controllers/login/login_state.dart';
 import '../../../models/login/login_form_biometric.dart';
-import '../../forget_password/forget_password_options/forget_password_model_bottom_sheet.dart';
-import 'package:local_auth/local_auth.dart';
+
+import 'package:local_auth_android/local_auth_android.dart';
+import 'package:local_auth_ios/local_auth_ios.dart';
 
 class LoginFormWidget extends StatefulWidget {
   const LoginFormWidget({
@@ -40,7 +41,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
 
   late bool obscureText = true;
 
-  final _auth = LocalAuthentication();
+  late final LocalAuthentication auth;
 
   bool _checkBio = false;
 
@@ -56,17 +57,15 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
 
     loginBloc = LoginBloc();
     sign = LoginForm();
+    auth = LocalAuthentication();
 
     obscureText = true;
 
     _checkBiometrics();
-
-    _getLoginForm();
   }
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     return Form(
       key: _formKey,
       child: Container(
@@ -82,12 +81,13 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
               Future.delayed(Duration.zero, () async {
                 Get.offAll(() => const Dashboard());
               });
+            } else if(state.tokenDTO.token.isEmpty && state.error.isEmpty) {
+              _getLoginFormBiometric();
             } else if(state.error.isNotEmpty) {
               WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                 alertToast(context, state.error, 3, Colors.grey, false);
               });
             }
-
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,16 +131,21 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                   ),
                 ),
                 const SizedBox(height: tFormHeight - 20),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {
-                      ForgetPasswordScreen.buildShowModalBottomSheet(context);
-                    },
-                    child: const Text(tForgetPassword),
-                  ),
-                ),
+
+                /**
+                 * TODO: Implementar recuperação de senhas
+                 * */
+                // Align(
+                //   alignment: Alignment.centerRight,
+                //   child: TextButton(
+                //     onPressed: () {
+                //       ForgetPasswordScreen.buildShowModalBottomSheet(context);
+                //     },
+                //     child: const Text(tForgetPassword),
+                //   ),
+                // ),
                 // -- LOGIN BTN
+
                 SizedBox(
                   width: double.infinity,
                   child: StreamBuilder<Object>(
@@ -150,7 +155,9 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                         isLoading: state.isLoading,
                         child: ElevatedButton(
                           onPressed: () {
-                            _onChangeSign();
+                            if(!state.isLoading) {
+                              _onChangeSign();
+                            }
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -172,11 +179,10 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
     );
   }
 
-  _getLoginForm() async {
-
-    LoginForm? loginForm = await LoginForm.get();
-
-    if(loginForm != null) {
+  _getLoginFormBiometric() async {
+    LoginFormBiometric? loginFormBiometric = await LoginFormBiometric.get();
+    TokenDTO tokenDTO = await TokenDTO.get();
+    if(tokenDTO.token.isEmpty && loginFormBiometric != null) {
       _startAuth();
     }
   }
@@ -195,34 +201,53 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
 
   _checkBiometrics() async {
     try {
-      final bio = await _auth.canCheckBiometrics;
+      final bio = await auth.canCheckBiometrics;
       setState(() => _checkBio = bio);
       print('Biometrics = $_checkBio');
     } catch (e) {}
   }
 
   _startAuth() async {
-    bool isAuthenticated = false;
-    try {
-      isAuthenticated = await _auth.authenticate(
-        localizedReason: 'Fingerprint',
-        options: const AuthenticationOptions(
-          useErrorDialogs: true,
-          stickyAuth: true,
-          biometricOnly: true,
-        ),
-      );
-    } on PlatformException catch (e) {
-      print(e.message);
-    }
 
     LoginFormBiometric? loginForm = await LoginFormBiometric.get();
+    TokenDTO tokenDTO = await TokenDTO.get();
 
-    if (isAuthenticated && loginForm != null && loginForm!.email != null) {
-      loginBloc.add(LoadLoginEvent(email: loginForm!.email!, password: loginForm!.password!));
+    if (loginForm != null && loginForm.email != null) {
+
+      try {
+        bool isAuthenticated = false;
+
+        if(tokenDTO.token.isEmpty) {
+          isAuthenticated = await auth.authenticate(
+            localizedReason: 'Por favor, faça a autenticação pela sua biometria.',
+            authMessages: const <AuthMessages> [
+              AndroidAuthMessages(
+                signInTitle: 'Coloque sua digital para entrar!',
+                cancelButton: 'Cancelar',
+              ),
+              IOSAuthMessages(
+                cancelButton: 'Cancelar',
+              ),
+            ],
+            options: const AuthenticationOptions(
+              useErrorDialogs: true,
+              stickyAuth: true,
+              biometricOnly: true,
+            ),
+          );
+        }
+
+        if(isAuthenticated) {
+          loginBloc.add(LoadLoginEvent(email: loginForm.email!, password: loginForm.password!));
+        }
+
+      } on PlatformException catch (e) {
+        print(e.message);
+      }
     } else if(loginForm == null || loginForm!.email == null) {
       if(!mounted) return null;
       alertToast(context, "Faça o login com usuário e senha uma vez para desbloquear o login por biometria", 3, Colors.grey, false);
     }
+
   }
 }

@@ -46,7 +46,7 @@ class _BannersComponentState extends State<BannersComponent> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return Padding(
-      padding: const EdgeInsets.only(left: 10, right: 10, top: 20),
+      padding: const EdgeInsets.only(left: 10, right: 10, top: 40),
       child: Column(
         children: [
           SizedBox(

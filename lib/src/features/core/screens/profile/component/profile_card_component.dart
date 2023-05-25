@@ -8,6 +8,8 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
+import '../../../../authentication/models/login/login_form_biometric.dart';
+
 class ProfileCardComponent extends StatefulWidget {
   final VoidCallback onTap;
   final Icon icon;
@@ -90,11 +92,11 @@ class _ProfileCardComponentState extends State<ProfileCardComponent> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(15),
                               child: widget.icon,
                             ),
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(15),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,7 +124,23 @@ class _ProfileCardComponentState extends State<ProfileCardComponent> {
                 ),
               )
             : GestureDetector(
-          onTap: widget.onTap,
+          onTap: () => showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: const Text('Sair'),
+              content: const Text('Deseja realmente sair?'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Não'),
+                ),
+                TextButton(
+                  onPressed: () => _exist(),
+                  child: const Text('Sim'),
+                ),
+              ],
+            ),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -167,11 +185,11 @@ class _ProfileCardComponentState extends State<ProfileCardComponent> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(15),
                         child: widget.icon,
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(15),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -205,7 +223,8 @@ class _ProfileCardComponentState extends State<ProfileCardComponent> {
   _exist() async {
     TokenDTO.clear();
     LoginForm.clear();
-    LoginController.logoutGoogle();
+    LoginController loginController = LoginController();
+    loginController.logoutGoogle();
     Get.offAll(() => const LoginScreen());
   }
 }

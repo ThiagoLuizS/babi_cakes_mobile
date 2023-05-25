@@ -12,24 +12,11 @@ import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import '../../models/banner/banner_view.dart';
 import '../../screens/components/dashboard_component.dart';
 import '../../screens/components/product_tab_component.dart';
-import '../../screens/dashboard/widgets/banner_session.dart';
+import '../../screens/dashboard/widgets/banner_session_view.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_typography.dart';
 
 class DashboardService {
-
-  static Future<ContentCategory?> getCategoryAll(BuildContext context, CategoryBloc categoryBloc) async {
-    ApiResponse<ContentCategory> response = await categoryBloc.getAllByPage(0, 10);
-
-    if (response.ok) {
-      response.result.content.insert(0, CategoryView(id: 0, name: "Início", show: false));
-      return response.result;
-    } else {
-      // ignore: use_build_context_synchronously
-      alertToast(context, response.erros[0].toString(), 3, Colors.grey, false);
-    }
-    return null;
-  }
 
   static getScreenPresentationNoProduct() {
     Widget widget = Container();
@@ -117,7 +104,7 @@ class DashboardService {
           BorderRadius.vertical(bottom: Radius.circular(700)),
         ),
         actions: [
-          Expanded(child: BannerSession(bannerList: bannerList))
+          //Expanded(child: BannerSession(bannerList: bannerList))
         ],
       ),
       body: Padding(

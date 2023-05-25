@@ -1,12 +1,9 @@
 import 'package:babi_cakes_mobile/src/constants/image_strings.dart';
 import 'package:babi_cakes_mobile/src/features/authentication/models/login/token_dto.dart';
-import 'package:babi_cakes_mobile/src/features/authentication/screens/signup/widgets/signup_form_widget.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/event/event_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/app_bar_default_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/components/liquid_refresh_component.dart';
-import 'package:babi_cakes_mobile/src/features/core/screens/components/shimmer_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/address/profile_address_screen.dart';
-import 'package:babi_cakes_mobile/src/features/core/screens/budget/component/pay_pal_integration.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/component/profile_card_component.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/cupom/profile_cupom_screen.dart';
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/notification/profile_notification_screen.dart';

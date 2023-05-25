@@ -7,14 +7,14 @@ import 'package:babi_cakes_mobile/src/utils/general/prefs.dart';
 
 @JsonSerializable()
 class ContentCategory {
-  late List<CategoryView> content = [];
+  late List<CategoryView>? content = [];
   late int? size;
   late int? totalPages;
   late int? totalElements;
   late int? numberOfElements;
 
   ContentCategory(
-      { required this.content,
+      { this.content,
          this.size,
          this.totalPages,
          this.totalElements,

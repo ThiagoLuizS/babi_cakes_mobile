@@ -12,6 +12,7 @@ import 'package:babi_cakes_mobile/src/utils/general/constants.dart';
 import 'package:http/http.dart' as http;
 
 class CategoryController {
+
   static Future<ApiResponse<ContentCategory>> getAllByPage(int page,
       int size) async {
     try {
@@ -49,7 +50,7 @@ class CategoryController {
     }
   }
 
-  static Future<ApiResponse<List<CategoryView>>> getAllCategoryAndFechProduct() async {
+  static Future<ApiResponse<List<CategoryView>>> getAllCategoryAndFetchProduct() async {
     try {
       Uri uri = Uri.http(
           Config.apiURL, '/api/categories/fetch-product');

@@ -3,9 +3,14 @@ import 'dart:async';
 
 import 'package:babi_cakes_mobile/config.dart';
 import 'package:babi_cakes_mobile/firebase_options.dart';
+import 'package:babi_cakes_mobile/src/features/authentication/controllers/login/login_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/authentication/screens/splash_screen/splash_screen.dart';
+import 'package:babi_cakes_mobile/src/features/core/controllers/banner/banner_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/budget/budget_bloc_state.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/budget/budget_provider_controller.dart';
+import 'package:babi_cakes_mobile/src/features/core/controllers/category/category_bloc.dart';
+import 'package:babi_cakes_mobile/src/features/core/controllers/parameterization/parameterization_bloc.dart';
+import 'package:babi_cakes_mobile/src/features/core/controllers/product/product_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/shopping_cart/shopping_cart_controller.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/event/event_message_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/service/event/providers_service.dart';
@@ -58,9 +63,14 @@ main() {
           ),
           Provider<NotificationService>(create: (context) => NotificationService(),),
           Provider<FirebaseMessagingService>(create: (context) => FirebaseMessagingService(context.read<NotificationService>()),),
-          BlocProvider<BudgetBlocState>(create: (context) => BudgetBlocState(),)
+          BlocProvider<BudgetBlocState>(create: (context) => BudgetBlocState(),),
+          BlocProvider<LoginBloc>(create: (context) => LoginBloc(),),
+          BlocProvider<ParameterizationBloc>(create: (context) => ParameterizationBloc(),),
+          BlocProvider<BannerBloc>(create: (context) => BannerBloc(),),
+          BlocProvider<CategoryBloc>(create: (context) => CategoryBloc(),),
+          BlocProvider<ProductBloc>(create: (context) => ProductBloc(),),
         ],
-        child: MyApp(),
+        child: const MyApp(),
       )
   );
 }
@@ -87,6 +97,7 @@ Future<void> notificationSettingAuthorized() async {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

@@ -35,13 +35,9 @@ class BudgetListView extends StatefulWidget {
 
 class _BudgetListViewState extends State<BudgetListView> {
   final _blocBudget = BudgetBloc();
-  // late ContentBudget contentBudget = ContentBudget(content: []);
   late bool isLoadingBudget = true;
 
   late final BudgetBlocState budgetBlocState;
-
-  final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey =
-  GlobalKey<LiquidPullToRefreshState>();
 
   @override
   void dispose() {
@@ -55,10 +51,6 @@ class _BudgetListViewState extends State<BudgetListView> {
     super.initState();
     budgetBlocState = BudgetBlocState();
     budgetBlocState.add(LoadBudgetEvent(page: 0, size: 50));
-
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      _listenBloc();
-    });
   }
 
   @override
@@ -142,16 +134,5 @@ class _BudgetListViewState extends State<BudgetListView> {
         ),
       ),
     );
-  }
-
-  _listenBloc() {
-    budgetBlocState.stream.listen((event) {
-      if(event is BudgetErrorState) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          var data = event.error;
-          alertToast(context, data, 3, Colors.grey, false);
-        });
-      }
-    });
   }
 }
