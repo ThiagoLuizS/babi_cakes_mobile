@@ -34,8 +34,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  int _selectedIndex = 0;
-
   late final ParameterizationBloc blocParameterization;
 
   @override
@@ -46,9 +44,6 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void initState() {
-    setState(() {
-      _selectedIndex = widget.indexBottomNavigationBar;
-    });
     super.initState();
 
     blocParameterization = ParameterizationBloc();

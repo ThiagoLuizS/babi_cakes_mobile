@@ -34,12 +34,14 @@ class HeaderShoppingCart extends StatelessWidget {
                     fontWeight: FontWeight.bold, fontSize: 16),
               ),
             ),
-            IconButton(
-                onPressed: () {
-                  cart.removeAll();
-                },
-                icon:
-                const Icon(Icons.delete_outline_outlined)),
+            Expanded(
+              child: IconButton(
+                  onPressed: () {
+                    cart.removeAll();
+                  },
+                  icon:
+                  const Icon(Icons.delete_outline_outlined)),
+            ),
           ],
         );
       }

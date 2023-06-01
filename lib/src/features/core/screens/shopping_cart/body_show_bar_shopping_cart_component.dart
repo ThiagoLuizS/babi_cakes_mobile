@@ -91,21 +91,24 @@ class _BodyShowBarShoppingCartComponentState
         return Scaffold(
           body: SizedBox(
             height: height,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: CustomScrollView(
-                slivers: [
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        HeaderShoppingCart(width: width),
-                        AddressShoppingCart(isLoading: isLoading, addressView: addressView),
-                        BodyCupomAndProductShoppingCart(contentCupom: contentCupom),
-                      ],
-                    ),
-                  )
-                ],
-              ),
+            child: CustomScrollView(
+              slivers: [
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      HeaderShoppingCart(width: width),
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: AddressShoppingCart(isLoading: isLoading, addressView: addressView),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: BodyCupomAndProductShoppingCart(contentCupom: contentCupom),
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
           ),
           bottomNavigationBar: BottomNavigatorShoppingCart(addressView: addressView,),

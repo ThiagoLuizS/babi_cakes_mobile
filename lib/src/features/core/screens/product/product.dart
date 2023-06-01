@@ -260,7 +260,7 @@ class _ProductState extends State<Product> {
                                           Padding(
                                             padding: EdgeInsets.only(left: 10),
                                             child: Text(
-                                              "Alguma observação?",
+                                              "observação?",
                                               style: TextStyle(
                                                   fontSize: 14, color: AppColors.black54),
                                             ),
@@ -333,7 +333,7 @@ class _ProductState extends State<Product> {
                                                         size: 20,
                                                       ),
                                                       const Text(
-                                                        'Adicionar',
+                                                        '',
                                                         style: TextStyle(
                                                             color: Colors.white, fontWeight: FontWeight.bold),
                                                       ),
@@ -366,22 +366,6 @@ class _ProductState extends State<Product> {
         }
       ),
     );
-  }
-
-  _incrementeQuantityProduct() {
-    setState(() {
-      _quantity = _quantity + 1;
-    });
-    _calculateValueFinal();
-  }
-
-  _subtractQuantityProduct() {
-    if(_quantity > 1) {
-      setState(() {
-        _quantity = _quantity - 1;
-      });
-      _calculateValueFinal();
-    }
   }
 
   _calculateValueFinal() {

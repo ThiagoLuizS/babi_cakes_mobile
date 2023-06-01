@@ -20,6 +20,8 @@ const String tPix = "PIX";
 const String tPixDescription = "Pagamento por meil de uma chave pix";
 const String tSelectFormPayment = "Selecionar forma de pagamento!";
 const String tSelectFormPaymentDescription = "Selecionar forma de pagamento de sua preferência.";
+const String tMessageWhatsappError = "Não foi possivel chamar o vendedor";
+const String tMessageWhatsappEnabledError = "Seu dispositivo não tem o Whatsapp intalado";
 
 
 // -- Splash Screen Text

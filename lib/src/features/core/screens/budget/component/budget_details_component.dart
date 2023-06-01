@@ -7,6 +7,7 @@ import 'package:babi_cakes_mobile/src/features/core/controllers/budget/budget_bl
 import 'package:babi_cakes_mobile/src/features/core/controllers/budget/budget_data.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/budget/budget_event.dart';
 import 'package:babi_cakes_mobile/src/features/core/controllers/budget/budget_state.dart';
+import 'package:babi_cakes_mobile/src/features/core/controllers/parameterization/parameterization_bloc.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/budget/budget_product_reserved_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/budget/budget_view.dart';
 import 'package:babi_cakes_mobile/src/features/core/models/event/event_message_view.dart';
@@ -27,6 +28,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../controllers/parameterization/parameterization_event.dart';
 import '../../../models/budget/optiona_payment.dart';
 import 'budget_form_of_payment.dart';
 
@@ -59,6 +61,8 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
 
     budgetBlocState = BudgetBlocState();
 
+    BlocProvider.of<ParameterizationBloc>(context).add(LoadParameterizationEvent());
+
     setState(() {
       budgetView = widget.budgetView;
     });
@@ -76,6 +80,8 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
       },
       builder: (context, state) {
         var budgetView = widget.budgetView;
+        var productReservedViewList = budgetView.productReservedViewList ?? [];
+
         if(state is BudgetSuccessViewState) {
           budgetView = state.budgetView;
         } else if(state is BudgetErrorState) {
@@ -166,11 +172,9 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
                                     ListView.builder(
                                       shrinkWrap: true,
                                       physics: const BouncingScrollPhysics(),
-                                      itemCount:
-                                      budgetView.productReservedViewList!.length,
+                                      itemCount: productReservedViewList.length,
                                       itemBuilder: (BuildContext itemBuilder, index) {
-                                        BudgetProductReservedView reserved = widget
-                                            .budgetView.productReservedViewList![index];
+                                        BudgetProductReservedView reserved = productReservedViewList[index];
                                         return Row(
                                           children: [
                                             Padding(
@@ -355,7 +359,7 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
                                             color: Color.fromARGB(229, 0, 0, 0),
                                             fontSize: 13),
                                       ),
-                                      Icon(Icons.arrow_forward_ios),
+                                      const Icon(Icons.arrow_forward_ios),
                                       _optionalPaymentSelect()
                                     ],
                                   ),
@@ -410,6 +414,7 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
 
   _getBudgetByUserAndById() {
     Future.delayed(const Duration(seconds: 3), () async {
+      if(!mounted) return;
       budgetBlocState.add(LoadBudgetIdEvent(id: budgetView.id!));
     });
   }
@@ -428,10 +433,12 @@ class _BudgetDetailsComponentState extends State<BudgetDetailsComponent>
   }
 
   _optionalPaymentSelect() {
-    return Image(
-        image: AssetImage(widget.optionalPayment == OptionalPayment.PAYPAL ? tPayPalImage : tPixImage),
-        width: 100,
-        height: 25,
-        color: AppColors.berimbau);
+    return Expanded(
+      child: Image(
+          image: AssetImage(widget.optionalPayment == OptionalPayment.PAYPAL ? tPayPalImage : tPixImage),
+          width: 100,
+          height: 25,
+          color: AppColors.berimbau),
+    );
   }
 }

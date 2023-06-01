@@ -6,6 +6,7 @@ class ParameterizationView {
   late int? id;
   late double? freightCost = 0.0;
   late bool? openShop = false;
+  late String? linkWhatsapp = "";
 
   ParameterizationView();
 
@@ -13,6 +14,7 @@ class ParameterizationView {
     id = json['id'];
     freightCost = json['freightCost'];
     openShop = json['openShop'];
+    linkWhatsapp = json['linkWhatsapp'];
   }
 
   Map<String, dynamic> toJson() {
@@ -20,6 +22,7 @@ class ParameterizationView {
     data['id'] = id;
     data['freightCost'] = freightCost;
     data['openShop'] = openShop;
+    data['linkWhatsapp'] = linkWhatsapp;
     return data;
   }
 

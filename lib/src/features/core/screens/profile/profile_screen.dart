@@ -9,9 +9,13 @@ import 'package:babi_cakes_mobile/src/features/core/screens/profile/cupom/profil
 import 'package:babi_cakes_mobile/src/features/core/screens/profile/notification/profile_notification_screen.dart';
 import 'package:babi_cakes_mobile/src/utils/general/api_response.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import '../../controllers/parameterization/parameterization_bloc.dart';
+import '../../controllers/parameterization/parameterization_state.dart';
 import '../../models/user/photo_google_sign.dart';
+import '../../service/parameterization/parameterization_service.dart';
 import 'account/my_account.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -46,8 +50,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60),
@@ -135,6 +137,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           title: 'Cupons',
                           subTitle: 'Meus cupons de desconto',
                           isDialog: false, notification: false,
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        BlocBuilder<ParameterizationBloc, ParameterizationState>(
+                          builder: (context, state) {
+                            return ProfileCardComponent(
+                              onTap: () => ParameterizationService.launchWhatsAppUri(context, state.parameterizationView, "App - Babi Cakes, olá!"),
+                              icon: const Icon(Icons.phone),
+                              title: 'Contato',
+                              subTitle: 'Entre em contato com a loja',
+                              isDialog: false, notification: false,
+                            );
+                          }
                         )
                       ],
                     ),

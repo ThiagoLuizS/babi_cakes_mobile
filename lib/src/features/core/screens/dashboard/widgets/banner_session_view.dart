@@ -24,12 +24,15 @@ class _BannerSessionViewState extends State<BannerSessionView> {
           children: [
             SizedBox(
               height: height / 3,
-              child: Container(
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(100), bottomRight: Radius.circular(100)),
-                    color: AppColors.milkCream
+              child: Align(
+                alignment: AlignmentDirectional.topCenter,
+                child: Container(
+                  decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(100), bottomRight: Radius.circular(100)),
+                      color: AppColors.milkCream
+                  ),
+                  child: Image(image: const AssetImage(tSplashImage), color: AppColors.berimbau, height: height * 0.6),
                 ),
-                child: Image(image: const AssetImage(tSplashImage), color: AppColors.berimbau, height: height * 0.6),
               ),
             ),
             BannersComponent(
